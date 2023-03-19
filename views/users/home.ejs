@@ -1,0 +1,64 @@
+<body>
+
+
+<h1>Welcome <%= user.name %> <br></h1>
+
+
+
+<table class="table table-hover table-bordered" class="table class="table table-hover table-bordered" table class="table table-hover table-bordered"-hover">
+    <tr>
+        <td> Email </td>
+        <td> <%= user.email  %> </td>
+    </tr>
+
+    <tr>
+        <td> Mobile </td>
+        <td> <%= user.phone %> </td>
+    </tr>
+
+    <tr>
+        <td> Hostel </td>
+        
+        <td>
+            <% if (user.hostel_allocated.hostel_name !== 'None') { %>  
+                <%= user.hostel_allocated.hostel_name %>
+            <% } else { %>
+                N/A
+            <% } %>
+        </td>
+    </tr>
+
+    <tr>
+        <td> Room no. </td>
+      
+    <td> <% if (user.hostel_allocated.room_no !== 0) { %>  
+            <%= user.hostel_allocated.room_no %>
+            <% } else { %>
+                N/A
+            <% } %> </td>
+    </tr>
+
+
+</table class="table table-hover table-bordered">
+
+<br>
+<a href="/edit?id=<%= user._id%>">Edit</a>
+<br>
+<a href="/hostels-list">View Hostels</a>
+<br>
+<a href="/apply-hostel">Apply for hostel</a>
+<br>
+<a href="/apply-leave">Apply for leave</a>
+<br>
+<a href="/payment">Make Payment</a>
+<br>
+<a href="/complaints">Submit Complaint</a>
+<br>
+<a href="/vacateUser">Vacate room</a>
+<br>
+<a href="/leaves">My leaves</a>
+<br>
+<a href="/logout">Logout</a>
+
+
+</body>

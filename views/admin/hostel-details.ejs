@@ -1,0 +1,44 @@
+<body>
+
+
+<h1> Details</h1>
+
+<table class="table table-hover table-bordered" width="70%">
+    <thead>
+      <tr>
+        <th>Room No</th>
+        <th>Student Name</th>
+        <th>Reg No</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% roomData.results.forEach(function(room) { %>
+        <tr>
+          <td><%= room.room_no %></td>
+          <td placeholder="hello"><a href="/admin/user-details/?id=<%= room.student_reg_no %>"><%= room.student_allocated %><a></td>
+          <td><%= room.student_reg_no %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table class="table table-hover table-bordered">
+  
+  <%
+  let totalPages;
+  if (hostelData.capacity % 20 == 0) {
+    totalPages = hostelData.capacity / 20;
+  } else {
+    totalPages = Math.floor(hostelData.capacity / 20) + 1;
+  }
+%>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <li class="page-item"><a class="page-link" href="/admin/hostel-details?id=<%=hostelData.name%>&page=<%=i%>"><%= i %></a></li>
+    <% } %>
+    
+  </ul>
+</nav>
+  
+
+</body>

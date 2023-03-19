@@ -1,0 +1,32 @@
+<body>
+
+
+<div class="container">
+    <h1>Admin Login</h1>
+
+<% 
+    if(typeof message !== 'undefined'){
+
+    %>
+
+    <h3> <%= message %> </h3>
+
+    <%
+    }
+
+%>
+    <form action="" method="POST">
+
+        <input class="form-control" type="email" name="email" id="" placeholder="Enter Email"> <br>
+        <input class="form-control" type="password" name="password" id="" placeholder="Enter password"> <br>
+        <input type="submit" class="btn btn btn-primary" class="btn btn btn-primary" value="Login"> <br>
+    
+        <br>
+        <a>Student??</a>
+        <a href="/home">Login here</a>
+    
+    </form>
+</div>
+
+
+</body>

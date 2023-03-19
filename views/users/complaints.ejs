@@ -1,0 +1,17 @@
+<h1>Submit a Complaint</h1>
+
+<form method="post" action="/complaints">
+  <div>
+    <label for="title">Title:</label>
+    <input class="form-control" type="text" id="title" name="title" required>
+  </div>
+  <div>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+  </div>
+  <div>
+    <label for="submittedBy">Submitted By:</label>
+    <input class="form-control" type="text" id="submittedBy" name="submittedBy" required>
+  </div>
+  <button type="submit" class="btn btn btn-primary">Submit Complaint</button>
+</form>

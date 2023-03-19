@@ -1,0 +1,13 @@
+<!-- EJS template code -->
+<body>
+  <br>
+  <h2>Hostels:</h2> <br>
+    <ul>
+        <% hostels.forEach(function(hostel) { %>
+          <li>
+            <a href="/hostels/<%= hostel._id %>"><%= hostel.name %></a>
+          </li>
+        <% }); %>
+      </ul>    
+    
+</body>

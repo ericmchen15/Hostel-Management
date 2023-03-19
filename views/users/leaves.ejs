@@ -1,0 +1,24 @@
+
+<body>
+
+    <h1>Leaves</h1>
+    <ol class="list-group list-group-numbered" style="text-align: left;">
+      <% leavesList.forEach(function(leave) { %>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Reason: <%= leave.reason %></div>
+            <p>Applied on: <%= leave.from %></p>
+          </div>
+          <span class="badge bg-primary rounded-pill"><%= leave.status %></span>
+        </li>
+        <!-- <li>
+          <h5>Student : <%= leave.reg_no %></h5>
+          <p>Reason: <%= leave.reason %></p>
+          <p>From: <%= leave.from %></p>
+          <p>To: <%= leave.to %></p>
+          <p>Status: <%= leave.status %></p>
+          
+        </li> -->
+      <% }); %>
+    </ol>
+    </body>

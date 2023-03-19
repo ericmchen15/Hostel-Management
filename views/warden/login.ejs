@@ -1,0 +1,32 @@
+<body>
+
+    <h1>
+        Warden Login
+    </h1>
+    
+    <% 
+        if(typeof message !== 'undefined'){
+        %>
+    
+        <h4> <%= message %> </h4>
+    
+        <%
+    
+        }
+    
+     %>
+    
+    <form action="" method="post">
+    
+        <input class="form-control" type="email" name="email" required placeholder="Enter Email">
+        <br>
+        <input class="form-control" type="password" name="password" required placeholder="Enter password">
+        <br>
+        <input type="submit" class="btn btn btn-primary" value="login">
+        <br>
+    
+    </form>
+    
+
+    
+    </body>

@@ -1,0 +1,115 @@
+<body>
+    
+    <h1>Dashboard</h1>
+    
+    <br>
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-2">
+        </div>
+          <form class="d-flex">
+            <input class="form-control me-2" type="text" id="search-box" onkeyup="sendData(this)" placeholder="Search" aria-label="Search">
+            </div>
+          </form>
+        </div>
+        <div class="col col-lg-2">
+        </div>
+      </div>
+      <br>
+    
+    <table class="table table-hover table-bordered" width="70%" >
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone No.</th>
+        </tr>
+    
+        <% 
+            if(userData.results.length > 0 )
+            {
+                for(i=0; i<userData.results.length ; i++){
+                    %>
+    
+                    <tr>
+                        <td>
+                        <%= userData.results[i].name %>
+                        </td>   
+                        
+                        <td>                   
+                        <%= userData.results[i].email %>          
+                        </td>  
+    
+                        <td>            
+                        <%= userData.results[i].phone %>
+                        </td>  
+    
+                         
+                    </tr>
+    
+                    <%
+                }
+            }
+            else{
+                %>
+    
+                <tr>
+                    <td colspan="5">Users not found.</td>
+                </tr>
+    
+                <%
+            }
+         %>
+    </table class="table table-hover table-bordered">
+
+    <%
+    let totalPages;
+    if (userData.results.length.capacity % 20 == 0) {
+      totalPages = userData.results.length.capacity / 20;
+    } else {
+      totalPages = Math.floor(userData.results.length / 20) + 1;
+    }
+  %>
+  
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item"><a class="page-link" href="/admin/dashboard/users-list?page=<%= i %>"><%=i%></a></li>
+      <% } %>
+      
+    </ul>
+  </nav>
+
+  <!-- <script>
+    let timeoutId;
+
+function sendData(data){
+  const searchResults = document.getElementById('search-results')
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    fetch('/admin/search-user', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ payload: data.value})
+    }).then(res => res.json())
+    .then(data => {
+      payload = data.payload
+      console.log(data.payload)
+      searchResults.innerHTML = ''
+      if(payload.length < 1){
+        searchResults.innerHTML = `<div class="card-body">
+    Sorry Nothing found
+  </div>`
+  return
+      }
+
+      payload.forEach((item, index) => {
+        if (index > )
+      });
+    });
+  }, 500)
+  ; // delay execution for 500ms
+}
+  </script> -->
+
+</body>
+    

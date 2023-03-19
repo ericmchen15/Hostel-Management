@@ -1,0 +1,16 @@
+<body>
+
+<!-- <img src="userImages/<%= user.image %>" width="100px" height="100px" alt="<%= user.image %>"> -->
+
+<form action="" method="post" enctype="multipart/form-data">
+
+    <input class="form-control" type="file" name="image"> <br>
+    <input class="form-control" type="hidden" name="user_id" value="<%= user._id %>"> <br>
+    <input class="form-control" type="text" name="name" value="<%= user.name %>" placeholder="Enter name" required> <br>
+    <input class="form-control" type="email" name="email" value="<%= user.email %>" placeholder="Enter email" required> <br>
+    <input class="form-control" type="text" name="mno" value="<%= user.phone %>" placeholder="Enter phone no." required> <br>
+    <input type="submit" class="btn btn btn-primary" value="Update profile">
+
+</form>
+
+</body>

@@ -1,0 +1,38 @@
+
+
+<body>
+  <h1><%= hostel.hostel_name %> Details</h1>
+  <p><strong>Address:</strong> <%= hostel.address %></p>
+  <p><strong>Capacity:</strong> <%= hostel.capacity %></p>
+  <p><strong>Type:</strong> <%= hostel.type %></p>
+  <p><strong>Vacancy:</strong> <%= hostel.vacancy %></p>
+  <p><strong>Contact:</strong> <%= hostel.contact %></p>
+  
+  <h2>Rooms</h2>
+  <% if (hostel.rooms.length > 0) { %>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>Room No</th>
+          <th>Vacant</th>
+          <th>Student Allocated</th>
+          <th>Student Reg No</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% hostel.rooms.forEach(function(room) { %>
+          <tr>
+            <td><%= room.room_no %></td>
+            <td><%= room.vacant %></td>
+            <td><%= room.student_allocated %></td>
+            <td><%= room.student_reg_no %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table class="table table-hover table-bordered">
+  <% } else { %>
+    <p>No rooms available</p>
+  <% } %>
+  
+</body>
+

@@ -1,0 +1,14 @@
+<h1>Complaints</h1>
+
+<ol class="list-group list-group-numbered">
+  <% complaintList.forEach(function(complaint) { %>
+    <li>
+      <h5>Complaint title: <%= complaint.title %></h5>
+      <p>Description: <%= complaint.description %></p>
+      <p>Hostel name: <%= complaint.hostelName %></p>
+      <p>Submitted by: <%= complaint.submittedBy %></p>
+    </li>
+  <% }); %>
+</ol>
+
+
