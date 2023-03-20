@@ -4,6 +4,7 @@ const Complaint = require('../models/complaintModel')
 const Warden = require('../models/wardenModel')
 const Department = require('../models/departmentModel')
 const bcrypt = require('bcrypt')
+const Leave = require('../models/leaveModel')
 
 
 const loadLogin = async (req, res) => {
@@ -53,8 +54,10 @@ const verifyLogin = async (req, res) => {
 const loadHome = async (req, res) => {
 
     try {
+        const complaintData = await Complaint.find({})
+        const leaveData = await Leave.find({})
         const userData = await User.findById({ _id: req.session.user_id })
-        res.render('home', { admin: userData })
+        res.render('home', { user: userData, leave: leaveData, complaint: complaintData })
     } catch (error) {
         console.log(error.message)
     }
