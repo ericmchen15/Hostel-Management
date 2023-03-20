@@ -67,6 +67,10 @@ const hostelSchema = mongoose.Schema({
           quota: {
             type: Number,
             required: true
+          },
+          vacancy: {
+            type: Number,
+            required: true
           }
         })
       },

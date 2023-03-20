@@ -99,6 +99,141 @@ const randomHostel = async (reg_no, gender, name, session_key) => {
     }
 }
 
+const randHostel = async (reg_no, gender, name, session_key) => {
+    try {
+  
+      var boys_hos = []
+      var girls_hos = []
+      var rooms = []
+      var vacan = 0
+  
+      const userData = await User.find({ "hostel_allocated.status": { $eq: "pending" } }).sort({ percentage: -1 });
+  
+      // const userData = await User.findOne({_id: session_key})
+      const hostelsData = await Hostel.find({})
+      hostelsData.forEach(function (hostel) {
+        vacan = hostel.vacancy //existing vacancy
+        console.log(vacan)
+        if (hostel.vacancy) {
+          if (hostel.type == "male") {
+            boys_hos.push(hostel.name)
+          } else {
+            girls_hos.push(hostel.name)
+          }
+        }
+  
+      })
+  
+      var allocatedHostel = ""
+  
+  
+      console.log(`data ************** ${userData} ************* \n`)
+  
+      var random_boys_hos = []
+      var random_girls_hos = []
+  
+      await userData.forEach(async user => {
+        if (user.gender == "male") {
+          const department = user.dept
+          boys_hos.forEach(hostel => {
+  
+            if (hostel.dept[user.dept].vacancy > 0) {
+              random_boys_hos.push(hostel.name);
+            }
+          })
+  
+          allocatedHostel = random_boys_hos[Math.floor(Math.random() * random_boys_hos.length)];
+  
+          // allocatedHostel.dept[user.department].vacancy--;
+  
+          await Hostel.findOne({ name: allocatedHostel }).then((hostel) => {
+            hostel.rooms.forEach(function (room) {
+              if (room.vacant) {
+                rooms.push(room.room_no)
+              }
+            })
+          })
+  
+          var allocatedRoom = rooms[Math.floor(Math.random() * rooms.length)];
+  
+          let hostelVacancy = (await Hostel.findOne({ name: allocatedHostel })).vacancy
+          let deptVacancy = (await Hostel.findOne({name: allocatedHostel } ,{dept: 1, _id: 0})).dept.department.vacancy
+          console.log(hostelVacancy)
+  
+          await Hostel.updateOne(
+            { name: allocatedHostel, "rooms.room_no": allocatedRoom },
+            {
+              $set: {
+                "rooms.$.vacant": false,
+                "rooms.$.student_reg_no": reg_no,
+                "rooms.$.student_allocated": name,
+                vacancy: hostelVacancy - 1,
+              }
+            }
+          )
+
+          await Hostel.updateOne(
+            { name: allocatedHostel }, 
+            { $set: { "dept.$[dept].vacancy": deptVacancy - 1 } },
+            { arrayFilters: [{ "dept._id": "user" }] }
+          )
+  
+          allocatedData = ({
+            'hostel_name': allocatedHostel,
+            'room_no': allocatedRoom
+          })
+  
+        } else {
+          girls_hos.forEach(hostel => {
+  
+            if (hostel.dept[user.dept].vacancy > 0) {
+              random_girls_hos.push(hostel.name);
+            }
+          })
+  
+          allocatedHostel = random_girls_hos[Math.floor(Math.random() * random_girls_hos.length)];
+  
+          // allocatedHostel.dept[user.department].vacancy--;
+  
+          await Hostel.findOne({ name: allocatedHostel }).then((hostel) => {
+            hostel.rooms.forEach(function (room) {
+              if (room.vacant) {
+                rooms.push(room.room_no)
+              }
+            })
+          })
+  
+          var allocatedRoom = rooms[Math.floor(Math.random() * rooms.length)];
+  
+          let vacancyy = (await Hostel.findOne({ name: allocatedHostel })).vacancy
+          console.log(vacancyy)
+  
+          await Hostel.updateOne(
+            { name: allocatedHostel, "rooms.room_no": allocatedRoom },
+            {
+              $set: {
+                "rooms.$.vacant": false,
+                "rooms.$.student_reg_no": reg_no,
+                "rooms.$.student_allocated": name,
+                vacancy: vacancyy - 1
+              }
+            }
+          )
+  
+          allocatedData = ({
+            'hostel_name': allocatedHostel,
+            'room_no': allocatedRoom
+          })
+  
+  
+        }
+      }
+      )
+  
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
 const securePassword = async (password) => {
 

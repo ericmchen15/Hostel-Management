@@ -26,6 +26,7 @@
             <% departmentsData.forEach(function(dept) { %>
                 <input type="text" class="form-control" placeholder="<%= dept.name %>" aria-label="Department name" readonly>
                 <input type="number" class="form-control" placeholder="Quota" name="dept[<%= dept.name %>][quota]" aria-label="Department quota">
+                <input type="number" class="form-control" placeholder="Vacancy" name="dept[<%= dept.name %>][vacancy]" aria-label="Department quota">
                 <br>
             <% }); %>
   
