@@ -314,210 +314,176 @@ const returnSearch = async (req, res) => {
     }
 }
 
-const allocateStudents = async(req, res)=> {
+
+// const randHostel = async (req,res) => {
+//     try {
+//         const hostelsData = await Hostel.find({ vacancy: { $gt: 0 } });
+//         hostelsData.forEach(hostel => {
+
+//             console.log(hostel.dept.get("CSE").vacancy)
+//         })
+//         res.send(hostelsData)
+
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
+const randHostel = async (req, res) => {
     try {
-      // Find all students in the database, sorted by marks in descending order
-      const students = await User.find({"hostel_allocated.status": {$eq: "pending"}}).sort({ marks: -1 });
-  
-      // Find all hostels in the database
-      const hostels = await Hostel.find({});
-  
-      // Loop through each student
-      for (let i = 0; i < students.length; i++) {
-        let allocated = false;
-  
-        // Loop through each hostel
-        for (let j = 0; j < hostels.length; j++) {
-          // Check if the hostel has a quota for the student's department
-          if (hostels[j].dept[students[i].department].quota > 0) {
-            // Allocate the student to the hostel and update the quota
-            hostels[j].dept[students[i].department].quota--;
-            students[i].hostel_allocated.hostel_name = hostels[j].name;
+        let allocatedStudents = []
+        let nonAllocatedStudents = []
 
-            var rooms = []
-            var vacan = 0
+        const userData = await User.find({ "hostel_allocated.status": "pending" }).sort({ percentage: -1 });
+        const hostelsData = await Hostel.find({ vacancy: { $gt: 0 } });
+
+        const boys_hos = hostelsData.filter(hostel => hostel.type === "male");
+        //console.log(boys_hos)
+        const girls_hos = hostelsData.filter(hostel => hostel.type === "female");
+
+        for (let i = 0; i < userData.length; i++) {
+            var allocatedData 
+            var allocatedHostel = ''
+            var allocatedRoom = ''
+            var vacantRooms = []
+            const userDept = userData[i].dept
+            // console.log("user dept: ", userDept)
 
 
-            await Hostel.findOne({ name: hostels[j].name }).then((hostel) => {
-                hostel.rooms.forEach(function (room) {
-                    if(room.vacant){
-                        rooms.push(room.room_no)
+            if (userData[i].gender == "male") {
+                var dept_boys_hos = []
+                var dept_vacancy
+                var hos_vacany
+
+                boys_hos.forEach(hos => {
+                    if (hos.dept.has(userDept) && hos.dept.get(userDept).vacancy > 0) {
+                        dept_vacancy = hos.dept.get(userDept).vacancy
+                        dept_boys_hos.push(hos);
                     }
+                });
+
+                
+                //const dept_boys_hos = boys_hos.filter(hostel => hostel.dept.userDept?.vacancy > 0);
+                if (dept_boys_hos.length === 0) {
+                    // No hostel with vacancy in the user's department for their gender
+                    nonAllocatedStudents.push(userData[i].reg_no)
+                    continue;
+                }
+
+                allocatedHostel = dept_boys_hos[Math.floor(Math.random() * dept_boys_hos.length)];
+                hos_vacany = allocatedHostel.vacancy
+
+                vacantRooms = allocatedHostel.rooms.filter(room => room.vacant);
+
+                allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
+                console.log("allocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacany-1)
+
+                var deptPath = `dept.${userData[i].dept}.vacancy`;
+
+                allocatedData = ({
+                    'hostel_name': allocatedHostel.name,
+                    'room_no': allocatedRoom,
+                    'status': "approved"
                 })
-            })
-    
-            var rand_room = rooms[Math.floor(Math.random() * rooms.length)];
 
-            students[i].hostel_allocated.room_no = rand_room
-            students[i].save();
-            allocated = true;
-            break;
-          }
-        }
-  
-        // If the student was not allocated to any hostel, assign them to a default hostel
-        if (!allocated) {
-          students[i].hostel = 'Default Hostel';
-          students[i].save();
-        }
-      }
-  
-      console.log('Allocation complete!');
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  
-  // Call the function to allocate the students to hostels
+                console.log(allocatedData)
+                await Hostel.updateOne(
+                    { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
+                    {
+                        $set: {
+                            "vacancy": hos_vacany-1,
+                            "rooms.$.vacant": false,
+                            "rooms.$.student_reg_no": userData[i].reg_no,
+                            "rooms.$.student_allocated": userData[i].name,
+                            [deptPath]: dept_vacancy - 1
+                        }
+                    }
+                );
 
-  const randHostel = async (reg_no, gender, name, session_key) => {
-    try {
-  
-      var boys_hos = []
-      var girls_hos = []
-      var rooms = []
-      var vacan = 0
-  
-      const userData = await User.find({ "hostel_allocated.status": { $eq: "pending" } }).sort({ percentage: -1 });
-  
-      // const userData = await User.findOne({_id: session_key})
-      const hostelsData = await Hostel.find({})
-      hostelsData.forEach(function (hostel) {
-        vacan = hostel.vacancy //existing vacancy
-        console.log(vacan)
-        if (hostel.vacancy) {
-          if (hostel.type == "male") {
-            boys_hos.push(hostel.name)
-          } else {
-            girls_hos.push(hostel.name)
-          }
-        }
-  
-      })
-  
-      var allocatedHostel = ""
-  
-  
-      console.log(`data ************** ${userData} ************* \n`)
-  
-      var random_boys_hos = []
-      var random_girls_hos = []
-  
-      await userData.forEach(async user => {
-        if (user.gender == "male") {
-          const department = user.dept
-          boys_hos.forEach(hostel => {
-  
-            if (hostel.dept[user.dept].vacancy > 0) {
-              random_boys_hos.push(hostel.name);
-            }
-          })
-  
-          allocatedHostel = random_boys_hos[Math.floor(Math.random() * random_boys_hos.length)];
-  
-          // allocatedHostel.dept[user.department].vacancy--;
-  
-          await Hostel.findOne({ name: allocatedHostel }).then((hostel) => {
-            hostel.rooms.forEach(function (room) {
-              if (room.vacant) {
-                rooms.push(room.room_no)
-              }
-            })
-          })
-  
-          var allocatedRoom = rooms[Math.floor(Math.random() * rooms.length)];
-  
-          let hostelVacancy = (await Hostel.findOne({ name: allocatedHostel })).vacancy
-          let deptVacancy = (await Hostel.findOne({name: allocatedHostel } ,{dept: 1, _id: 0})).dept.department.vacancy
-          console.log(hostelVacancy)
-  
-          await Hostel.updateOne(
-            { name: allocatedHostel, "rooms.room_no": allocatedRoom },
-            {
-              $set: {
-                "rooms.$.vacant": false,
-                "rooms.$.student_reg_no": reg_no,
-                "rooms.$.student_allocated": name,
-                vacancy: hostelVacancy - 1,
-              }
-            }
-          )
+                await User.updateOne(
+                    { _id: userData[i]._id },
+                    { $set: { 
+                        hostel_allocated: allocatedData
+                    } }
+                );
 
-          await Hostel.updateOne(
-            { name: allocatedHostel }, 
-            { $set: { "dept.$[dept].vacancy": deptVacancy - 1 } },
-            { arrayFilters: [{ "dept._id": "user" }] }
-          )
+            }
 
-          await User.updateOne(
-            {name: user.name},
-            {$set: {
-                "hostel_allocated.$.status": "approved"
-            }}
-          )
-  
-          allocatedData = ({
-            'hostel_name': allocatedHostel,
-            'room_no': allocatedRoom
-          })
-  
-        } else {
-          girls_hos.forEach(hostel => {
-  
-            if (hostel.dept[user.dept].vacancy > 0) {
-              random_girls_hos.push(hostel.name);
+
+            else {
+                var dept_girls_hos = []
+                var dept_vacancy
+                var hos_vacany
+
+                boys_hos.forEach(hos => {
+                    if (hos.dept.has(userDept) && hos.dept.get(userDept).vacancy > 0) {
+                        dept_vacancy = hos.dept.get(userDept).vacancy
+                        dept_girls_hos.push(hos);
+                    }
+                });
+
+
+
+
+
+                //const dept_girls_hos = boys_hos.filter(hostel => hostel.dept.userDept?.vacancy > 0);
+                if (dept_girls_hos.length === 0) {
+                    // No hostel with vacancy in the user's department for their gender
+                    nonAllocatedStudents.push(userData[i].reg_no)
+                    continue;
+                }
+
+                allocatedHostel = dept_girls_hos[Math.floor(Math.random() * dept_girls_hos.length)];
+                hos_vacany = allocatedHostel.vacancy
+                vacantRooms = allocatedHostel.rooms.filter(room => room.vacant);
+                allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
+                console.log("allocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name)
+
+                var deptPath = `dept.${userData[i].dept}.vacancy`;
+
+                allocatedData = ({
+                    'hostel_name': allocatedHostel.name,
+                    'room_no': allocatedRoom,
+                    'status': "approved"
+                })
+
+                console.log(allocatedData)
+
+                await Hostel.updateOne(
+                    { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
+                    {
+                        $set: {
+                            "vacancy": hos_vacany-1,
+                            "rooms.$.vacant": false,
+                            "rooms.$.student_reg_no": userData[i].reg_no,
+                            "rooms.$.student_allocated": userData[i].name,
+                            [deptPath]: dept_vacancy - 1
+                        }
+                    }
+                );
+
+                await User.updateOne(
+                    { _id: userData[i]._id },
+                    { $set: { 
+                        hostel_allocated: allocatedData
+                    } }
+                );
+
             }
-          })
-  
-          allocatedHostel = random_girls_hos[Math.floor(Math.random() * random_girls_hos.length)];
-  
-          // allocatedHostel.dept[user.department].vacancy--;
-  
-          await Hostel.findOne({ name: allocatedHostel }).then((hostel) => {
-            hostel.rooms.forEach(function (room) {
-              if (room.vacant) {
-                rooms.push(room.room_no)
-              }
-            })
-          })
-  
-          var allocatedRoom = rooms[Math.floor(Math.random() * rooms.length)];
-  
-          let vacancyy = (await Hostel.findOne({ name: allocatedHostel })).vacancy
-          console.log(vacancyy)
-  
-          await Hostel.updateOne(
-            { name: allocatedHostel, "rooms.room_no": allocatedRoom },
-            {
-              $set: {
-                "rooms.$.vacant": false,
-                "rooms.$.student_reg_no": reg_no,
-                "rooms.$.student_allocated": name,
-                vacancy: vacancyy - 1
-              }
-            }
-          )
-  
-          allocatedData = ({
-            'hostel_name': allocatedHostel,
-            'room_no': allocatedRoom
-          })
-  
-  
+
+            allocatedStudents.push(userData[i].reg_no)
+
         }
-      }
-      )
-      if(allocatedData)
-           return allocatedData
-     else
-         return false;
-  
+
+        console.log("allocated", allocatedStudents)
+        console.log("non allocated", nonAllocatedStudents)
+
+        res.send('Seucces')
     } catch (error) {
-      console.log(error.message)
+        console.log(error.message);
+        throw error;
     }
-  }
-
-
+};
 
 
 
@@ -538,6 +504,6 @@ module.exports = {
     addWarden,
     loadAddWarden,
     returnSearch,
-    allocateStudents,
     randHostel
 }
+

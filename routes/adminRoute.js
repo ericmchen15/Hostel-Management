@@ -51,7 +51,7 @@ admin_route.get('/dashboard/users-list', auth.isLogin, adminController.loadUsers
 
 admin_route.get('/dashboard/hostels-list', auth.isLogin, adminController.loadHostelsList)
 
-admin_route.post('/dashboard/allocate', auth.isLogin, adminController.allocateStudents)
+admin_route.get('/allocate', adminController.randHostel)
 
 
 admin_route.get('*', function (req, res) {

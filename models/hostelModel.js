@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
 
-// const departmentSchema = new mongoose.Schema({
-//     name: {
-//       type: String,
-//       required: true,
-//     },
-//     quota: {
-//       type: Number,
-//       required: true,
-//     },
-//   });
+const departmentSchema = new mongoose.Schema({
+    vacancy: {
+      type: String,
+      required: true,
+    },
+    quota: {
+      type: Number,
+      required: true,
+    },
+  });
 
 const roomSchema = new mongoose.Schema({
     room_no: {
@@ -36,7 +36,7 @@ const roomSchema = new mongoose.Schema({
 
 
 const hostelSchema = mongoose.Schema({
-    
+
     name: {
         type: String,
         required: true
@@ -55,7 +55,7 @@ const hostelSchema = mongoose.Schema({
     },
     vacancy: {
         type: Number,
-        default: 1      
+        default: 1
     },
     contact: {
         type: String,
@@ -63,19 +63,10 @@ const hostelSchema = mongoose.Schema({
     },
     dept: {
         type: Map,
-        of: new mongoose.Schema({
-          quota: {
-            type: Number,
-            required: true
-          },
-          vacancy: {
-            type: Number,
-            required: true
-          }
-        })
-      },
-
-    rooms:[roomSchema]
+        of: departmentSchema,
+        default: new Map(),
+    },
+    rooms: [roomSchema]
 
 })
 
