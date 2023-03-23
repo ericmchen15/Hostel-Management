@@ -69,7 +69,7 @@ user_route.post('/complaints', auth.isLogin, userController.saveComplaint);
 
 user_route.get('/vacateUser', auth.isLogin, userController.loadVacate);
 
-user_route.post('/vacateUser', auth.isLogin, userController.vacateUser);
+user_route.post('/vacateUser', auth.isLogin, userController.vacate2);
 
 user_route.get('/payment', auth.isLogin, userController.loadPayment)
 

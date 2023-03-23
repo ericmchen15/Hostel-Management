@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 
 const nodemailer = require('nodemailer');
 const { ObjectId } = require('mongodb');
+const { findById } = require('../models/userModel');
 const PUBLISHABLE_KEY = 'pk_test_51MjI0OSCU5yTsDL8ehrVZDYo4tD5KSzqTzXZPmJQZelawlGfuew2feSCaQeux7ZXHxEruu3w8vpHr4ylq5GK64tV00WUb8yvNy'
 const SECRET_KEY = 'sk_test_51MjI0OSCU5yTsDL8qWYTbuqQQsQM4lXU6ru7VPNGjnCD7ILJGyec9AtB3rk31t5dzM3lcSxIowy35BkTcANdUsdQ00EOPWUxzv'
 
@@ -401,34 +402,53 @@ const vacateUser = async (req, res) => {
     try {
     
       // Find the user and update in the database
-      await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0 } });
+      await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0, "hostel_allocated.status": "pending" } });
 
       //const user = await User.findOne({ reg_no: req.body.regNo });
   
       // Find the hostel documents
-      const hostels = await Hostel.find({});
+     // const hostels = await Hostel.find({});
 
       console.log(req.body.regNo)
-  
-      // Loop through each hostel document
-      for (let i = 0; i < hostels.length; i++) {
-        const hostel = hostels[i];
-  
-        // Loop through the rooms array and update the vacant and student_allocated fields
-        for (let j = 0; j < hostel.rooms.length; j++) {
-          const room = hostel.rooms[j];
-          if (room.student_reg_no === req.body.regNo) {
-            hostel.vacancy++;
-            room.vacant = true;
-            room.student_allocated = "";
-            room.student_reg_no = "";
-          }
+      const userHostel = (await User.findById({ _id: req.session.user_id})).hostel_allocated.hostel_name
+      const userRoom = (await User.findById({ _id: req.session.user_id})).hostel_allocated.room_no
+      const userDept = (await User.findById({_id: req.session.user_id})).dept
+
+      const vacancy = userHostel.vacancy;
+      var deptPath = `dept.${userDept}.vacancy`;
+      dept_vacancy = userHostel.dept.get(userDept).vacancy
+
+      await Hostel.updateOne(
+        { name: userHostel, "rooms.room_no": userRoom },
+        {
+            $set: {
+                "vacancy": +1,
+                "rooms.$.vacant": true,
+                "rooms.$.student_reg_no": 'N/A',
+                "rooms.$.student_allocated": 'N/A',
+                [deptPath]: dept_vacancy + 1
+            }
         }
+    );
   
-        // Save the updated hostel document back to the database
-        await hostel.save();
-        
-      }
+     // Loop through each hostel document
+    //   for (let i = 0; i < hostels.length; i++) {
+    //     const hostel = hostels[i];
+  
+    //     // Loop through the rooms array and update the vacant and student_allocated fields
+    //     for (let j = 0; j < hostel.rooms.length; j++) {
+    //       const room = hostel.rooms[j];
+    //       if (room.student_reg_no === req.body.regNo) {
+    //         hostel.vacancy++;
+            
+    //         room.vacant = true;
+    //         room.student_allocated = "";
+    //         room.student_reg_no = "";
+    //       }
+    //     }
+  
+        //Save the updated hostel document back to the database
+        // await userHostel.save();
   
       res.send("User vacated successfully");
     } catch (error) {
@@ -436,6 +456,45 @@ const vacateUser = async (req, res) => {
     }
   };
   
+  const vacate2 = async(req, res) => {
+    try {
+
+        const userHostel = (await User.findById({ _id: req.session.user_id})).hostel_allocated.hostel_name
+        const userRoom = (await User.findById({ _id: req.session.user_id})).hostel_allocated.room_no
+        const userDept = (await User.findById({_id: req.session.user_id})).dept
+
+        console.log("USER HOSTEL: ", userHostel, "USER ROOM: ", userRoom, "USER DEPT: ", userDept)
+
+        const hostel = await Hostel.findOne({ name: userHostel });
+        console.log("Hostel: ", hostel)
+        const vacancy = hostel.vacancy;
+
+        var deptPath = `dept.${userDept}.vacancy`;
+        console.log("Dept Path: ", deptPath)
+        dept_vacancy = hostel.dept.get(userDept).vacancy
+        console.log("Dept vacancy: ", dept_vacancy)
+
+        await Hostel.updateOne(
+            { name: userHostel, "rooms.room_no": userRoom },
+            {
+                $set: {
+                    "vacancy": vacancy + 1,
+                    "rooms.$.vacant": true,
+                    "rooms.$.student_reg_no": 'N/A',
+                    "rooms.$.student_allocated": 'N/A',
+                    [deptPath]: dept_vacancy + 1
+                }
+            }
+        );
+
+        await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0, "hostel_allocated.status": "pending" } });
+
+        res.send("Vacated successfully.")
+
+    } catch (error) {
+        console.log(error)
+    }
+  }
   
   
 const loadPayment = async (req, res) => {
@@ -593,5 +652,6 @@ module.exports = {
     applyLeave,
     loadLeave,
     loadHostelsList,
-    loadHostelDetails
+    loadHostelDetails,
+    vacate2
 }

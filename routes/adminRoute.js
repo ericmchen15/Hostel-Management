@@ -53,6 +53,8 @@ admin_route.get('/dashboard/hostels-list', auth.isLogin, adminController.loadHos
 
 admin_route.get('/allocate', adminController.randHostel)
 
+admin_route.get('/vacateAll', adminController.vacateAll)
+
 
 admin_route.get('*', function (req, res) {
     res.redirect('/admin')
