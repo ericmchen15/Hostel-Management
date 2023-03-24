@@ -92,7 +92,7 @@ const loadUsersList = async (req, res) => {
         const limit = 20
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
-        results = {}
+        var results = {}
         const usersData = await User.find({ role: 0 })
         results.results = (usersData).slice(startIndex, endIndex);
         results.currentPage = page
@@ -170,7 +170,7 @@ const insertHostel = async (req, res) => {
     try {
 
 
-        cap = req.body.capacity
+        var cap = req.body.capacity
 
         var rooms = []
 
@@ -376,7 +376,7 @@ const randHostel = async (req, res) => {
                 vacantRooms = allocatedHostel.rooms.filter(room => room.vacant );
 
                 allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
-                console.log("allocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
+                console.log("\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
 
                 var deptPath = `dept.${userData[i].dept}.vacancy`;
 
@@ -386,7 +386,7 @@ const randHostel = async (req, res) => {
                     'status': "approved"
                 })
 
-                console.log(allocatedData)
+                // console.log(allocatedData)
                 
                 await Hostel.updateOne(
                     { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
@@ -408,13 +408,13 @@ const randHostel = async (req, res) => {
                     } }
                 );
 
-                console.log("Vacancy: ",allocatedHostel.vacancy)
-                console.log("Department vacancy: ", allocatedHostel.dept.get(userDept).vacancy)
+                // console.log("Vacancy: ",allocatedHostel.vacancy)
+                // console.log("Department vacancy: ", allocatedHostel.dept.get(userDept).vacancy)
 
                 allocatedHostel.vacancy = allocatedHostel.vacancy - 1;
                 allocatedHostel.dept.get(userDept).vacancy = allocatedHostel.dept.get(userDept).vacancy-1;
-                console.log("Boy's Allocated hostel vac: ",  allocatedHostel.vacancy)
-                console.log("Boy's Dept vac: ", allocatedHostel.dept.get(userDept).vacancy)
+                // console.log("Boy's Allocated hostel vac: ",  allocatedHostel.vacancy)
+                // console.log("Boy's Dept vac: ", allocatedHostel.dept.get(userDept).vacancy)
                 // dept_vacancy = dept_vacancy - 1;
         
             }
@@ -422,8 +422,8 @@ const randHostel = async (req, res) => {
 
             else {
                 var dept_girls_hos = []
-                var dept_vacancy
-                var hos_vacancy
+                dept_vacancy
+                hos_vacancy
 
                 girls_hos.forEach(hos => {
                     if (hos.dept.has(userDept) && hos.dept.get(userDept).vacancy > 0) {
@@ -448,9 +448,9 @@ const randHostel = async (req, res) => {
 
                 vacantRooms = allocatedHostel.rooms.filter(room => room.vacant );
                 allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
-                console.log("\n\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n\n")
+                console.log("\n\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
 
-                var deptPath = `dept.${userData[i].dept}.vacancy`;
+                deptPath = `dept.${userData[i].dept}.vacancy`;
 
                 allocatedData = ({
                     'hostel_name': allocatedHostel.name,
@@ -458,7 +458,7 @@ const randHostel = async (req, res) => {
                     'status': "approved"
                 })
 
-                console.log(allocatedData)
+                // console.log(allocatedData)
 
                 await Hostel.updateOne(
                     { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
@@ -482,8 +482,8 @@ const randHostel = async (req, res) => {
 
                 allocatedHostel.vacancy = allocatedHostel.vacancy - 1;
                 allocatedHostel.dept.get(userDept).vacancy = allocatedHostel.dept.get(userDept).vacancy-1;
-                console.log("Girl's Allocated hostel vac: ",  allocatedHostel.vacancy)
-                console.log("Girl's Dept vac: ", allocatedHostel.dept.get(userDept).vacancy)
+                // console.log("Girl's Allocated hostel vac: ",  allocatedHostel.vacancy)
+                // console.log("Girl's Dept vac: ", allocatedHostel.dept.get(userDept).vacancy)
 
             }
 
@@ -526,7 +526,6 @@ const vacateAll = async (req, res) => {
           var rooms = []
           var cap = hostelsData[i].capacity
 
-          console.log(cap)
           for (let i = 0; i < cap; i++) {
               rooms.push({
                   room_no: i + 1
