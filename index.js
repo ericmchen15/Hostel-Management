@@ -46,6 +46,12 @@ app.use('/admin', adminRoute)
 const wardenRoute = require("./routes/wardenRoute")
 app.use('/warden', wardenRoute)
 
+app.get('*', function(req, res){
+  res.send('What where are you, it\'s a 404', 404);
+});
+
+
+
 
 connectDB().then(() => {
     app.listen(PORT, () => {
