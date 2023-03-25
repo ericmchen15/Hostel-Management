@@ -54,8 +54,8 @@ app.get('*', function(req, res){
 
 
 connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is running at http://127.0.0.1:${PORT}`)    })
+    app.listen("0.0.0.0",PORT, () => {
+        console.log(`Server is running at http://0.0.0.0:${PORT}`)    })
 })
 
 

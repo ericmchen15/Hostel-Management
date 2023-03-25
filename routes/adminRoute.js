@@ -21,6 +21,9 @@ const auth = require('../middleware/adminAuth')
 
 const adminController = require('../controllers/adminController')
 
+
+
+
 admin_route.get('/', auth.isLogout, adminController.loadLogin)
 
 admin_route.post('/', adminController.verifyLogin)
