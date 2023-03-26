@@ -329,6 +329,9 @@ const returnSearch = async (req, res) => {
 //     }
 // }
 
+
+
+
 const randomHostel = async (req, res) => {
     try {
         let allocatedStudents = []
@@ -584,4 +587,6 @@ module.exports = {
     randomHostel,
     vacateAll
 }
+
+
 

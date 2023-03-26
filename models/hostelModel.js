@@ -12,6 +12,21 @@ const departmentSchema = new mongoose.Schema({
     },
   });
 
+  const messSchema = new mongoose.Schema({
+    breakfast: {
+      type: String,
+      required: true,
+    },
+    lunch: {
+      type: String,
+      required: true,
+    },
+    dinner: {
+        type: String,
+        required: true,
+      },
+  });
+
 const roomSchema = new mongoose.Schema({
     room_no: {
         type: Number,
@@ -65,6 +80,11 @@ const hostelSchema = mongoose.Schema({
         type: Map,
         of: departmentSchema,
         default: new Map(),
+    },
+    mess: {
+        type: Map,
+        of: messSchema,
+        default: new Map()
     },
     rooms: [roomSchema]
 
