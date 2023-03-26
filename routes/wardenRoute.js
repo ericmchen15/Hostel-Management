@@ -36,5 +36,9 @@ warden_route.post('/leaves/approve', auth.isLogin, wardenController.approveLeave
 
 warden_route.post('/leaves/reject', auth.isLogin, wardenController.rejectLeave)
 
+warden_route.get('/add-mess-details', auth.isLogin, wardenController.loadAddMessDetails)
+
+warden_route.post('/add-mess-details', auth.isLogin, wardenController.addMessDetails)
+
 
 module.exports =  warden_route
