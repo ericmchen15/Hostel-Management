@@ -1,0 +1,88 @@
+<body>
+  <div class="container">
+    <h1>Allocated Students</h1>
+
+    <table class="table table-hover table-bordered" width="70%">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Reg No</th>
+          <th>Dept</th>
+          <th>Percentage</th>
+          <th>Hostel Allocated</th>
+          <th>Room No</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% studentData.forEach(function(student) { %>
+          <tr>
+            <td>
+              <%= student.name %>
+            </td>
+            <td>
+              <%= student.reg_no %>
+            </td>
+            <td>
+              <%= student.dept %>
+            </td>
+            <td>
+              <%= student.percentage %>
+            </td>
+            <td>
+              <%= student.hostel_allocated.hostel_name %>
+            </td>
+            <td>
+              <%= student.hostel_allocated.room_no %>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
+    </table class="table table-hover table-bordered">
+    <br>
+    <h1>Non-Allocated Students</h1>
+
+            <% if(nonAllocatedStudentData.length === 0){ %>
+              <h5>Nothing to display</h5>
+            <% } else{ %>  
+              <table class="table table-hover table-bordered" width="70%">
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Reg No</th>
+                    <th>Dept</th>
+                    <th>Percentage</th>
+                    <th>Hostel Allocated</th>
+                    <th>Room No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% nonAllocatedStudentData.forEach(function(student) { %>
+                    <tr>
+                      <td>
+                        <%= student.name %>
+                      </td>
+                      <td>
+                        <%= student.reg_no %>
+                      </td>
+                      <td>
+                        <%= student.dept %>
+                      </td>
+                      <td>
+                        <%= student.percentage %>
+                      </td>
+                      <td>
+                        <%= student.hostel_allocated.hostel_name %>
+                      </td>
+                      <td>
+                        <%= student.hostel_allocated.room_no %>
+                      </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+                </table class="table table-hover table-bordered">
+           <% } %>
+
+
+  </div>
+
+</body>
