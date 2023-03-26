@@ -329,7 +329,7 @@ const returnSearch = async (req, res) => {
 //     }
 // }
 
-const randHostel = async (req, res) => {
+const randomHostel = async (req, res) => {
     try {
         let allocatedStudents = []
         let nonAllocatedStudents = []
@@ -501,6 +501,18 @@ const randHostel = async (req, res) => {
     }
 };
 
+const displayHostellers = async(req, res)=>{
+    try {
+        
+        
+        
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
 const vacateAll = async (req, res) => {
   try {
       const userData = await User.find({ "hostel_allocated.status": "approved" }).sort({ percentage: -1 });
@@ -576,7 +588,7 @@ module.exports = {
     addWarden,
     loadAddWarden,
     returnSearch,
-    randHostel,
+    randomHostel,
     vacateAll
 }
 

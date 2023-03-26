@@ -1,8 +1,9 @@
-const morgan = require('morgan')
+//const morgan = require('morgan')
 const mongoose = require('mongoose')
 require('dotenv').config();
 const process = require('process');
 const path = require('path')
+
 
 const MONGOURI = process.env.MONGOURI
 const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY
@@ -52,10 +53,7 @@ app.get('*', function(req, res){
 
 
 
-
 connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is running at http://127.0.0.1:${PORT}`)    })
+  app.listen(PORT, () => {
+      console.log(`Server is running at http://127.0.0.1:${PORT}`)    })
 })
-
-
