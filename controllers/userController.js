@@ -293,9 +293,10 @@ const loadHome = async (req, res) => {
 
 
     try {
-
+        
         const userData = await User.findById({ _id: req.session.user_id })
-        res.render('home', { user: userData })
+        const leaveData = await Leave.find({ reg_no: userData.reg_no})
+        res.render('home', { user: userData, leave: leaveData })
     } catch (error) {
         console.log(error.message)
     }
@@ -306,7 +307,7 @@ const userLogout = async (req, res) => {
     try {
 
         req.session.destroy()
-        res.redirect('/')
+        res.redirect('/login')
 
     } catch (error) {
         console.log(error.message)
