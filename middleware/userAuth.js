@@ -6,7 +6,7 @@ const isLogin = async(req, res, next) =>{
 
         }
         else{
-            return res.redirect('/')
+            return res.redirect('/login')
         }
 
         next()

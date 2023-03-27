@@ -18,23 +18,6 @@ const bodyParser = require('body-parser')
 user_route.use(bodyParser.json())
 user_route.use(bodyParser.urlencoded({extended:true}))
 
-const multer = require('multer')
-const path = require('path')
-
-user_route.use(express.static('public'))
-
-const storage = multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname, '../public/userImages'))
-    },
-    filename: function(req, file, cb){
-        const name = Date.now() + '-' + file.originalname
-        cb(null, name)
-    }
-})
-
-const upload = multer({storage:storage})
-
 const userController = require("../controllers/userController")
 
 // user_route.get('/', (req, res)=>{
@@ -43,9 +26,9 @@ const userController = require("../controllers/userController")
 
 user_route.get('/register', auth.isLogout, userController.loadRegister)
 
-user_route.post('/register', upload.single('image') , userController.insertUser)
+user_route.post('/register' , userController.insertUser)
 
-user_route.get('/',auth.isLogout , userController.loginLoad)
+user_route.get('/login',auth.isLogout , userController.loginLoad)
 
 user_route.get('/login', auth.isLogout, userController.loginLoad)
 
@@ -61,7 +44,7 @@ user_route.post("/apply-hostel", auth.isLogin, userController.applyHostel)
 
 user_route.get('/edit', auth.isLogin, userController.editLoad)
 
-user_route.post('/edit', upload.single('image') ,userController.updateProfile)
+user_route.post('/edit' ,userController.updateProfile)
 
 user_route.get('/complaints', auth.isLogin, userController.submitComplaint);
 

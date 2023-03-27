@@ -29,14 +29,16 @@ var expressLayouts = require("express-ejs-layouts");
 const express = require('express')
 const app = express()
 
-
+app.use(expressLayouts);
 
 app.use(express.static(path.join(__dirname, "public")))
 
+//for public routes 
+const publicRoute = require("./routes/publicRoute")
+app.use('/', publicRoute)
 
 //for user routes
 const userRoute = require('./routes/userRoute')
-app.use(expressLayouts);
 app.use('/', userRoute)
 
 //for admin routes
