@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const Hostel = require('../models/hostelModel')
 const Complaint = require('../models/complaintModel');
+const Warden = require('../models/wardenModel')
 const Leave = require('../models/leaveModel')
 const Department = require('../models/departmentModel')
 const bcrypt = require('bcrypt')
@@ -296,7 +297,13 @@ const loadHome = async (req, res) => {
         
         const userData = await User.findById({ _id: req.session.user_id })
         const leaveData = await Leave.find({ reg_no: userData.reg_no})
-        res.render('home', { user: userData, leave: leaveData })
+        const warden = await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name})
+        const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
+
+        console.log(messData)
+
+
+        res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData })
     } catch (error) {
         console.log(error.message)
     }
@@ -399,65 +406,65 @@ const loadVacate = async( req, res) => {
 }
 
   
-const vacateUser = async (req, res) => {
-    try {
+// const vacateUser = async (req, res) => {
+//     try {
     
-      // Find the user and update in the database
-      await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0, "hostel_allocated.status": "pending" } });
+//       // Find the user and update in the database
+//       await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0, "hostel_allocated.status": "pending" } });
 
-      //const user = await User.findOne({ reg_no: req.body.regNo });
+//       //const user = await User.findOne({ reg_no: req.body.regNo });
   
-      // Find the hostel documents
-     // const hostels = await Hostel.find({});
+//       // Find the hostel documents
+//      // const hostels = await Hostel.find({});
 
-      console.log(req.body.regNo)
-      const userHostel = (await User.findById({ _id: req.session.user_id})).hostel_allocated.hostel_name
-      const userRoom = (await User.findById({ _id: req.session.user_id})).hostel_allocated.room_no
-      const userDept = (await User.findById({_id: req.session.user_id})).dept
+//       console.log(req.body.regNo)
+//       const userHostel = (await User.findById({ _id: req.session.user_id})).hostel_allocated.hostel_name
+//       const userRoom = (await User.findById({ _id: req.session.user_id})).hostel_allocated.room_no
+//       const userDept = (await User.findById({_id: req.session.user_id})).dept
 
-      const vacancy = userHostel.vacancy;
-      var deptPath = `dept.${userDept}.vacancy`;
-      dept_vacancy = userHostel.dept.get(userDept).vacancy
+//       const vacancy = userHostel.vacancy;
+//       var deptPath = `dept.${userDept}.vacancy`;
+//       dept_vacancy = userHostel.dept.get(userDept).vacancy
 
-      await Hostel.updateOne(
-        { name: userHostel, "rooms.room_no": userRoom },
-        {
-            $set: {
-                "vacancy": +1,
-                "rooms.$.vacant": true,
-                "rooms.$.student_reg_no": 'N/A',
-                "rooms.$.student_allocated": 'N/A',
-                [deptPath]: dept_vacancy + 1
-            }
-        }
-    );
+//       await Hostel.updateOne(
+//         { name: userHostel, "rooms.room_no": userRoom },
+//         {
+//             $set: {
+//                 "vacancy": +1,
+//                 "rooms.$.vacant": true,
+//                 "rooms.$.student_reg_no": 'N/A',
+//                 "rooms.$.student_allocated": 'N/A',
+//                 [deptPath]: dept_vacancy + 1
+//             }
+//         }
+//     );
   
-     // Loop through each hostel document
-    //   for (let i = 0; i < hostels.length; i++) {
-    //     const hostel = hostels[i];
+//      // Loop through each hostel document
+//     //   for (let i = 0; i < hostels.length; i++) {
+//     //     const hostel = hostels[i];
   
-    //     // Loop through the rooms array and update the vacant and student_allocated fields
-    //     for (let j = 0; j < hostel.rooms.length; j++) {
-    //       const room = hostel.rooms[j];
-    //       if (room.student_reg_no === req.body.regNo) {
-    //         hostel.vacancy++;
+//     //     // Loop through the rooms array and update the vacant and student_allocated fields
+//     //     for (let j = 0; j < hostel.rooms.length; j++) {
+//     //       const room = hostel.rooms[j];
+//     //       if (room.student_reg_no === req.body.regNo) {
+//     //         hostel.vacancy++;
             
-    //         room.vacant = true;
-    //         room.student_allocated = "";
-    //         room.student_reg_no = "";
-    //       }
-    //     }
+//     //         room.vacant = true;
+//     //         room.student_allocated = "";
+//     //         room.student_reg_no = "";
+//     //       }
+//     //     }
   
-        //Save the updated hostel document back to the database
-        // await userHostel.save();
+//         //Save the updated hostel document back to the database
+//         // await userHostel.save();
   
-      res.send("User vacated successfully");
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+//       res.send("User vacated successfully");
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
   
-  const vacate2 = async(req, res) => {
+  const vacate = async(req, res) => {
     try {
 
         const userHostel = (await User.findById({ _id: req.session.user_id})).hostel_allocated.hostel_name
@@ -645,7 +652,6 @@ module.exports = {
     updateProfile,
     submitComplaint,
     saveComplaint,
-    vacateUser,
     loadVacate,
     loadPayment,
     makePayment,
@@ -654,5 +660,5 @@ module.exports = {
     loadLeave,
     loadHostelsList,
     loadHostelDetails,
-    vacate2
+    vacate
 }

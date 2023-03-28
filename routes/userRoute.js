@@ -50,9 +50,9 @@ user_route.get('/complaints', auth.isLogin, userController.submitComplaint);
 
 user_route.post('/complaints', auth.isLogin, userController.saveComplaint);
 
-user_route.get('/vacateUser', auth.isLogin, userController.loadVacate);
+user_route.get('/vacate-user', auth.isLogin, userController.loadVacate);
 
-user_route.post('/vacateUser', auth.isLogin, userController.vacate2);
+user_route.post('/vacate-user', auth.isLogin, userController.vacate);
 
 user_route.get('/payment', auth.isLogin, userController.loadPayment)
 
