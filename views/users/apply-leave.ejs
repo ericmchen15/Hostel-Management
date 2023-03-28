@@ -6,11 +6,20 @@
 
     
     <form onsubmit="return checkDate()" action="" method="post">
-        <input class="form-control" type="text" name="reason" required placeholder="Reason">
+        <label for="reason">Reason</label>
+        <textarea class="form-control" type="text" name="reason" required placeholder="Reason"></textarea>
         <br>
-        <input class="form-control" type="date" name="from" required placeholder="Enter leave date">
-        <br>
-        <input class="form-control" type="date" name="to" required placeholder="Enter return date">
+        
+            <div class="row">
+              <div class="col">
+                <label for="from">Leave Date</label>
+                <input type="date" class="form-control" name="from" placeholder="Leaving Date" required>
+              </div>
+              <div class="col">
+                <label for="to">Return Date</label>
+                <input type="date" class="form-control" name="to" placeholder="Returning Date" required>
+              </div>
+            </div>
         <br>
         <input type="submit" class="btn btn btn-primary" value="submit">
         <br>
