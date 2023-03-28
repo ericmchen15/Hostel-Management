@@ -296,11 +296,27 @@ const loadHome = async (req, res) => {
     try {
         
         const userData = await User.findById({ _id: req.session.user_id })
-        const leaveData = await Leave.find({ reg_no: userData.reg_no})
-        const warden = await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name})
-        const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
+        // const leaveData = await Leave.find({ reg_no: userData.reg_no})
+        const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
+        // const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
 
-        console.log(messData)
+
+        let messData = null;
+        let warden = null;
+        let leaveData = null;
+        if (hostelData) {
+            messData = hostelData.mess;
+            warden = await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name})
+            leaveData = await Leave.find({ reg_no: userData.reg_no})
+        }else{
+            messData = 'None',
+            warden = 'None',
+            leaveData = 'None'
+        }
+        
+
+        console.log(messData);
+        console.log("\nWarden:", warden);
 
 
         res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData })

@@ -1,5 +1,8 @@
 <!-- EJS template code -->
 <body>
+  <%- include('navbar.ejs')  %>
+
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
   <br>
   <h2>Hostels:</h2> <br>
     <ul>
@@ -8,6 +11,7 @@
             <a href="/hostels/<%= hostel._id %>"><%= hostel.name %></a>
           </li>
         <% }); %>
-      </ul>    
+      </ul>  
+    </main>  
     
 </body>
