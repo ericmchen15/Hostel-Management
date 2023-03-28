@@ -300,7 +300,6 @@ const loadHome = async (req, res) => {
         const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
         // const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
 
-
         let messData = null;
         let warden = null;
         let leaveData = null;
@@ -314,9 +313,6 @@ const loadHome = async (req, res) => {
             leaveData = 'None'
         }
         
-
-        console.log(messData);
-        console.log("\nWarden:", warden);
 
 
         res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData })
