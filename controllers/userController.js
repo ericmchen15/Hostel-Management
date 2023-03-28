@@ -637,6 +637,32 @@ const loadHostelDetails = async (req, res) => {
       console.log(error.message);
     }
 };
+
+const loadMessDetails = async(req, res)=>{
+    try {
+        const user = await User.findOne({ _id: req.session.user_id});
+        const hostelName = user.hostel_allocated.hostel_name;
+
+        const hostel = await Hostel.findOne({name: hostelName})
+        const mess = hostel.mess;
+
+        console.log(hostelName);
+        console.log(mess);
+
+
+        if(hostelName === 'undefined'){
+            res.send("You haven't been allocated at any hostel.")
+            return;
+        }
+
+        const messDetails = [...hostel.mess.entries()];
+
+        res.render('mess-details', {hostelName: hostelName, messDetails: messDetails })
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
   
 
 module.exports = {
@@ -660,5 +686,6 @@ module.exports = {
     loadLeave,
     loadHostelsList,
     loadHostelDetails,
-    vacate
+    vacate,
+    loadMessDetails
 }

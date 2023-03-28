@@ -68,4 +68,6 @@ user_route.get('/hostels-list', auth.isLogin, userController.loadHostelsList)
 
 user_route.get('/hostels/:id', auth.isLogin, userController.loadHostelDetails)
 
+user_route.get('/mess-details', auth.isLogin, userController.loadMessDetails)
+
 module.exports = user_route
