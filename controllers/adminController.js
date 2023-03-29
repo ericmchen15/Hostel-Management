@@ -149,6 +149,23 @@ const loadHostelDetails = async (req, res) => {
     }
 }
 
+const allocatedRooms = async (req, res) => {
+    try {
+      const hostelName = req.query.id;
+  
+      // Find the hostel by name
+      const hostel = await Hostel.findOne({ name: hostelName });
+  
+      // Filter the rooms array to get all the rooms that have vacant=false
+      const rooms = hostel.rooms.filter((room) => !room.vacant);
+  
+      // Send the list of rooms to the client
+      res.render('allocated-rooms', { rooms });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  
 
 
 const loadUserDetails = async (req, res) => {
@@ -606,7 +623,8 @@ module.exports = {
     randomHostel,
     vacateAll,
     loadApplications,
-    allocatedList
+    allocatedList,
+    allocatedRooms
 }
 
 

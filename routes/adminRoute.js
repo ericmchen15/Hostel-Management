@@ -62,6 +62,8 @@ admin_route.get('/vacate-all', auth.isLogin, adminController.vacateAll)
 
 admin_route.get('/view-allocated', auth.isLogin, adminController.allocatedList)
 
+admin_route.get('/allocated-rooms', auth.isLogin, adminController.allocatedRooms)
+
 
 admin_route.get('*', function (req, res) {
     res.redirect('/admin')
