@@ -1,0 +1,29 @@
+<%- include('navbar.ejs')  %>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    <h3> These are the students who have applied for Hostels:</h3>
+
+    <% if (userData.length === 0) { %>
+        <h3>No students to to Display</h3>
+    <% } else { %>
+
+   
+    <ul>
+    <% userData.forEach(function(user) { %>
+      <li>
+        <%= user.name %>
+      </li>
+    <% }); %>
+
+    <h3>Click on the below button to allocate them rooms in the available hostels:</h3>
+
+        <!-- <a href="/admin/allocate">Allocate</a> -->
+        <button type="button" onclick="location.href='/admin/allocate'" class="btn btn-primary">Allocate</button>
+
+    </ul>  
+
+     <% } %>
+
+
+</main>

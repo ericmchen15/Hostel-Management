@@ -330,6 +330,16 @@ const returnSearch = async (req, res) => {
 // }
 
 
+const loadApplications = async(req, res) => {
+    try {
+        var userData = await User.find({ "hostel_allocated.status": "pending" }).sort({ percentage: -1 });
+     
+        res.render('applied-users', {userData: userData})
+        
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 
 const randomHostel = async (req, res) => {
@@ -565,7 +575,16 @@ const vacateAll = async (req, res) => {
   }
 }
 
-
+const allocatedList = async(req, res) => {
+    try {
+        const allocatedStudentData = await User.find({ "hostel_allocated.status" : "approved" }) 
+        const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "pending" }) 
+       // console.log(nonAllocatedStudentData)
+        res.render('displayAllocated', { studentData: allocatedStudentData, nonAllocatedStudentData: nonAllocatedStudentData})
+    } catch (error) {
+     console.log(error)   
+    }
+}
 
 
 module.exports = {
@@ -585,7 +604,9 @@ module.exports = {
     loadAddWarden,
     returnSearch,
     randomHostel,
-    vacateAll
+    vacateAll,
+    loadApplications,
+    allocatedList
 }
 
 
