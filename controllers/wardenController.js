@@ -79,7 +79,7 @@ const loadHostelDetails = async (req, res) => {
 
         const hostelData = await Hostel.findOne({ name: req.query.n })
         console.log(hostelData)
-        res.render('hostel-details', { hostel: hostelData })
+        res.render('hostel-details', { hostel: hostelData, hostelName: hostelData.name })
 
     } catch (error) {
         console.log(error.message)
@@ -89,7 +89,7 @@ const loadHostelDetails = async (req, res) => {
 const loadLeaves = async (req, res) => {
     try {
         const wardenHostel = (await Warden.findOne({ _id: req.session.user_id })).hostel_name
-        console.log(wardenHostel)
+        
 
         Leave.find({ hostel_name: wardenHostel }, (err, leavesList) => {
             if (err) {
@@ -97,7 +97,7 @@ const loadLeaves = async (req, res) => {
                 res.send('An error occurred while retrieving leaves.');
             } else {
                 leavesList.reverse();
-                res.render('leaves', { leavesList: leavesList });
+                res.render('leaves', { leavesList: leavesList, hostelName: wardenHostel });
             }
         });
     } catch (error) {
@@ -107,7 +107,6 @@ const loadLeaves = async (req, res) => {
 
 const approveLeave = async (req, res) => {
     try {
-        console.log("This is the leave id: \n", req.body.leave_id)
         const leave = await Leave.findOneAndUpdate(
             { leave_id: req.body.leave_id, status: 'pending' },
             { $set: { status: 'approved' } },
@@ -147,7 +146,10 @@ const rejectLeave = async (req, res) => {
 
 const loadAddMessDetails = async (req, res) => {
     try {
-        res.render("add-mess-details")
+        const wardenId = req.session.user_id
+
+        const hostelData = await Warden.findOne({ _id: wardenId })
+        res.render("add-mess-details", {hostelName: hostelData.hostel_name})
     } catch (error) {
         console.log(error.message)
     }
@@ -168,6 +170,22 @@ const addMessDetails = async (req, res) => {
     }
 }
 
+const loadComplaints = async (req, res) => {
+    try {
+        const wardenId = req.session.user_id
+
+        const hostelData = await Warden.findOne({ _id: wardenId })
+        console.log(hostelData.hostel_name)
+        const complaintData = await Complaint.find({ hostelName: hostelData.hostel_name })
+
+        console.log(complaintData)
+
+        res.render('view-complaints', {complaints: complaintData, hostelName: hostelData.hostel_name})
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 
 module.exports = {
     loadDashboard,
@@ -179,7 +197,8 @@ module.exports = {
     approveLeave,
     rejectLeave,
     loadAddMessDetails,
-    addMessDetails
+    addMessDetails,
+    loadComplaints
 }
 
 
