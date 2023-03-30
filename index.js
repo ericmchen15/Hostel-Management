@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 require('dotenv').config();
 const process = require('process');
 const path = require('path')
+const nocache = require('nocache')
 
 
 const MONGOURI = process.env.MONGOURI
@@ -32,6 +33,8 @@ const app = express()
 app.use(expressLayouts);
 
 app.use(express.static(path.join(__dirname, "public")))
+
+app.use(nocache())
 
 //for public routes 
 const publicRoute = require("./routes/publicRoute")

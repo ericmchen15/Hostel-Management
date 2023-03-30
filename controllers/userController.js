@@ -339,7 +339,12 @@ const userLogout = async (req, res) => {
     try {
 
         req.session.destroy()
+        // res.setHeader('Cache-Control', 'no-cache, no-store')
+        // res.setHeader('Pragma', 'no-cache')
+        // res.setHeader('Expires', '0')
+        // res.redirect('/login?cache=false&' + new Date().getTime())
         res.redirect('/login')
+
 
     } catch (error) {
         console.log(error.message)
