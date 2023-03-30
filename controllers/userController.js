@@ -145,6 +145,19 @@ const insertUser = async (req, res) => {
 const loadApplyHostel = async (req, res) => {
     try {
         const departmentsData = await Department.find({})
+        const userRegNo = (await User.findById({_id: req.session.user_id})).reg_no
+        console.log(userRegNo)
+
+        const userHostel = (await User.findOne({ reg_no : userRegNo})).hostel_allocated.hostel_name
+        const userHostelStatus = (await User.findOne({ reg_no : userRegNo})).hostel_allocated.status
+
+        console.log("userHostel: ",userHostel, "\nuserHostelStatus: " , userHostelStatus)
+
+        if(userHostel !== 'None' || (userHostelStatus === 'pending' || userHostelStatus === 'approved') ){
+            res.send('You have already applied for Hostel.')
+            return;
+        }
+
         res.render('apply-hostel', { departmentsData: departmentsData })
 
     } catch (error) {
@@ -386,7 +399,8 @@ const saveComplaint = async (req, res) => {
         title: req.body.title,
         description: req.body.description,
         hostelName: (await User.findOne({ _id: req.session.user_id})).hostel_allocated.hostel_name,
-        submittedBy: req.body.submittedBy
+        submittedBy: req.body.submittedBy,
+        regNo : req.body.regNo
       });
     
       // Save the complaint to the database
@@ -675,6 +689,25 @@ const loadMessDetails = async(req, res)=>{
         console.log(error.message);
     }
 }
+
+const loadComplaints = async (req, res) => {
+    try {
+        const reg_no =  ((await User.findOne({ _id: req.session.user_id})).reg_no)
+        console.log(reg_no)
+        Complaint.find({regNo: reg_no}, (err, complaintList) => {
+        if (err) {
+          console.log(err);
+          res.send('An error occurred while retrieving complints.');
+        } else {
+            console.log(complaintList)
+          res.render('my-complaints', { complaintList: complaintList });
+        }
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+};
+
   
 
 module.exports = {
@@ -699,5 +732,6 @@ module.exports = {
     loadHostelsList,
     loadHostelDetails,
     vacate,
-    loadMessDetails
+    loadMessDetails,
+    loadComplaints
 }

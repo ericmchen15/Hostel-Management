@@ -19,6 +19,10 @@ const complaintSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  regNo : {
+    type: String,
+    required: true
+  },
   submittedAt: {
     type: Date,
     default: Date.now

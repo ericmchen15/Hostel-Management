@@ -443,8 +443,8 @@ const randomHostel = async (req, res) => {
 
                 allocatedHostel.vacancy = allocatedHostel.vacancy - 1;
                 allocatedHostel.dept.get(userDept).vacancy = allocatedHostel.dept.get(userDept).vacancy-1;
-                // console.log("Boy's Allocated hostel vac: ",  allocatedHostel.vacancy)
-                // console.log("Boy's Dept vac: ", allocatedHostel.dept.get(userDept).vacancy)
+                console.log("Boy's Allocated hostel vac: ",  allocatedHostel.vacancy)
+                console.log("Boy's Dept vac: ", allocatedHostel.dept.get(userDept).vacancy)
                 // dept_vacancy = dept_vacancy - 1;
         
             }
