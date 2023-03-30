@@ -505,7 +505,7 @@ const loadVacate = async( req, res) => {
 
         var deptPath = `dept.${userDept}.vacancy`;
         console.log("Dept Path: ", deptPath)
-        dept_vacancy = hostel.dept.get(userDept).vacancy
+        dept_vacancy = parseInt(hostel.dept.get(userDept).vacancy)
         console.log("Dept vacancy: ", dept_vacancy)
 
         await Hostel.updateOne(
