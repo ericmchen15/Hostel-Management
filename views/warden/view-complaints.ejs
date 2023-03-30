@@ -1,0 +1,30 @@
+<body>
+    <%- include('navbar.ejs') %>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <br>
+
+            <% if (complaints.length===0) { %>
+                <h4>No complaints to display</h4>
+                <% } else { %>
+
+                    <% complaints.forEach(complaint=> { %>
+                        <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"><%= complaint.title %> </h5>
+                              <h6 class="card-subtitle mb-2 text-muted">Submitted by: <strong><%= complaint.submittedBy %></strong></h6>
+                              <p class="card-text"><%= complaint.description %></p>
+                              <a href="#" class="card-link">Card link</a>
+                              <a href="#" class="card-link">Another link</a>
+                            </div>
+                          </div>
+                          <br>
+                        <% }) %>
+                            <% } %>
+
+
+
+        </main>
+
+
+</body>

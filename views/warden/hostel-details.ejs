@@ -1,7 +1,11 @@
 
 
 <body>
-  <h1><%= hostel.hostel_name %> Details</h1>
+
+  <%- include('navbar.ejs')  %>
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    <h1><%= hostel.hostel_name %> Details</h1>
   <p><strong>Address:</strong> <%= hostel.address %></p>
   <p><strong>Capacity:</strong> <%= hostel.capacity %></p>
   <p><strong>Type:</strong> <%= hostel.type %></p>
@@ -33,6 +37,8 @@
   <% } else { %>
     <p>No rooms available</p>
   <% } %>
+  </main>
+  
   
 </body>
 
