@@ -527,7 +527,7 @@ const loadVacate = async( req, res) => {
             }
         );
 
-        await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "N/A" } });
+        await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "NA" } });
 
         res.send("Vacated successfully.")
 
