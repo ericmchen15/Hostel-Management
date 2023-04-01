@@ -23,6 +23,9 @@ const complaintSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  userId : {
+    type: String,   
+  },
   submittedAt: {
     type: Date,
     default: Date.now

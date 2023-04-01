@@ -57,12 +57,12 @@ const userSchema = mongoose.Schema({
         
         status:{
             type: String,
-            enum: ['pending', 'approved', 'rejected', 'N/A'],
-            default: 'N/A',
+            enum: ['pending', 'approved', 'rejected', 'NA'],
+            default: 'NA',
         },
         hostel_name: {
             type: String,
-            default: 'None',
+            default: 'NA',
             required: true
         },
         room_no: {

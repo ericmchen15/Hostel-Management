@@ -153,7 +153,7 @@ const loadApplyHostel = async (req, res) => {
 
         console.log("userHostel: ",userHostel, "\nuserHostelStatus: " , userHostelStatus)
 
-        if(userHostel !== 'None' || (userHostelStatus === 'pending' || userHostelStatus === 'approved') ){
+        if(userHostel !== 'NA' || (userHostelStatus === 'pending' || userHostelStatus === 'approved') ){
             res.send('You have already applied for Hostel.')
             return;
         }
@@ -181,7 +181,7 @@ const applyHostel = async (req, res) => {
                         guardian_name: req.body.guardian_name,
                         guardian_phone: req.body.guardian_phone,
                         hostel_allocated: {
-                            hostel_name: "None",
+                            hostel_name: "NA",
                             room_no: 0,
                             status: "pending"
                         }
@@ -405,7 +405,8 @@ const saveComplaint = async (req, res) => {
         description: req.body.description,
         hostelName: (await User.findOne({ _id: req.session.user_id})).hostel_allocated.hostel_name,
         submittedBy: req.body.submittedBy,
-        regNo : req.body.regNo
+        regNo : req.body.regNo,
+        userId : req.session.user_id
       });
     
       // Save the complaint to the database
@@ -425,7 +426,7 @@ const saveComplaint = async (req, res) => {
 const loadVacate = async( req, res) => {
     try {
         const user = await User.findByIdAndUpdate({ _id: req.session.user_id })
-        if(user.hostel_allocated.hostel_name === 'None'){
+        if(user.hostel_allocated.hostel_name === 'NA'){
            res.send('Sorry! You have not been allocated any room!')
            return;
         }
@@ -519,14 +520,14 @@ const loadVacate = async( req, res) => {
                 $set: {
                     "vacancy": vacancy + 1,
                     "rooms.$.vacant": true,
-                    "rooms.$.student_reg_no": 'N/A',
-                    "rooms.$.student_allocated": 'N/A',
+                    "rooms.$.student_reg_no": 'NA',
+                    "rooms.$.student_allocated": 'NA',
                     [deptPath]: dept_vacancy + 1
                 }
             }
         );
 
-        await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0, "hostel_allocated.status": "N/A" } });
+        await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "N/A" } });
 
         res.send("Vacated successfully.")
 
@@ -589,7 +590,7 @@ const loadApplyLeave = async (req, res) => {
     try {     
        
         const hostel_name = ((await User.findOne({ _id: req.session.user_id})).hostel_allocated).hostel_name
-        if(hostel_name === 'None'){
+        if(hostel_name === 'NA'){
             res.send("<h2>Sorry!!!</h2> \n You can't apply for leave since you've not been allocated a room in any Hostel yet.")
         }
         else{
@@ -699,7 +700,7 @@ const loadComplaints = async (req, res) => {
     try {
         const reg_no =  ((await User.findOne({ _id: req.session.user_id})).reg_no)
         console.log(reg_no)
-        Complaint.find({regNo: reg_no}, (err, complaintList) => {
+        Complaint.find({userId: req.session.user_id}, (err, complaintList) => {
         if (err) {
           console.log(err);
           res.send('An error occurred while retrieving complints.');
