@@ -41,7 +41,12 @@
                         <div class="col">
                             <p class="statistics-title">Warden</p>
                             <h3 class="rate-percentage">
-                                <%= warden.name %>
+                                <% if (warden === 'None') { %>
+                                    <h5>Nothing to Display</h5>
+                                <% } else { %>
+                                <h4>N/A</h4>
+                                <%#= warden.name %>
+                                <% } %>
                             </h3>
                             <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
                         </div>
