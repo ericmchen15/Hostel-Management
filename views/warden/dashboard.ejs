@@ -6,12 +6,97 @@
   <%- include('navbar.ejs')  %>
   <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
-  <h1>Warden Dashboard</h1>
+    <h1>Warden Dashboard</h1>
+  
+    <!-- <img src="/hostelImages/<%#= hostelName %>.jpg" alt="Hostel Image" width="100px" height="100px"> -->
+    <h4> Welcome , <%= wardenName  %> </h4>
+    
+    <div class="col-lg-12">
+      <div class="row row-cols-auto d-flex align-items-center justify-content-between">
+        <div class="col">
+          <p class="statistics-title"><strong><%= hostel.name %></strong></p>
+          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+        </div>
+        <div class="col">
+          <p class="statistics-title">Capacity <%= hostel.capacity %></p>
+          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+        </div>
 
-  <!-- <img src="/hostelImages/<%= hostelName %>.jpg" alt="Hostel Image" width="100px" height="100px"> -->
+        <div class="col">
+          <p class="statistics-title">Capacity <%= hostel.vacancy %></p>
+          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+        </div>
+        <div class="col">
+          <p class="statistics-title">Total Students <%= hostel.capacity - hostel.vacancy %></p>
+          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+        </div>
+      </div>
+    </div>
 
- </main>
+    <h2>Section title</h2>
+    <div class="row">
+      <div class="col">
+        <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title">Recent Complaints</h5>
+              <table class="table table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th>Room No</th>
+                    <th>Student Name</th>
+                    <th>Reg No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <% complaints.forEach(function(complaint) { %>
+                          <tr>
+                            <td><%= complaint.title %></td>
+                            <td ><a href=""><%= complaint.description %><a></td>
+                            <td><%= complaint.status %></td>
+                          </tr>
+                        <% }); %>
+                </tbody>
+              </table class="table table-hover table-bordered">
+              <a href="/warden/view-complaints" class="btn btn-warning">View All</a>
+            </div>
+          </div>
+        
+      </div>
+      <div class="col">
+        <div class="col">
+            <div class="card text-center">
+                <div class="card-body">
+                  <h5 class="card-title">Recent Leaves</h5>
+                  <table class="table table-hover table-bordered">
+                    <thead>
+                      <tr>
+                    <th>Room No</th>
+                    <th>Student Name</th>
+                    <th>Reg No</th>
+                  </tr>
+                      
+                    </thead>
+                    <tbody>
+                        <% leaves.forEach(function(leave) { %>
+                          <tr>
+                            <td><%= leave.reg_no %></td>
+                            <td ><a href=""><%= leave.reason %><a></td>
+                            <td><%= leave.status %></td>
+                          </tr>
+                        <% }); %>
+                    </tbody>
+                  </table class="table table-hover table-bordered">
+                  <a href="/warden/leaves" class="btn btn-warning">View All</a>
+                </div>
+              </div>
+            
+          </div>
+      </div>
+    </div>
 
+
+  
+   </main>
 
 
 </body>

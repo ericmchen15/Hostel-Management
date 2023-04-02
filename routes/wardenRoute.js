@@ -42,5 +42,7 @@ warden_route.post('/add-mess-details', auth.isLogin, wardenController.addMessDet
 
 warden_route.get("/view-complaints", auth.isLogin, wardenController.loadComplaints)
 
+warden_route.get("/remove-boarder", auth.isLogin, wardenController.removeBoarder)
+
 
 module.exports =  warden_route

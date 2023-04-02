@@ -6,11 +6,9 @@ const Leave = require('../models/leaveModel')
 const Department = require('../models/departmentModel')
 const bcrypt = require('bcrypt')
 
-const nodemailer = require('nodemailer');
 const { ObjectId } = require('mongodb');
-const { findById } = require('../models/userModel');
-const PUBLISHABLE_KEY = 'pk_test_51MjI0OSCU5yTsDL8ehrVZDYo4tD5KSzqTzXZPmJQZelawlGfuew2feSCaQeux7ZXHxEruu3w8vpHr4ylq5GK64tV00WUb8yvNy'
-const SECRET_KEY = 'sk_test_51MjI0OSCU5yTsDL8qWYTbuqQQsQM4lXU6ru7VPNGjnCD7ILJGyec9AtB3rk31t5dzM3lcSxIowy35BkTcANdUsdQ00EOPWUxzv'
+const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY
+const SECRET_KEY = process.env.SECRET_KEY
 
 
 const stripe = require('stripe')(SECRET_KEY)
@@ -511,7 +509,7 @@ const loadVacate = async( req, res) => {
 
         var deptPath = `dept.${userDept}.vacancy`;
         console.log("Dept Path: ", deptPath)
-        dept_vacancy = parseInt(hostel.dept.get(userDept).vacancy)
+        var dept_vacancy = parseInt(hostel.dept.get(userDept).vacancy)
         console.log("Dept vacancy: ", dept_vacancy)
 
         await Hostel.updateOne(
@@ -536,6 +534,13 @@ const loadVacate = async( req, res) => {
     }
   }
   
+
+  const calculateOrderAmount = (items) => {
+    // Replace this constant with a calculation of the order's amount
+    // Calculate the order total on the server to prevent
+    // people from directly manipulating the amount on the client
+    return 1400;
+  };
   
 const loadPayment = async (req, res) => {
     try {
@@ -548,43 +553,76 @@ const loadPayment = async (req, res) => {
     }
 }
 
-const makePayment = async (req, res) => {
+const loadPaymentSuccess = async (req, res) => {
     try {
 
-        stripe.customers.create({
-            email: req.body.stripeEmail,
-            source: req.body.stripeToken,
-            name: "XYZ",
-            address: {
-                line1 : 'Lyon Estates, Hill Valley',
-                postal_code: '110092',
-                city: 'Guwahati',
-                state: 'Assam',
-                country: 'India'
-            }
-        }).then((customer)=>{
-                return stripe.paymentIntents.create({
-                amount: 5000,
-                description: 'Applying Hostel Room',
-                currency: 'USD',
-                customer: customer.id,
-                payment_method: 'pm_card_visa',
-                confirm: true
-            })
-        }).then((charge)=>{
-            console.log(charge)
-            res.send("Success")
-        })
-        .catch((error)=>{
-            res.send(error.message)
-            console.log(error.message)
-        })
-
+        res.render('success')
+        // console.log(stripe.create)
 
     } catch (error) {
         console.log(error.message)
     }
 }
+
+
+const createPaymentIntent = async (req,res) => {
+    try {
+        console.log("Hello")
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: calculateOrderAmount(items),
+            currency: "usd",
+            automatic_payment_methods: {
+              enabled: true,
+            },
+          });
+        
+          res.send({
+            clientSecret: paymentIntent.client_secret,
+          });
+
+          console.log(paymentIntent.client_secret)
+    } catch (error) {
+        res.send("error")
+    }
+}
+
+// const makePayment = async (req, res) => {
+//     try {
+
+//         stripe.customers.create({
+//             email: req.body.stripeEmail,
+//             source: req.body.stripeToken,
+//             name: "XYZ",
+//             address: {
+//                 line1 : 'Lyon Estates, Hill Valley',
+//                 postal_code: '110092',
+//                 city: 'Guwahati',
+//                 state: 'Assam',
+//                 country: 'India'
+//             }
+//         }).then((customer)=>{
+//                 return stripe.paymentIntents.create({
+//                 amount: 5000,
+//                 description: 'Applying Hostel Room',
+//                 currency: 'USD',
+//                 customer: customer.id,
+//                 payment_method: 'pm_card_visa',
+//                 confirm: true
+//             })
+//         }).then((charge)=>{
+//             console.log(charge)
+//             res.send("Success")
+//         })
+//         .catch((error)=>{
+//             res.send(error.message)
+//             console.log(error.message)
+//         })
+
+
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }
 
 const loadApplyLeave = async (req, res) => {
     try {     
@@ -615,7 +653,7 @@ const applyLeave = async (req, res) => {
 
             
             await leaveData.save()
-            res.redirect('/')
+            res.redirect('/home')
             console.log('success')      
 
     } catch (error) {
@@ -731,7 +769,6 @@ module.exports = {
     saveComplaint,
     loadVacate,
     loadPayment,
-    makePayment,
     loadApplyLeave,
     applyLeave,
     loadLeave,
@@ -739,5 +776,7 @@ module.exports = {
     loadHostelDetails,
     vacate,
     loadMessDetails,
-    loadComplaints
+    loadComplaints,
+    createPaymentIntent,
+    loadPaymentSuccess
 }

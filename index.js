@@ -35,6 +35,7 @@ app.use(expressLayouts);
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use(nocache())
+app.use(express.json());
 
 //for public routes 
 const publicRoute = require("./routes/publicRoute")

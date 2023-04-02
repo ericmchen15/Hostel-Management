@@ -56,7 +56,11 @@ user_route.post('/vacate-user', auth.isLogin, userController.vacate);
 
 user_route.get('/payment', auth.isLogin, userController.loadPayment)
 
-user_route.post('/payment', auth.isLogin, userController.makePayment)
+// user_route.post('/payment', auth.isLogin, userController.makePayment)
+
+user_route.post('/create-payment', auth.isLogin, userController.createPaymentIntent)
+
+user_route.get('/payment-success', auth.isLogin, userController.loadPaymentSuccess)
 
 user_route.get('/apply-leave', auth.isLogin, userController.loadApplyLeave)
 

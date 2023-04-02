@@ -5,7 +5,10 @@
     <h3> These are the students who have applied for Hostels:</h3>
 
     <% if (userData.length === 0) { %>
-        <h3>No students to to Display</h3>
+      <h3>No students to to Display!</h3>
+      <br>
+      <h5>Check out the allocated students' details:</h5>
+      <button type="button" onclick="location.href='/admin/view-allocated'" class="btn btn-warning">View Allocated Students</button>
     <% } else { %>
 
    

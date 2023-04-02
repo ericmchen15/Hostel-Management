@@ -1,19 +1,20 @@
-<%- include('navbar.ejs')  %>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 <body>
-    <h3>Welcome to Payment Gateway</h3>
-        <form action="payment" method="POST">
-            <script
-            src="//checkout.stripe.com/v3/checkout.js"
-            class="stripe-button"
-            data-key="<%= key %>"
-            data-amount="7000"
-            data-currency="usd"
-            data-name="Allocator"
-            data-description="Apply for a Room"
-            data-locale="auto" >
-            </script>
-        </form>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/js/checkout.js" defer></script>
+    <link href="/css/checkout.css" rel="stylesheet">
+
+    <form id="payment-form">
+        <div id="link-authentication-element">
+          <!--Stripe.js injects the Link Authentication Element-->
+        </div>
+        <div id="payment-element">
+          <!--Stripe.js injects the Payment Element-->
+        </div>
+        <button id="submit">
+          <div class="spinner hidden" id="spinner"></div>
+          <span id="button-text">Pay now</span>
+        </button>
+        <div id="payment-message" class="hidden"></div>
+      </form>
 </body>
-</main>

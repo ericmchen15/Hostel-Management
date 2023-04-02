@@ -21,6 +21,7 @@
           <th>Vacant</th>
           <th>Student Allocated</th>
           <th>Student Reg No</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,7 @@
             <td><%= room.vacant %></td>
             <td><%= room.student_allocated %></td>
             <td><%= room.student_reg_no %></td>
+            <td><a href="/warden/remove-boarder?q=<%= room.student_reg_no %>">Remove</a></td>
           </tr>
         <% }) %>
       </tbody>
