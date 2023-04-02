@@ -10,15 +10,21 @@ const loadDashboard = async (req, res) => {
 
     try {
         const wardenId = req.session.user_id
+        const wardenName = (await Warden.findOne({ _id: wardenId })).name
+        console.log(wardenName)
 
-        const hostelData = await Warden.findOne({ _id: wardenId })
+        const wardenHostel = (await Warden.findOne({ _id: wardenId })).hostel_name
+        const hostelData = await Hostel.findOne({ name: wardenHostel})
+        const complaintData = await Complaint.find({hostelName: hostelData.name})
+        const leaveData = await Leave.find({hostel_name: wardenHostel})
 
-        res.render('dashboard', { hostelName: hostelData.hostel_name })
+        res.render('dashboard', { wardenName: wardenName, hostel: hostelData, complaints: complaintData, leaves: leaveData, hostelName: hostelData.name })
+
+
     } catch (error) {
         console.log(error.message)
     }
 }
-
 const loadLogin = async (req, res) => {
 
     try {
@@ -89,7 +95,7 @@ const loadHostelDetails = async (req, res) => {
 const loadLeaves = async (req, res) => {
     try {
         const wardenHostel = (await Warden.findOne({ _id: req.session.user_id })).hostel_name
-        
+
 
         Leave.find({ hostel_name: wardenHostel }, (err, leavesList) => {
             if (err) {
@@ -149,7 +155,7 @@ const loadAddMessDetails = async (req, res) => {
         const wardenId = req.session.user_id
 
         const hostelData = await Warden.findOne({ _id: wardenId })
-        res.render("add-mess-details", {hostelName: hostelData.hostel_name})
+        res.render("add-mess-details", { hostelName: hostelData.hostel_name })
     } catch (error) {
         console.log(error.message)
     }
@@ -180,7 +186,47 @@ const loadComplaints = async (req, res) => {
 
         console.log(complaintData)
 
-        res.render('view-complaints', {complaints: complaintData, hostelName: hostelData.hostel_name})
+        res.render('view-complaints', { complaints: complaintData, hostelName: hostelData.hostel_name })
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const removeBoarder = async (req, res) => {
+    try {
+        console.log(req.query)
+        const userData = await User.findOne({ reg_no: req.query.q })
+        const userHostel = userData.hostel_allocated.hostel_name
+        const userRoom = userData.hostel_allocated.room_no
+        const userDept = userData.dept
+
+        const hostelData = await Hostel.findOne({ name: userHostel })
+
+        const vacancy = hostelData.vacancy;
+
+        var deptPath = `dept.${userDept}.vacancy`;
+        console.log("Dept Path: ", deptPath)
+        var dept_vacancy = parseInt(hostelData.dept.get(userDept).vacancy)
+        console.log("Dept vacancy: ", dept_vacancy)
+
+        await Hostel.updateOne(
+            { name: userHostel, "rooms.room_no": userRoom },
+            {
+                $set: {
+                    "vacancy": vacancy + 1,
+                    "rooms.$.vacant": true,
+                    "rooms.$.student_reg_no": 'NA',
+                    "rooms.$.student_allocated": 'NA',
+                    [deptPath]: dept_vacancy + 1
+                }
+            }
+        );
+
+        await User.findByIdAndUpdate({ reg_no: req.query.q }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "NA" } });
+
+        res.redirect("/warden")
+
+
     } catch (error) {
         console.log(error.message)
     }
@@ -198,7 +244,8 @@ module.exports = {
     rejectLeave,
     loadAddMessDetails,
     addMessDetails,
-    loadComplaints
+    loadComplaints,
+    removeBoarder
 }
 
 
