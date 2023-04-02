@@ -76,4 +76,6 @@ user_route.get('/mess-details', auth.isLogin, userController.loadMessDetails)
 
 user_route.get('/my-complaints', auth.isLogin, userController.loadComplaints)
 
+user_route.get('/warden-details/:name', auth.isLogin, userController.wardenDetails)
+
 module.exports = user_route

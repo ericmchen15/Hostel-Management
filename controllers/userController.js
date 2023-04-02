@@ -752,6 +752,27 @@ const loadComplaints = async (req, res) => {
     }
 };
 
+const wardenDetails = async(req, res) => {
+    try {
+
+        const wardenName = req.params.name 
+        // const wardenData = await Warden.findOne({name: wardenName}) 
+
+        Warden.findOne({name: wardenName}, function(err, warden) {
+            if (err) {
+              console.log(err);
+              res.send('Error occurred while retrieving warden details');
+            } else {
+              res.render('warden-details.ejs', { warden: warden });
+            }
+          });
+    
+    } catch (error) {
+      console.log(error.message);
+    }
+   
+}
+
   
 
 module.exports = {
@@ -778,5 +799,6 @@ module.exports = {
     loadMessDetails,
     loadComplaints,
     createPaymentIntent,
-    loadPaymentSuccess
+    loadPaymentSuccess,
+    wardenDetails
 }
