@@ -196,6 +196,7 @@ const removeBoarder = async (req, res) => {
     try {
         console.log(req.query)
         const userData = await User.findOne({ reg_no: req.query.q })
+        console.log(userData)
         const userHostel = userData.hostel_allocated.hostel_name
         const userRoom = userData.hostel_allocated.room_no
         const userDept = userData.dept
@@ -222,9 +223,9 @@ const removeBoarder = async (req, res) => {
             }
         );
 
-        await User.findByIdAndUpdate({ reg_no: req.query.q }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "NA" } });
+        await User.findOneAndUpdate({ reg_no: req.query.q }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "NA" } });
 
-        res.redirect("/warden")
+        res.redirect('/warden/dashboard?message=Successfully removed boarder!');
 
 
     } catch (error) {

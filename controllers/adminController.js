@@ -54,10 +54,43 @@ const verifyLogin = async (req, res) => {
 const loadHome = async (req, res) => {
 
     try {
+        let allocatedStudents = 0
+        const allocatedUsers = await User.find({'hostel_allocated.status' : 'approved'})
+
+        allocatedUsers.forEach(user =>{
+            allocatedStudents++;
+        })
+
+        console.log("Total studs: ",allocatedStudents)
+
+        let totalWardens = 0;
+        const Wardens = await Warden.find({})
+        Wardens.forEach(warden =>{
+            totalWardens++;
+        })
+
+        console.log("Total wardens: ", totalWardens)
+
+        let totalHostels = 0;
+        const Hostels = await Hostel.find({})
+        Hostels.forEach(hostel =>{
+            totalHostels++;
+        })
+
+        console.log("Total hostels: ", totalHostels)
+
+        let appliedStudents = 0
+        const appliedUsers = await User.find({'hostel_allocated.status' : 'pending'})
+
+        appliedUsers.forEach(user =>{
+            appliedStudents++;
+        })
+        console.log("Applied : ", appliedStudents)
+
         const complaintData = await Complaint.find({})
         const leaveData = await Leave.find({})
         const userData = await User.findById({ _id: req.session.user_id })
-        res.render('home', { user: userData, leave: leaveData, complaint: complaintData })
+        res.render('home', { user: userData, leave: leaveData, complaint: complaintData, allocated: allocatedStudents, totalWardens: totalWardens, totalHostels: totalHostels, appliedStudents: appliedStudents })
     } catch (error) {
         console.log(error.message)
     }
@@ -287,6 +320,7 @@ const addWarden = async (req, res) => {
         const wardenData = await warden.save()
 
         if (wardenData) {
+            
             res.send(`
             <h1>Warden has been added
             <h3>Redirecting 
@@ -294,7 +328,7 @@ const addWarden = async (req, res) => {
             window.setTimeout(function(){
                 window.location.href = "/admin/addWarden";
         
-            }, 3000);
+            }, 500);
     </script>`);
         }
         else {

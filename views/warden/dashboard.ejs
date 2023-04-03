@@ -15,20 +15,20 @@
       <div class="row row-cols-auto d-flex align-items-center justify-content-between">
         <div class="col">
           <p class="statistics-title"><strong><%= hostel.name %></strong></p>
-          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+          
         </div>
         <div class="col">
           <p class="statistics-title">Capacity <%= hostel.capacity %></p>
-          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+          
         </div>
 
         <div class="col">
           <p class="statistics-title">Vacancy <%= hostel.vacancy %></p>
-          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+          
         </div>
         <div class="col">
           <p class="statistics-title">Total Students <%= hostel.capacity - hostel.vacancy %></p>
-          <p class="text-warning d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p>
+          
         </div>
       </div>
     </div>
@@ -100,3 +100,14 @@
 
 
 </body>
+
+<script>
+  // get the message from the query parameter
+const urlParams = new URLSearchParams(window.location.search);
+const message = urlParams.get('message');
+
+// display the message in an alert
+if (message) {
+  alert(message);
+}
+</script>
