@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const DateOnly = require('mongoose-dateonly')(mongoose);
 
 const leaveSchema = new mongoose.Schema({
   reg_no: {
@@ -18,11 +19,11 @@ const leaveSchema = new mongoose.Schema({
     required: true
   },
   from: {
-    type: Date,
+    type: DateOnly,
     required: true
   },
   to: {
-    type: Date,
+    type: DateOnly,
     required: true
   },
   status: {
