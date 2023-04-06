@@ -4,7 +4,7 @@ const Complaint = require('../models/complaintModel')
 const Warden = require('../models/wardenModel')
 const bcrypt = require('bcrypt')
 const Leave = require('../models/leaveModel')
-
+const Payment = require('../models/paymentModel')
 
 const loadDashboard = async (req, res) => {
 
@@ -233,6 +233,19 @@ const removeBoarder = async (req, res) => {
     }
 }
 
+const loadPayments = async(req, res) => {
+    try {
+        const wardenId = req.session.user_id
+
+        const hostelName = (await Warden.findOne({ _id: wardenId })).hostel_name
+        const paymentList = (await Payment.find({hostel_name: hostelName}))
+        res.render('view-payments', {paymentList: paymentList, hostelName: hostelName})
+        
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 
 module.exports = {
     loadDashboard,
@@ -246,7 +259,8 @@ module.exports = {
     loadAddMessDetails,
     addMessDetails,
     loadComplaints,
-    removeBoarder
+    removeBoarder,
+    loadPayments
 }
 
 

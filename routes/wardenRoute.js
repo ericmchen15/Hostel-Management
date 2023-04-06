@@ -1,5 +1,6 @@
 const express = require('express')
 const warden_route = express()
+const path = require('path')
 
 const auth = require('../middleware/wardenAuth')
 const session = require('express-session')
@@ -13,6 +14,8 @@ warden_route.use(session({
 const bodyParser = require('body-parser')
 warden_route.use(bodyParser.json())
 warden_route.use(bodyParser.urlencoded({extended:true}))
+
+warden_route.use(express.static(path.join(__dirname, "src")))
 
 warden_route.set('view engine', 'ejs')
 warden_route.set('views', './views/warden')
@@ -43,6 +46,8 @@ warden_route.post('/add-mess-details', auth.isLogin, wardenController.addMessDet
 warden_route.get("/view-complaints", auth.isLogin, wardenController.loadComplaints)
 
 warden_route.get("/remove-boarder", auth.isLogin, wardenController.removeBoarder)
+
+warden_route.get('/viewPayments', auth.isLogin, wardenController.loadPayments)
 
 
 module.exports =  warden_route

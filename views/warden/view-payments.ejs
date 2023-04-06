@@ -1,0 +1,27 @@
+
+
+<body>
+
+  <%- include('navbar.ejs')  %>
+
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+  <h1>Payments:</h1> 
+  <ol class="list-group list-group-numbered">
+    <% if (paymentList.length ) {
+      paymentList.forEach(function(payment) { %>
+      <li>
+        <h5>Student : <%= payment.name %></h5>
+        <p>Reg No: <%= payment.reg_no %></p>
+       <img src="/warden/<%= payment.image %>" alt="">
+      </li>
+    <% });
+      } else { %>
+        <p>No leaves to show!!!</p>
+    <% } %>
+  </ol>
+  
+    
+  
+</main>
+</body>

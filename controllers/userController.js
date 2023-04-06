@@ -4,7 +4,9 @@ const Complaint = require('../models/complaintModel');
 const Warden = require('../models/wardenModel')
 const Leave = require('../models/leaveModel')
 const Department = require('../models/departmentModel')
+const Payment = require('../models/paymentModel')
 const bcrypt = require('bcrypt')
+const moment = require('moment')
 
 const { ObjectId } = require('mongodb');
 const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY
@@ -542,16 +544,61 @@ const loadVacate = async( req, res) => {
     return 1400;
   };
   
+// const loadPayment = async (req, res) => {
+//     try {
+
+//         res.render('payment', {key: PUBLISHABLE_KEY})
+//         // console.log(stripe.create)
+
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }
+
 const loadPayment = async (req, res) => {
     try {
 
-        res.render('payment', {key: PUBLISHABLE_KEY})
+        res.render('payment2')
         // console.log(stripe.create)
 
     } catch (error) {
         console.log(error.message)
     }
 }
+
+const getTimestamp = () => {
+    return moment(new Date()).format('YYYY-MM-DD');
+}
+
+const makePayment = async (req, res) => {
+    try {
+
+        const hostelName = (await User.findOne({_id: req.session.user_id})).hostel_allocated.hostel_name
+        console.log(hostelName)
+       
+    const payment = new Payment({
+            name : req.body.name,
+            reg_no : req.body.reg_no,       
+            image : req.file.filename,
+            hostel_name : hostelName,
+            date: getTimestamp()
+        })
+
+        const paymentData = await payment.save()
+
+        if(paymentData){
+            
+            res.send( "Payment receipt uploaded successfully.")
+        }
+        else{
+            res.send('Failed to upload file!')      
+        }
+        
+    } catch (error) {
+        
+    }
+}
+
 
 const loadPaymentSuccess = async (req, res) => {
     try {
@@ -800,5 +847,6 @@ module.exports = {
     loadComplaints,
     createPaymentIntent,
     loadPaymentSuccess,
-    wardenDetails
+    wardenDetails,
+    makePayment
 }
