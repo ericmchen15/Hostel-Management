@@ -19,72 +19,72 @@ const stripe = require('stripe')(SECRET_KEY)
 
 const randHostel = async (req, res) => {
     try {
-      var allocatedStudents = []
-      var nonAllocatedStudents = [] 
+        var allocatedStudents = []
+        var nonAllocatedStudents = []
 
-      const userData = await User.find({ "hostel_allocated.status": "pending" }).sort({ percentage: -1 });
-      const hostelsData = await Hostel.find({ vacancy: { $gt: 0 } });
-      
-      const boys_hos = hostelsData.filter(hostel => hostel.type === "male");
-      const girls_hos = hostelsData.filter(hostel => hostel.type === "female");
+        const userData = await User.find({ "hostel_allocated.status": "pending" }).sort({ percentage: -1 });
+        const hostelsData = await Hostel.find({ vacancy: { $gt: 0 } });
 
-      for (let i = 0; i < userData.length; i++){
-        const random_boys_hos = boys_hos.filter(hostel => hostel.dept[userData[i].dept].vacancy > 0);
-        if (random_boys_hos.length === 0) {
-          // No hostel with vacancy in the user's department for their gender
-          nonAllocatedStudents.push(userData[i].reg_no)
-          continue;
+        const boys_hos = hostelsData.filter(hostel => hostel.type === "male");
+        const girls_hos = hostelsData.filter(hostel => hostel.type === "female");
+
+        for (let i = 0; i < userData.length; i++) {
+            const random_boys_hos = boys_hos.filter(hostel => hostel.dept[userData[i].dept].vacancy > 0);
+            if (random_boys_hos.length === 0) {
+                // No hostel with vacancy in the user's department for their gender
+                nonAllocatedStudents.push(userData[i].reg_no)
+                continue;
+            }
+            const random_girls_hos = girls_hos.filter(hostel => hostel.dept[userData[i].dept].vacancy > 0);
+            if (random_girls_hos.length === 0) {
+                // No hostel with vacancy in the user's department for their gender
+                nonAllocatedStudents.push(userData[i].reg_no)
+                continue;
+            }
+
+            const allocatedHostel = (userData[i].gender === "male") ? random_boys_hos[Math.floor(Math.random() * random_boys_hos.length)] : random_girls_hos[Math.floor(Math.random() * random_girls_hos.length)];
+
+            const vacantRooms = allocatedHostel.rooms.filter(room => room.vacant);
+            const allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
+
+            await Hostel.updateOne(
+                { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
+                {
+                    $set: {
+                        "rooms.$.vacant": false,
+                        "rooms.$.student_reg_no": userData[i].reg_no,
+                        "rooms.$.student_allocated": userData[i].name,
+                    },
+                    $inc: { vacancy: -1, "dept.$[dept].vacancy": -1 }
+                },
+                { arrayFilters: [{ "dept._id": allocatedHostel._id }] }
+            );
+
+            await User.updateOne(
+                { _id: userData[i]._id, "hostel_allocated.status": "pending" },
+                { $set: { "hostel_allocated.$.status": "approved" } }
+            );
+
+
+            const allocatedData = {
+                hostel_name: allocatedHostel.name,
+                room_no: allocatedRoom
+            };
+
+            allocatedStudents.push(userData[i].reg_no)
+
         }
-        const random_girls_hos = girls_hos.filter(hostel => hostel.dept[userData[i].dept].vacancy > 0);
-        if (random_girls_hos.length === 0) {
-          // No hostel with vacancy in the user's department for their gender
-          nonAllocatedStudents.push(userData[i].reg_no)
-          continue;
-        }
-        
-        const allocatedHostel = (userData[i].gender === "male") ? random_boys_hos[Math.floor(Math.random() * random_boys_hos.length)] : random_girls_hos[Math.floor(Math.random() * random_girls_hos.length)];
-        
-        const vacantRooms = allocatedHostel.rooms.filter(room => room.vacant);
-        const allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
-        
-        await Hostel.updateOne(
-          { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
-          {
-            $set: {
-              "rooms.$.vacant": false,
-              "rooms.$.student_reg_no": userData[i].reg_no,
-              "rooms.$.student_allocated": userData[i].name,
-            },
-            $inc: { vacancy: -1, "dept.$[dept].vacancy": -1 }
-          },
-          { arrayFilters: [{ "dept._id": allocatedHostel._id }] }
-        );
 
-        await User.updateOne(
-          { _id: userData[i]._id, "hostel_allocated.status": "pending" },
-          { $set: { "hostel_allocated.$.status": "approved" } }
-        );
+        console.log(allocatedStudents)
+        console.log(nonAllocatedStudents)
 
-    
-        const allocatedData = {
-          hostel_name: allocatedHostel.name,
-          room_no: allocatedRoom
-        };
-
-        allocatedStudents.push(userData[i].reg_no)
-        
-      }
-      
-      console.log(allocatedStudents)
-      console.log(nonAllocatedStudents)
-
-      res.send("Success");
+        res.send("Success");
     } catch (error) {
-      console.log(error.message);
-      throw error;
+        console.log(error.message);
+        throw error;
     }
-  };
-  
+};
+
 const securePassword = async (password) => {
 
     try {
@@ -102,8 +102,8 @@ const securePassword = async (password) => {
 const loadRegister = async (req, res) => {
     try {
 
-       
-       
+
+
         res.render('registration')
 
     } catch (error) {
@@ -127,14 +127,14 @@ const insertUser = async (req, res) => {
             role: 0
         })
 
-        if(await User.findOne({reg_no : req.body.reg_no}) || await User.findOne({email: req.body.email})){
+        if (await User.findOne({ reg_no: req.body.reg_no }) || await User.findOne({ email: req.body.email })) {
             res.send("A user with the same registration no or email is already registered")
         } else {
             await user.save()
             res.redirect('/')
         }
 
-        
+
 
 
     } catch (error) {
@@ -145,15 +145,15 @@ const insertUser = async (req, res) => {
 const loadApplyHostel = async (req, res) => {
     try {
         const departmentsData = await Department.find({})
-        const userRegNo = (await User.findById({_id: req.session.user_id})).reg_no
+        const userRegNo = (await User.findById({ _id: req.session.user_id })).reg_no
         console.log(userRegNo)
 
-        const userHostel = (await User.findOne({ reg_no : userRegNo})).hostel_allocated.hostel_name
-        const userHostelStatus = (await User.findOne({ reg_no : userRegNo})).hostel_allocated.status
+        const userHostel = (await User.findOne({ reg_no: userRegNo })).hostel_allocated.hostel_name
+        const userHostelStatus = (await User.findOne({ reg_no: userRegNo })).hostel_allocated.status
 
-        console.log("userHostel: ",userHostel, "\nuserHostelStatus: " , userHostelStatus)
+        console.log("userHostel: ", userHostel, "\nuserHostelStatus: ", userHostelStatus)
 
-        if(userHostel !== 'NA' || (userHostelStatus === 'pending' || userHostelStatus === 'approved') ){
+        if (userHostel !== 'NA' || (userHostelStatus === 'pending' || userHostelStatus === 'approved')) {
             res.send('You have already applied for Hostel.')
             return;
         }
@@ -228,8 +228,8 @@ const applyHostel = async (req, res) => {
 //                             guardian_phone: req.body.guardian_phone,
 //                             percentage: req.body.percentage,
 //                             hostel_allocated: randHostel
-        
-        
+
+
 //                         }
 //                     }, function (err, result) {
 //                         if (err) {
@@ -243,7 +243,7 @@ const applyHostel = async (req, res) => {
 //         }else{
 //             res.send("Invalid Reg no.")
 //         }
-        
+
 
 //     } catch (error) {
 //         console.log(`errrrro ${error.message}`)
@@ -307,7 +307,7 @@ const loadHome = async (req, res) => {
 
 
     try {
-        
+
         const userData = await User.findById({ _id: req.session.user_id })
         // const leaveData = await Leave.find({ reg_no: userData.reg_no})
         const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
@@ -318,14 +318,14 @@ const loadHome = async (req, res) => {
         let leaveData = null;
         if (hostelData) {
             messData = hostelData.mess;
-            warden = await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name})
-            leaveData = await Leave.find({ reg_no: userData.reg_no})
-        }else{
+            warden = await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name })
+            leaveData = await Leave.find({ reg_no: userData.reg_no })
+        } else {
             messData = 'None',
-            warden = 'None',
-            leaveData = 'None'
+                warden = 'None',
+                leaveData = 'None'
         }
-        
+
 
 
         res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData })
@@ -388,7 +388,7 @@ const updateProfile = async (req, res) => {
     }
 }
 
-const submitComplaint = async( req, res) => {
+const submitComplaint = async (req, res) => {
     try {
         res.render('complaints')
     } catch (error) {
@@ -399,36 +399,36 @@ const submitComplaint = async( req, res) => {
 
 const saveComplaint = async (req, res) => {
     try {
-      // Create a new complaint object with data from the request body
-      const newComplaint = new Complaint({
-        title: req.body.title,
-        description: req.body.description,
-        hostelName: (await User.findOne({ _id: req.session.user_id})).hostel_allocated.hostel_name,
-        submittedBy: req.body.submittedBy,
-        regNo : req.body.regNo,
-        userId : req.session.user_id
-      });
-    
-      // Save the complaint to the database
-      newComplaint.save(err => {
-        if (err) {
-          console.log(err);
-          res.send('An error occurred while submitting your complaint.');
-        } else {
-          res.redirect('/home');
-        }
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+        // Create a new complaint object with data from the request body
+        const newComplaint = new Complaint({
+            title: req.body.title,
+            description: req.body.description,
+            hostelName: (await User.findOne({ _id: req.session.user_id })).hostel_allocated.hostel_name,
+            submittedBy: req.body.submittedBy,
+            regNo: req.body.regNo,
+            userId: req.session.user_id
+        });
 
-const loadVacate = async( req, res) => {
+        // Save the complaint to the database
+        newComplaint.save(err => {
+            if (err) {
+                console.log(err);
+                res.send('An error occurred while submitting your complaint.');
+            } else {
+                res.redirect('/home');
+            }
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+const loadVacate = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate({ _id: req.session.user_id })
-        if(user.hostel_allocated.hostel_name === 'NA'){
-           res.send('Sorry! You have not been allocated any room!')
-           return;
+        if (user.hostel_allocated.hostel_name === 'NA') {
+            res.send('Sorry! You have not been allocated any room!')
+            return;
         }
         res.render('vacate')
     } catch (error) {
@@ -437,15 +437,15 @@ const loadVacate = async( req, res) => {
 
 }
 
-  
+
 // const vacateUser = async (req, res) => {
 //     try {
-    
+
 //       // Find the user and update in the database
 //       await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0, "hostel_allocated.status": "pending" } });
 
 //       //const user = await User.findOne({ reg_no: req.body.regNo });
-  
+
 //       // Find the hostel documents
 //      // const hostels = await Hostel.find({});
 
@@ -470,38 +470,38 @@ const loadVacate = async( req, res) => {
 //             }
 //         }
 //     );
-  
+
 //      // Loop through each hostel document
 //     //   for (let i = 0; i < hostels.length; i++) {
 //     //     const hostel = hostels[i];
-  
+
 //     //     // Loop through the rooms array and update the vacant and student_allocated fields
 //     //     for (let j = 0; j < hostel.rooms.length; j++) {
 //     //       const room = hostel.rooms[j];
 //     //       if (room.student_reg_no === req.body.regNo) {
 //     //         hostel.vacancy++;
-            
+
 //     //         room.vacant = true;
 //     //         room.student_allocated = "";
 //     //         room.student_reg_no = "";
 //     //       }
 //     //     }
-  
+
 //         //Save the updated hostel document back to the database
 //         // await userHostel.save();
-  
+
 //       res.send("User vacated successfully");
 //     } catch (error) {
 //       console.log(error.message);
 //     }
 //   };
-  
-  const vacate = async(req, res) => {
+
+const vacate = async (req, res) => {
     try {
 
-        const userHostel = (await User.findById({ _id: req.session.user_id})).hostel_allocated.hostel_name
-        const userRoom = (await User.findById({ _id: req.session.user_id})).hostel_allocated.room_no
-        const userDept = (await User.findById({_id: req.session.user_id})).dept
+        const userHostel = (await User.findById({ _id: req.session.user_id })).hostel_allocated.hostel_name
+        const userRoom = (await User.findById({ _id: req.session.user_id })).hostel_allocated.room_no
+        const userDept = (await User.findById({ _id: req.session.user_id })).dept
 
         console.log("USER HOSTEL: ", userHostel, "USER ROOM: ", userRoom, "USER DEPT: ", userDept)
 
@@ -534,16 +534,16 @@ const loadVacate = async( req, res) => {
     } catch (error) {
         console.log(error)
     }
-  }
-  
+}
 
-  const calculateOrderAmount = (items) => {
+
+const calculateOrderAmount = (items) => {
     // Replace this constant with a calculation of the order's amount
     // Calculate the order total on the server to prevent
     // people from directly manipulating the amount on the client
     return 1400;
-  };
-  
+};
+
 // const loadPayment = async (req, res) => {
 //     try {
 
@@ -573,29 +573,28 @@ const getTimestamp = () => {
 const makePayment = async (req, res) => {
     try {
 
-        const hostelName = (await User.findOne({_id: req.session.user_id})).hostel_allocated.hostel_name
-        console.log(hostelName)
-       
-    const payment = new Payment({
-            name : req.body.name,
-            reg_no : req.body.reg_no,       
-            image : req.file.filename,
-            hostel_name : hostelName,
+        const hostelName = (await User.findOne({ _id: req.session.user_id })).hostel_allocated.hostel_name
+
+        const payment = new Payment({
+            name: req.body.name,
+            reg_no: req.body.reg_no,
+            image: req.file.location,
+            hostel_name: hostelName,
             date: getTimestamp()
         })
 
         const paymentData = await payment.save()
 
-        if(paymentData){
-            
-            res.send( "Payment receipt uploaded successfully.")
+        if (paymentData) {
+
+            res.send("Payment receipt uploaded successfully.")
         }
-        else{
-            res.send('Failed to upload file!')      
+        else {
+            res.send('Failed to upload file!')
         }
-        
+
     } catch (error) {
-        
+
     }
 }
 
@@ -612,22 +611,22 @@ const loadPaymentSuccess = async (req, res) => {
 }
 
 
-const createPaymentIntent = async (req,res) => {
+const createPaymentIntent = async (req, res) => {
     try {
         console.log("Hello")
         const paymentIntent = await stripe.paymentIntents.create({
             amount: calculateOrderAmount(items),
             currency: "usd",
             automatic_payment_methods: {
-              enabled: true,
+                enabled: true,
             },
-          });
-        
-          res.send({
-            clientSecret: paymentIntent.client_secret,
-          });
+        });
 
-          console.log(paymentIntent.client_secret)
+        res.send({
+            clientSecret: paymentIntent.client_secret,
+        });
+
+        console.log(paymentIntent.client_secret)
     } catch (error) {
         res.send("error")
     }
@@ -672,36 +671,36 @@ const createPaymentIntent = async (req,res) => {
 // }
 
 const loadApplyLeave = async (req, res) => {
-    try {     
-       
-        const hostel_name = ((await User.findOne({ _id: req.session.user_id})).hostel_allocated).hostel_name
-        if(hostel_name === 'NA'){
+    try {
+
+        const hostel_name = ((await User.findOne({ _id: req.session.user_id })).hostel_allocated).hostel_name
+        if (hostel_name === 'NA') {
             res.send("<h2>Sorry!!!</h2> \n You can't apply for leave since you've not been allocated a room in any Hostel yet.")
         }
-        else{
+        else {
             res.render('apply-leave')
         }
-        
+
     } catch (error) {
         console.log(error.message)
     }
 }
 
 const applyLeave = async (req, res) => {
-    try {  
+    try {
         const leaveData = new Leave({
-            reg_no:  ((await User.findOne({ _id: req.session.user_id})).reg_no),
+            reg_no: ((await User.findOne({ _id: req.session.user_id })).reg_no),
             leave_id: new ObjectId(),
             reason: req.body.reason,
             from: req.body.from,
             to: req.body.to,
-            hostel_name: ((await User.findOne({ _id: req.session.user_id})).hostel_allocated).hostel_name
+            hostel_name: ((await User.findOne({ _id: req.session.user_id })).hostel_allocated).hostel_name
         })
 
-            
-            await leaveData.save()
-            res.redirect('/home')
-            console.log('success')      
+
+        await leaveData.save()
+        res.redirect('/home')
+        console.log('success')
 
     } catch (error) {
         console.log(error.message)
@@ -710,19 +709,19 @@ const applyLeave = async (req, res) => {
 
 const loadLeave = async (req, res) => {
     try {
-        const reg_no =  ((await User.findOne({ _id: req.session.user_id})).reg_no)
+        const reg_no = ((await User.findOne({ _id: req.session.user_id })).reg_no)
         console.log(reg_no)
-        Leave.find({reg_no: reg_no}, (err, leavesList) => {
-        if (err) {
-          console.log(err);
-          res.send('An error occurred while retrieving leaves.');
-        } else {
-            console.log(leavesList)
-          res.render('leaves', { leavesList: leavesList });
-        }
-      });
+        Leave.find({ reg_no: reg_no }, (err, leavesList) => {
+            if (err) {
+                console.log(err);
+                res.send('An error occurred while retrieving leaves.');
+            } else {
+                console.log(leavesList)
+                res.render('leaves', { leavesList: leavesList });
+            }
+        });
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
     }
 };
 
@@ -730,7 +729,7 @@ const loadHostelsList = async (req, res) => {
     try {
 
         const hostels = await Hostel.find({});
-        res.render('hostels-list', {hostels: hostels})
+        res.render('hostels-list', { hostels: hostels })
         // console.log(stripe.create)
 
     } catch (error) {
@@ -741,40 +740,40 @@ const loadHostelsList = async (req, res) => {
 
 const loadHostelDetails = async (req, res) => {
     try {
-        Hostel.findById(req.params.id, function(err, hostel) {
+        Hostel.findById(req.params.id, function (err, hostel) {
             if (err) {
-              console.log(err);
-              res.send('Error occurred while retrieving hostel details');
+                console.log(err);
+                res.send('Error occurred while retrieving hostel details');
             } else {
-              res.render('hostel-details.ejs', { hostel: hostel });
+                res.render('hostel-details.ejs', { hostel: hostel });
             }
-          });
-    
+        });
+
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
     }
 };
 
-const loadMessDetails = async(req, res)=>{
+const loadMessDetails = async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.session.user_id});
+        const user = await User.findOne({ _id: req.session.user_id });
         const hostelName = user.hostel_allocated.hostel_name;
 
-        const hostel = await Hostel.findOne({name: hostelName})
+        const hostel = await Hostel.findOne({ name: hostelName })
         const mess = hostel.mess;
 
         console.log(hostelName);
         console.log(mess);
 
 
-        if(hostelName === 'undefined'){
+        if (hostelName === 'undefined') {
             res.send("You haven't been allocated at any hostel.")
             return;
         }
 
         const messDetails = [...hostel.mess.entries()];
 
-        res.render('mess-details', {hostelName: hostelName, messDetails: messDetails })
+        res.render('mess-details', { hostelName: hostelName, messDetails: messDetails })
 
     } catch (error) {
         console.log(error.message);
@@ -783,51 +782,51 @@ const loadMessDetails = async(req, res)=>{
 
 const loadComplaints = async (req, res) => {
     try {
-        const reg_no =  ((await User.findOne({ _id: req.session.user_id})).reg_no)
+        const reg_no = ((await User.findOne({ _id: req.session.user_id })).reg_no)
         console.log(reg_no)
-        Complaint.find({userId: req.session.user_id}, (err, complaintList) => {
-        if (err) {
-          console.log(err);
-          res.send('An error occurred while retrieving complints.');
-        } else {
-            console.log(complaintList)
-          res.render('my-complaints', { complaintList: complaintList });
-        }
-      });
+        Complaint.find({ userId: req.session.user_id }, (err, complaintList) => {
+            if (err) {
+                console.log(err);
+                res.send('An error occurred while retrieving complints.');
+            } else {
+                console.log(complaintList)
+                res.render('my-complaints', { complaintList: complaintList });
+            }
+        });
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
     }
 };
 
-const wardenDetails = async(req, res) => {
+const wardenDetails = async (req, res) => {
     try {
 
-        const wardenName = req.params.name 
+        const wardenName = req.params.name
         // const wardenData = await Warden.findOne({name: wardenName}) 
 
-        Warden.findOne({name: wardenName}, function(err, warden) {
+        Warden.findOne({ name: wardenName }, function (err, warden) {
             if (err) {
-              console.log(err);
-              res.send('Error occurred while retrieving warden details');
+                console.log(err);
+                res.send('Error occurred while retrieving warden details');
             } else {
-              res.render('warden-details.ejs', { warden: warden });
+                res.render('warden-details.ejs', { warden: warden });
             }
-          });
-    
+        });
+
     } catch (error) {
-      console.log(error.message);
+        console.log(error.message);
     }
-   
+
 }
 
-  
+
 
 module.exports = {
     loadRegister,
     applyHostel,
     loadApplyHostel,
-    insertUser,   
-    loginLoad,  
+    insertUser,
+    loginLoad,
     loadHome,
     verifyLogin,
     userLogout,

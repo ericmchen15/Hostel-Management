@@ -2,7 +2,6 @@ const express = require('express')
 const user_route = express()
 
 const session = require('express-session')
-const path = require('path')
 
 const config = require('../config/config')
 user_route.use(session({
@@ -19,21 +18,9 @@ const bodyParser = require('body-parser')
 user_route.use(bodyParser.json())
 user_route.use(bodyParser.urlencoded({extended:true}))
 
-const multer = require('multer')
-
-const storage = multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname, '../src/warden'))
-    },
-    filename: function(req, file, cb){
-        const name = Date.now() + '-' + file.originalname
-        cb(null, name)
-    }
-})
-
-const upload = multer({storage:storage})
 
 const userController = require("../controllers/userController")
+const uploadImage = require('../helpers/uploadFile')
 
 // user_route.get('/', (req, res)=>{
 //     res.send("HOME PAGE")
@@ -93,6 +80,6 @@ user_route.get('/my-complaints', auth.isLogin, userController.loadComplaints)
 
 user_route.get('/warden-details/:name', auth.isLogin, userController.wardenDetails)
 
-user_route.post('/payment', upload.single('image') , userController.makePayment)
+user_route.post('/payment', uploadImage.single("image") , userController.makePayment)
 
 module.exports = user_route
