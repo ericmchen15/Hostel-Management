@@ -49,5 +49,7 @@ warden_route.get("/remove-boarder", auth.isLogin, wardenController.removeBoarder
 
 warden_route.get('/view-payments', auth.isLogin, wardenController.loadPayments)
 
+warden_route.get('/view-payment-file', auth.isLogin, wardenController.viewPaymentFile)
+
 
 module.exports =  warden_route

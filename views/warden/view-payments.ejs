@@ -13,11 +13,11 @@
       <li>
         <h5>Student : <%= payment.name %></h5>
         <p>Reg No: <%= payment.reg_no %></p>
-       <img src="<%= payment.image %>" alt="">
+        <a href="/warden/view-payment-file?key=<%= payment.image %>">Show payment file</a>
       </li>
     <% });
       } else { %>
-        <p>No leaves to show!!!</p>
+        <p>No payments to show!!!</p>
     <% } %>
   </ol>
   

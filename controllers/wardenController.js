@@ -5,14 +5,14 @@ const Warden = require('../models/wardenModel')
 const bcrypt = require('bcrypt')
 const Leave = require('../models/leaveModel')
 const Payment = require('../models/paymentModel')
+const getImage = require('../helpers/getFile')
+const encode = require('../helpers/encode')
 
 const loadDashboard = async (req, res) => {
 
     try {
         const wardenId = req.session.user_id
         const wardenName = (await Warden.findOne({ _id: wardenId })).name
-        console.log(wardenName)
-
         const wardenHostel = (await Warden.findOne({ _id: wardenId })).hostel_name
         const hostelData = await Hostel.findOne({ name: wardenHostel})
         const complaintData = await Complaint.find({hostelName: hostelData.name})
@@ -84,7 +84,6 @@ const loadHostelDetails = async (req, res) => {
     try {
 
         const hostelData = await Hostel.findOne({ name: req.query.n })
-        console.log(hostelData)
         res.render('hostel-details', { hostel: hostelData, hostelName: hostelData.name })
 
     } catch (error) {
@@ -132,7 +131,6 @@ const approveLeave = async (req, res) => {
 
 const rejectLeave = async (req, res) => {
     try {
-        console.log(req.body.leave_id)
         const leave = await Leave.findOneAndUpdate(
             { leave_id: req.body.leave_id, status: 'pending' },
             { $set: { status: 'rejected' } },
@@ -181,10 +179,8 @@ const loadComplaints = async (req, res) => {
         const wardenId = req.session.user_id
 
         const hostelData = await Warden.findOne({ _id: wardenId })
-        console.log(hostelData.hostel_name)
         const complaintData = await Complaint.find({ hostelName: hostelData.hostel_name })
 
-        console.log(complaintData)
 
         res.render('view-complaints', { complaints: complaintData, hostelName: hostelData.hostel_name })
     } catch (error) {
@@ -194,9 +190,7 @@ const loadComplaints = async (req, res) => {
 
 const removeBoarder = async (req, res) => {
     try {
-        console.log(req.query)
         const userData = await User.findOne({ reg_no: req.query.q })
-        console.log(userData)
         const userHostel = userData.hostel_allocated.hostel_name
         const userRoom = userData.hostel_allocated.room_no
         const userDept = userData.dept
@@ -246,6 +240,24 @@ const loadPayments = async(req, res) => {
     }
 }
 
+const viewPaymentFile = async(req, res) => {
+    try {
+        const { key } = req.query
+        const hostelName = (await Warden.findOne({ _id: req.session.user_id })).hostel_name
+
+        const img = await getImage(key);
+
+        const data = await encode(img.Body);
+        const file = `data:image/jpg;base64,${data}`;
+
+        res.render('view-payment-file', {file: file, hostelName: hostelName})
+        
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+
 
 module.exports = {
     loadDashboard,
@@ -260,7 +272,8 @@ module.exports = {
     addMessDetails,
     loadComplaints,
     removeBoarder,
-    loadPayments
+    loadPayments,
+    viewPaymentFile
 }
 
 

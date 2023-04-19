@@ -26,6 +26,7 @@
           <th>Name</th>
           <th>Email</th>
           <th>Phone No.</th>
+          <th>Hostel</th>
       </tr>
   
       <% 
@@ -45,7 +46,11 @@
   
                       <td>            
                       <%= userData.results[i].phone %>
-                      </td>  
+                      </td>
+
+                      <td>            
+                      <a href="/admin/hostel-details?id=<%= userData.results[i].hostel_allocated.hostel_name %>"><%= userData.results[i].hostel_allocated.hostel_name %></a> 
+                      </td> 
   
                        
                   </tr>

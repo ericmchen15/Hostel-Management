@@ -578,7 +578,7 @@ const makePayment = async (req, res) => {
         const payment = new Payment({
             name: req.body.name,
             reg_no: req.body.reg_no,
-            image: req.file.location,
+            image: req.file.key,
             hostel_name: hostelName,
             date: getTimestamp()
         })
