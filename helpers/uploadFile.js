@@ -17,13 +17,13 @@ const s3 = new S3Client({
 
 const s3Storage = multerS3({
     s3: s3, // s3 instance
-    bucket: "hostel-photos-db", // change it as per your project requirement
-    acl: "public-read", // storage access type
+    bucket: process.env.BUCKET, // change it as per your project requirement // storage access type
     metadata: (req, file, cb) => {
         cb(null, {fieldname: file.fieldname})
     },
     key: (req, file, cb) => {
-        const fileName = moment(new Date()).format('YYYY-MM-DD') + "_" + req.body.reg_no + "_payment";
+        const ext = path.extname(file.originalname);
+        const fileName = moment(new Date()).format('YYYY-MM-DD') + "_" + req.body.reg_no + "_payment" + ext ;
         cb(null, fileName);
     }
 });
