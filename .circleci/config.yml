@@ -21,10 +21,10 @@ jobs:
             aws configure set region $AWS_REGION
 
             # Copy the files to the EC2 instance
-            scp -r ./dist ec2-user@${EC2_INSTANCE_IP}:~/app
+            scp -r ./dist ubuntu@${EC2_INSTANCE_IP}:~/app
 
             # SSH into the instance and run the deploy script
-            ssh ec2-user@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
+            ssh ubuntu@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
             
 workflows:
   deploy:
