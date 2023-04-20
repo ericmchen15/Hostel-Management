@@ -1,21 +1,25 @@
 version: 2.1
 
-orbs:
-  aws-ecr: circleci/aws-ecr@8.2.1 # Use the AWS ECR orb in your configuration
-  aws-ecs: circleci/aws-ecs@3.2.0 # Use the AWS ECS orb in your configuration
+jobs:
+  deploy:
+    docker:
+      - image: circleci/python:3.8
 
+    steps:
+      - checkout
+      - run:
+          name: Deploy to EC2 instance
+          command: |
+
+            ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
+            
+            # SSH into the instance and run the deploy script
+            ssh ubuntu@${EC2_INSTANCE_IP} 'rm -r app && git clone https://github.com/bbhupen/Hostel-Management.git app && cd ~/app && chmod +x deploy.sh && ./deploy.sh'
+            
 workflows:
-  build-and-deploy:
+  deploy:
     jobs:
-      - aws-ecr/build-and-push-image:
-          dockerfile: Dockerfile
-          path: .
-          repo: ${MY_APP_PREFIX}
-          tag: '${CIRCLE_SHA1}'
-      - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build-and-push-image # only run the deployment job once the build and push image job has completed
-          family: '${MY_APP_PREFIX}-service'
-          cluster: '${MY_APP_PREFIX}-cluster'
-          container-image-name-updates: 'container=${MY_APP_PREFIX}-service,tag=${CIRCLE_SHA1}'
-
+      - deploy:
+          filters:
+            branches:
+              only: main
