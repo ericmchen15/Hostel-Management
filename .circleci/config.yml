@@ -17,7 +17,7 @@ jobs:
           name: Deploy to EC2 instance
           command: |
             echo ${KEY} > ${HOME}/key.pem
-            ls 
+            cat ${HOME}/key.pem
             chmod 400 ${HOME}/key.pem
             
             ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
