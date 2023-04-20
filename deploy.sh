@@ -7,6 +7,10 @@ sudo apt-get -y install nginx
 # Stop the Nginx service if it is already running
 sudo systemctl stop nginx
 
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt-get -y install nodejs
+
+
 # Create an Nginx server block configuration file for your Node.js app
 sudo tee /etc/nginx/sites-available/hostel-mgmt <<EOF
 server {
