@@ -11,7 +11,7 @@ jobs:
           name: Deploy to EC2 instance
           command: |
 
-            ssh-keyscan -H EC2_INSTANCE_IP >> ~/.ssh/known_hosts
+            ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
             ls
             pwd
             # Copy the files to the EC2 instance
