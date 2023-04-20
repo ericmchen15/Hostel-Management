@@ -16,17 +16,15 @@ jobs:
       - run:
           name: Deploy to EC2 instance
           command: |
-            echo ${KEY} > ${HOME}/key.pem
-            cat ${HOME}/key.pem
-            chmod 400 ${HOME}/key.pem
+            
             
             ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
 
             # Copy the files to the ${EC2 instance}
-            scp -i ${HOME}/key.pem -r ./dist ubuntu@${EC2_INSTANCE_IP}:~/app
+            scp -r ./dist ubuntu@${EC2_INSTANCE_IP}:~/app
 
             # SSH into the instance and run the deploy script
-            ssh -i ${HOME}/key.pem ubuntu@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
+            ssh ubuntu@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
             
 workflows:
   deploy:
