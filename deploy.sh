@@ -33,6 +33,8 @@ sudo ln -s /etc/nginx/sites-available/hostel-mgmt /etc/nginx/sites-enabled/
 # Remove the default Nginx server block configuration file
 sudo rm /etc/nginx/sites-enabled/default
 
+cp ~/.env ~/app
+
 # Restart the Nginx service
 sudo systemctl start nginx
 
