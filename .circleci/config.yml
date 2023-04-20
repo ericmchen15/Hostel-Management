@@ -22,7 +22,7 @@ jobs:
             
             ssh-keyscan -H EC2_INSTANCE_IP >> ~/.ssh/known_hosts
 
-            # Copy the files to the EC2 instance
+            # Copy the files to the ${EC2 instance}
             scp -r ./dist ubuntu@${EC2_INSTANCE_IP}:~/app
 
             # SSH into the instance and run the deploy script
