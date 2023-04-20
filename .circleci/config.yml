@@ -16,17 +16,16 @@ jobs:
       - run:
           name: Deploy to EC2 instance
           command: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set region $AWS_REGION
+            echo $KEY > key.pem
+            chmod 400 key.pem
             
             ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
 
             # Copy the files to the ${EC2 instance}
-            scp -r ./dist ubuntu@${EC2_INSTANCE_IP}:~/app
+            scp -i key.pem -r ./dist ubuntu@${EC2_INSTANCE_IP}:~/app
 
             # SSH into the instance and run the deploy script
-            ssh ubuntu@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
+            ssh -i key.pem ubuntu@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
             
 workflows:
   deploy:
