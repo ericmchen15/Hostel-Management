@@ -10,7 +10,6 @@ workflows:
       - aws-ecr/build-and-push-image:
           dockerfile: Dockerfile
           path: .
-          profile-name: ${PROFLE_NAME}
           repo: ${MY_APP_PREFIX}
           tag: '${CIRCLE_SHA1}'
       - aws-ecs/deploy-service-update:
