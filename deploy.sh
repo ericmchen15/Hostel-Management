@@ -38,6 +38,8 @@ cp ~/.env ~/app
 # Restart the Nginx service
 sudo systemctl start nginx
 
+npm i
+
 sudo npm install pm2 -g
 
 pm2 --name Hostel-Management start npm -- start
