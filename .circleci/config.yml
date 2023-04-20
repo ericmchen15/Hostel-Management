@@ -14,7 +14,7 @@ jobs:
             ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
             
             # SSH into the instance and run the deploy script
-            ssh ubuntu@${EC2_INSTANCE_IP} 'rm app && git clone https://github.com/bbhupen/Hostel-Management.git && cd ~/app && chmod +x deploy.sh && ./deploy.sh'
+            ssh ubuntu@${EC2_INSTANCE_IP} 'rm -r app && git clone https://github.com/bbhupen/Hostel-Management.git && cd ~/app && chmod +x deploy.sh && ./deploy.sh'
             
 workflows:
   deploy:
