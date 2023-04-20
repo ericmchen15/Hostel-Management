@@ -20,7 +20,7 @@ jobs:
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set region $AWS_REGION
             
-            ssh-keyscan -H EC2_INSTANCE_IP >> ~/.ssh/known_hosts
+            ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
 
             # Copy the files to the ${EC2 instance}
             scp -r ./dist ubuntu@${EC2_INSTANCE_IP}:~/app
