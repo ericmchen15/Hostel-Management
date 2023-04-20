@@ -38,13 +38,6 @@ sudo systemctl start nginx
 
 npm i 
 
-npm i -g pm2
-
 # Start your Node.js app using a process manager like pm2
-pm2 start index.js
+npm start 
 
-# Save the current process list to be able to start them on system reboot
-pm2 save
-
-# Ensure that pm2 starts automatically on system reboot
-sudo pm2 startup systemd
