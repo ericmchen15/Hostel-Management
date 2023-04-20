@@ -11,14 +11,10 @@ jobs:
           name: Deploy to EC2 instance
           command: |
 
-            ssh-keyscan -H EC2_INSTANCE_IP >> ~/.ssh/known_hosts
-            ls
-            pwd
-            # Copy the files to the EC2 instance
-            scp -r ./* ec2-user@${EC2_INSTANCE_IP}:~/app
-
+            ssh-keyscan -H ${EC2_INSTANCE_IP} >> ~/.ssh/known_hosts
+            
             # SSH into the instance and run the deploy script
-            ssh ec2-user@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
+            ssh ubuntu@${EC2_INSTANCE_IP} 'rm -r app && git clone https://github.com/bbhupen/Hostel-Management.git app && cd ~/app && chmod +x deploy.sh && ./deploy.sh'
             
 workflows:
   deploy:
