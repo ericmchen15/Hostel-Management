@@ -38,8 +38,8 @@ cp ~/.env ~/app
 # Restart the Nginx service
 sudo systemctl start nginx
 
-npm i 
+sudo npm install pm2 -g
 
-# Start your Node.js app using a process manager like pm2
-npm start 
+pm2 --name Hostel-Management start npm -- start
+
 
