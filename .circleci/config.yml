@@ -8,20 +8,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install AWS CLI
-          command: |
-            sudo apt-get update && \
-            sudo apt-get -y install awscli
-
-      - run:
           name: Deploy to EC2 instance
           command: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set region $AWS_REGION
 
+            ssh-keyscan -H EC2_INSTANCE_IP >> ~/.ssh/known_hosts
+            ls
+            pwd
             # Copy the files to the EC2 instance
-            scp -r ./dist ec2-user@${EC2_INSTANCE_IP}:~/app
+            scp -r ./* ec2-user@${EC2_INSTANCE_IP}:~/app
 
             # SSH into the instance and run the deploy script
             ssh ec2-user@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'

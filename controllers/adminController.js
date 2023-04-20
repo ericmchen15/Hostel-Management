@@ -61,15 +61,11 @@ const loadHome = async (req, res) => {
             allocatedStudents++;
         })
 
-        console.log("Total studs: ",allocatedStudents)
-
         let totalWardens = 0;
         const Wardens = await Warden.find({})
         Wardens.forEach(warden =>{
             totalWardens++;
         })
-
-        console.log("Total wardens: ", totalWardens)
 
         let totalHostels = 0;
         const Hostels = await Hostel.find({})
@@ -77,15 +73,13 @@ const loadHome = async (req, res) => {
             totalHostels++;
         })
 
-        console.log("Total hostels: ", totalHostels)
-
         let appliedStudents = 0
         const appliedUsers = await User.find({'hostel_allocated.status' : 'pending'})
 
         appliedUsers.forEach(user =>{
             appliedStudents++;
         })
-        console.log("Applied : ", appliedStudents)
+       
 
         const complaintData = await Complaint.find({})
         const leaveData = await Leave.find({})
