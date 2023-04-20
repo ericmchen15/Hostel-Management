@@ -38,6 +38,8 @@ sudo systemctl start nginx
 
 npm i 
 
+npm i -g pm2
+
 # Start your Node.js app using a process manager like pm2
 pm2 start index.js
 
