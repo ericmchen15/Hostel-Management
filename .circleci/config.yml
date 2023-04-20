@@ -15,10 +15,10 @@ jobs:
             ls
             pwd
             # Copy the files to the EC2 instance
-            scp -r ./* ec2-user@${EC2_INSTANCE_IP}:~/app
+            scp -r ./* ubuntu@${EC2_INSTANCE_IP}:~/app
 
             # SSH into the instance and run the deploy script
-            ssh ec2-user@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
+            ssh ubuntu@${EC2_INSTANCE_IP} 'cd ~/app && ./deploy.sh'
             
 workflows:
   deploy:
