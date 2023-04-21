@@ -42,6 +42,8 @@ npm i
 
 sudo npm install pm2 -g
 
+pm2 delete all
+
 pm2 --name Hostel-Management start npm -- start
 
 

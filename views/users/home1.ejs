@@ -1,0 +1,220 @@
+
+
+<body>
+
+    <%- include('navbar.ejs') %>
+    
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    <div class="col">
+                      <div class="card">
+                      
+                        <div class="card-body">
+                          <h5 class="card-title">Reg No</h5>
+                          <p class="card-text"><%= user.reg_no %></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        
+                        <div class="card-body">
+                          <h5 class="card-title">Allocated Hostel</h5>
+                          <p class="card-text"><%= user.hostel_allocated.hostel_name %></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        
+                        <div class="card-body">
+                          <h5 class="card-title">Room No</h5>
+                          <p class="card-text"><%= user.hostel_allocated.room_no %></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                    
+                        <div class="card-body">
+                          <h5 class="card-title">Warden</h5>
+                          <p class="card-text">
+                            <% if (warden === 'None') { %>
+                                Nothing to Display
+                            <% } else { %>
+                            N/A
+                            <%#= warden.name %>
+                            <% } %>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <div class="col-lg-12">
+                    <div class="row row-cols-auto d-flex align-items-center justify-content-between">
+
+                        <div class="col">
+                            <p class="statistics-title">Reg No</p>
+                            <h3 class="rate-percentage">
+                                <%= user.reg_no %>
+                            </h3>
+                            
+                        </div>
+
+                        <div class="col">
+                            <p class="statistics-title">Allocated Hostel</p>
+                            <h3 class="rate-percentage">
+                                <%= user.hostel_allocated.hostel_name %>
+                            </h3>
+
+                        </div>
+                        <div class="col">
+                            <p class="statistics-title">Room No</p>
+                            <h3 class="rate-percentage">
+                                <%= user.hostel_allocated.room_no %>
+                            </h3>
+                            
+                        </div>
+
+                        <div class="col">
+                            <p class="statistics-title">Warden</p>
+                            <h3 class="rate-percentage">
+                                <% if (warden === 'None') { %>
+                                    <h5>Nothing to Display</h5>
+                                <% } else { %>
+                                <h4>N/A</h4>
+                                <%#= warden.name %>
+                                <% } %>
+                            </h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <% if (mess === 'None') { %>
+                    <h2></h2>
+                <% } else { %>
+
+                <h2>Mess Details</h2>
+                <div class="row">
+                    <div class="col">
+                        <div class="col">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Mess Details</h5>
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Day</th>
+                                                <th>Breakfast</th>
+                                                <th>Lunch</th>
+                                                <th>Dinner</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            <% for (let [day, menu] of mess) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= day %>
+                                                    </td>
+                                                    <td>
+                                                        <%= menu.breakfast %><a>
+                                                    </td>
+                                                    <td>
+                                                        <%= menu.lunch %><a>
+                                                    </td>
+                                                    <td>
+                                                        <%= menu.dinner %><a>
+                                                    </td>
+                                                </tr>
+                                                <% }; %>
+                                        </tbody>
+                                    </table class="table table-hover table-bordered">
+                                    <a href="/mess-details" class="btn btn-primary">View More Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <h2>Recent Leaves</h2>
+                <div class="row">
+                    <div class="col">
+                        <div class="col">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">Recent Leaves</h5>
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Reg No</th>
+                                                <th>Reason</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>Status</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            <% leave.forEach(function(leave) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= leave.reg_no %>
+                                                    </td>
+                                                    <td>
+                                                        <%= leave.reason %>
+                                                    <td>
+                                                        <%= leave.from %>
+                                                    </td>
+                                                    <td>
+                                                        <%= leave.to %>
+                                                    </td>
+                                                    <td>
+                                                        <%= leave.status %>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table class="table table-hover table-bordered">
+                                    <a href="#" class="btn btn-primary">View All</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <% } %>
+
+                <div class="m-3">
+
+                <% if (warden === 'None') { %>
+                    <h5></h5>
+                <% } else { %>
+
+                    <h4 >View details of your Hostel Warden:</h4>
+                <button type="button" onclick="location.href='/warden-details/<%= warden.name %>'" class="btn btn-warning">Warden Details</button>
+
+                    <% } %>   
+
+                <h4  >View Hostels List</h4>
+                <button type="button" onclick="location.href='/hostels-list'" class="btn btn-warning">View Hostels</button>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+</body>
