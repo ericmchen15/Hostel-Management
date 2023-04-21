@@ -1,36 +1,154 @@
-<body>
-  <%- include('navbar.ejs')  %>
+<body class="">
+    <!-- Navbar -->
+  
+    <!-- End Navbar -->
+    <main class="main-content  mt-0">
+      <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
+        style="background-image: url('https://gumlet.assettype.com/pratidintime%2F2022-04%2F22a8fae6-c9d8-4e83-901c-d2a8b7cd6f3c%2F227926_gauhati_university_exam_1200x768.webp?format=auto'); background-position: top;">
+        <span class="mask bg-gradient-dark opacity-6"></span>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-5 text-center mx-auto">
+              <h1 class="text-white mb-2 mt-5">Welcome!</h1>
+              <p class="text-lead text-white">to Gauhati University Hostel Portal</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row mt-lg-n10 mt-md-n11 mt-n10 justify-content-center">
+          <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
+            <div class="card z-index-0">
+              <div class="card-header text-center pt-4">
+                <h5>Register to Hostel Portal</h5>
+              </div>
+              <img src="https://seeklogo.com/images/G/gauhati-university-logo-C031FC616D-seeklogo.com.png"
+                class="card-img-top" alt="..." style="padding: 0 5px 0 5px;
+              width: 30%;
+              height: 30%;
+              margin-left: auto;
+            margin-right: auto;">
+              <div class="card-body">
+                <form role="form" action="/register" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Name" name="name" aria-label="Name" required>
+                    </div>
+                  <div class="mb-3">
+                    <input type="email" class="form-control" placeholder="Email" name="email" aria-label="Email" required>
+                  </div>
 
-  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                  <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Mobile Number" name="mno" aria-label="mno" required>
+                  </div>
 
-<h1>User Registration</h1>
+                  <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Registration Number" name="regNo" aria-label="mno" required>
+                  </div>
 
-<form action="" method="post">
-    <input class="form-control" type="text" name="name" placeholder="Enter Name" required>
-    <br>
-
-    <input class="form-control" type="email" name="email" placeholder="Enter Email" required>
-    <br>
-
-    <input class="form-control" type="text" name="mno" id="mno-input" class="form-control" placeholder="Enter Phone No." required>
-    <br>
+                  <div class="mb-3">
+                    <select class="form-select" aria-label="Default select example" type="text" name="gender" required>
+                        <option selected disabled>Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select>
+                  </div>
 
 
-    <input class="form-control" type="password" name="password" placeholder="Enter Password" required>
-    <br>
-
-    <input class="form-control" type="text" name="regNo" placeholder="Enter Registration No." required>
-    <br>
-
-    <select type="text" name="gender" placeholder="Select your Gender" required>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-   </select> 
-
-    <input type="submit" class="btn btn btn-primary" value="register">
-
-</form>
-
-</main>
-
-</body>
+                  <div class="mb-3">
+                    <input type="password" class="form-control" placeholder="Password" name="password"
+                      aria-label="Password" required>
+                  </div>
+                  <% if(typeof message !=='undefined' ){ %>
+  
+                    <lable style="color: red; font-size: small;">
+                      <%= message %>
+                    </lable>
+  
+                    <% } %>
+  
+                      <div class="text-center">
+                        <input type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2" value="Register">
+                      </div>
+                      <p class="text-sm mt-3 mb-0">Already registered? <a href="/login"
+                          class="text-dark font-weight-bolder">Login Here</a></p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
+    <footer class="footer py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mb-4 mx-auto text-center">
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              Company
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              About Us
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              Team
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              Products
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              Blog
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              Pricing
+            </a>
+          </div>
+          <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+              <span class="text-lg fab fa-dribbble"></span>
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+              <span class="text-lg fab fa-twitter"></span>
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+              <span class="text-lg fab fa-instagram"></span>
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+              <span class="text-lg fab fa-pinterest"></span>
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-4 me-4">
+              <span class="text-lg fab fa-github"></span>
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8 mx-auto text-center mt-1">
+            <p class="mb-0 text-secondary">
+              Copyright ©
+              <script>
+                document.write(new Date().getFullYear())
+              </script> Soft by Creative Tim.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
+    <!--   Core JS Files   -->
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script>
+      var win = navigator.platform.indexOf('Win') > -1;
+      if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+          damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+      }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+  </body>
