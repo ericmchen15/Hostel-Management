@@ -75,7 +75,7 @@ const userSchema = mongoose.Schema({
     payment_status : {
         type: String,
         enum: ['approved', 'rejected', 'NA'],
-        default: ['NA']
+        default: 'NA'
     }
 
 })
