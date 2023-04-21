@@ -78,6 +78,19 @@
               <span class="nav-link-text ms-1">Make Payment</span>
             </a>
           </li>
+
+          <li class="nav-item mt-3">
+            <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="/logout">
+              <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+              </div>
+              <span class="nav-link-text ms-1">Logout</span>
+            </a>
+          </li>
         
         </ul>
       </div>
@@ -202,6 +215,7 @@
           </div>
         </div>
         <div class="row mt-4">
+            
 
             <div class="col-lg-7 mb-lg-0 mb-4">
                 <div class="card mb-4">
@@ -221,28 +235,33 @@
                         </thead>
                         <tbody>
 
-                            <% for (let [day, menu] of mess) { %>
-                                <tr>
-                                    <td>
-                                      <div class="d-flex px-2 py-1">
-                                        <img src="https://png.pngtree.com/png-vector/20190119/ourmid/pngtree-calendar-icon-graphic-design-template-vector-png-image_325812.jpg" class="avatar avatar-sm me-3" alt="user1">
-                                        <div class="d-flex flex-column justify-content-center">
-                                          <h6 class="mb-0 text-sm"><%= day %></h6>
-                                        </div>
-                                      </div>
-                                    </td>
+                            <% if (mess === 'None') { %>
+                            <% } else { %>
+                            
+                                <% for (let [day, menu] of mess) { %>
+                                    <tr>
+                                        <td>
+                                          <div class="d-flex px-2 py-1">
+                                            <img src="https://png.pngtree.com/png-vector/20190119/ourmid/pngtree-calendar-icon-graphic-design-template-vector-png-image_325812.jpg" class="avatar avatar-sm me-3" alt="user1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                              <h6 class="mb-0 text-sm"><%= day %></h6>
+                                            </div>
+                                          </div>
+                                        </td>
+    
+                                        <td class="text-xs font-weight-bold mb-0">
+                                            <span class="mb-0 text-sm"><%= menu.breakfast %></span>
+                                          </td>
+                                        <td class="text-xs font-weight-bold mb-0">
+                                            <span class="mb-0 text-sm"><%= menu.lunch %></span>
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0">
+                                          <span class="mb-0 text-sm"><%= menu.dinner %></span>
+                                        </td>
+                                      </tr>
+                                    <% }; %>
+                            <% } %>
 
-                                    <td class="text-xs font-weight-bold mb-0">
-                                        <span class="mb-0 text-sm"><%= menu.breakfast %></span>
-                                      </td>
-                                    <td class="text-xs font-weight-bold mb-0">
-                                        <span class="mb-0 text-sm"><%= menu.lunch %></span>
-                                    </td>
-                                    <td class="text-xs font-weight-bold mb-0">
-                                      <span class="mb-0 text-sm"><%= menu.dinner %></span>
-                                    </td>
-                                  </tr>
-                                <% }; %>
 
 
                         </tbody>
