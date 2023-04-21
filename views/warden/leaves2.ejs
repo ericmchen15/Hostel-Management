@@ -1,0 +1,82 @@
+
+
+<body>
+
+  <%- include('navbar.ejs')  %>
+
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+  <h1>Leaves:</h1> 
+  <ol class="list-group list-group-numbered">
+    <% if (leavesList.length ) {
+      leavesList.forEach(function(leave) { %>
+      <li>
+        <h5>Student : <%= leave.reg_no %></h5>
+        <p>Reason: <%= leave.reason %></p>
+        <p>From: <%= leave.from %></p>
+        <p>To: <%= leave.to %></p>
+        <% if (leave.status === "pending") { %>
+          <p>Status: <%= leave.status %> </p>
+          <button onclick="approveLeave('<%= leave.leave_id %>')">Approve</button>
+          <button onclick="rejectLeave('<%= leave.leave_id%>')">Reject</button>
+        <% } else if (leave.status === "approved") { %>
+          <p>Status: <%= leave.status %> </p>
+          <button disabled>Approved</button>
+        <% } else { %>
+          <p>Status: <%= leave.status %> </p>
+          <button disabled>Rejected</button>
+        <% } %>
+      </li>
+    <% });
+      } else { %>
+        <p>No leaves to show!!!</p>
+    <% } %>
+  </ol>
+  
+    
+  <script>
+   
+   // function to handle approve button click
+function approveLeave(leave_id) {
+  fetch('/warden/leaves/approve', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ leave_id })
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Leave approved successfully');
+      // reload the page to see the updated status
+      location.reload();
+    } else {
+      console.log('Failed to approve leave');
+    }
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+function rejectLeave(leave_id) {
+  fetch('/warden/leaves/reject', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ leave_id })
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Leave rejected successfully');
+      // reload the page to see the updated status
+      location.reload();
+    } else {
+      console.log('Failed to reject leave');
+    }
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+</script>
+</main>
+</body>
