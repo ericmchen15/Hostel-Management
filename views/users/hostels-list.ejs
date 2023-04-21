@@ -9,17 +9,17 @@
       <div class="row">
         <% hostels.forEach(function(hostel) { %>
           <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
+
+            <div class="card" style="width: 18rem;">
               <img src="/hostelImages/gu-img.jpg" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title"><%= hostel.name %></h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-              <div class="card-footer">
-                <a href="/hostels/<%= hostel._id %>" class="card-link">View details</a>
-                
+                <a href="/hostels/<%= hostel._id %>" class="btn btn-primary">View details</a>
               </div>
             </div>
+
+            
           </div>
         <% }); %>
       </div>
