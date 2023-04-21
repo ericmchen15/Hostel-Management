@@ -42,16 +42,16 @@
               <table class="table table-hover table-bordered">
                 <thead>
                   <tr>
-                    <th>Room No</th>
-                    <th>Student Name</th>
                     <th>Reg No</th>
+                    <th>Description</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                     <% complaints.forEach(function(complaint) { %>
                           <tr>
-                            <td><%= complaint.title %></td>
-                            <td ><a href=""><%= complaint.description %><a></td>
+                            <td><%= complaint.regNo %></td>
+                            <td><%= complaint.title %></td>                         
                             <td><%= complaint.status %></td>
                           </tr>
                         <% }); %>
@@ -70,9 +70,9 @@
                   <table class="table table-hover table-bordered">
                     <thead>
                       <tr>
-                    <th>Room No</th>
-                    <th>Student Name</th>
                     <th>Reg No</th>
+                    <th>Reason</th>
+                    <th>Status</th>
                   </tr>
                       
                     </thead>
