@@ -19,7 +19,7 @@ const loadDashboard = async (req, res) => {
         const leaveData = await Leave.find({hostel_name: wardenHostel})
 
         res.render('dashboard', { wardenName: wardenName, hostel: hostelData, complaints: complaintData, leaves: leaveData, hostelName: hostelData.name })
-
+        console.log(complaintData)
 
     } catch (error) {
         console.log(error.message)
