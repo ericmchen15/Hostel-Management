@@ -15,7 +15,6 @@ const bodyParser = require('body-parser')
 warden_route.use(bodyParser.json())
 warden_route.use(bodyParser.urlencoded({extended:true}))
 
-warden_route.use(express.static(path.join(__dirname, "src")))
 
 warden_route.set('view engine', 'ejs')
 warden_route.set('views', './views/warden')
