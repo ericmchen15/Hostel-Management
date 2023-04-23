@@ -22,7 +22,7 @@ const isLogout = async(req, res, next) =>{
     try {
 
         if(req.session.user_id && (req.session.role === 2 || req.session.role === 1)){
-            return res.redirect('/login')
+            return res.redirect('/warden/dashboard')
         }
         next()
     } catch (error) {

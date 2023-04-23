@@ -146,12 +146,9 @@ const loadApplyHostel = async (req, res) => {
     try {
         const departmentsData = await Department.find({})
         const userRegNo = (await User.findById({ _id: req.session.user_id })).reg_no
-        console.log(userRegNo)
 
         const userHostel = (await User.findOne({ reg_no: userRegNo })).hostel_allocated.hostel_name
         const userHostelStatus = (await User.findOne({ reg_no: userRegNo })).hostel_allocated.status
-
-        console.log("userHostel: ", userHostel, "\nuserHostelStatus: ", userHostelStatus)
 
         if (userHostel !== 'NA' || (userHostelStatus === 'pending' || userHostelStatus === 'approved')) {
             res.send('You have already applied for Hostel.')
@@ -558,7 +555,7 @@ const calculateOrderAmount = (items) => {
 const loadPayment = async (req, res) => {
     try {
 
-        res.render('payment2')
+        res.render('payment')
         // console.log(stripe.create)
 
     } catch (error) {
@@ -716,7 +713,7 @@ const loadLeave = async (req, res) => {
                 console.log(err);
                 res.send('An error occurred while retrieving leaves.');
             } else {
-                console.log(leavesList)
+                leavesList.reverse()
                 res.render('leaves', { leavesList: leavesList });
             }
         });
@@ -782,14 +779,11 @@ const loadMessDetails = async (req, res) => {
 
 const loadComplaints = async (req, res) => {
     try {
-        const reg_no = ((await User.findOne({ _id: req.session.user_id })).reg_no)
-        console.log(reg_no)
         Complaint.find({ userId: req.session.user_id }, (err, complaintList) => {
             if (err) {
                 console.log(err);
                 res.send('An error occurred while retrieving complints.');
             } else {
-                console.log(complaintList)
                 res.render('my-complaints', { complaintList: complaintList });
             }
         });
