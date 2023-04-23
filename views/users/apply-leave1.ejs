@@ -1,0 +1,52 @@
+<body>
+
+    <%- include('navbar.ejs')  %>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    <h1>
+        Apply for leave
+    </h1>
+
+    
+    <form onsubmit="return checkDate()" action="" method="post">
+        <label for="reason">Reason</label>
+        <textarea class="form-control" type="text" name="reason" required placeholder="Reason"></textarea>
+        <br>
+        
+            <div class="row">
+              <div class="col">
+                <label for="from">Leave Date</label>
+                <input type="date" class="form-control" name="from" placeholder="Leaving Date" required>
+              </div>
+              <div class="col">
+                <label for="to">Return Date</label>
+                <input type="date" class="form-control" name="to" placeholder="Returning Date" required>
+              </div>
+            </div>
+        <br>
+        <input type="submit" class="btn btn btn-primary" value="submit">
+        <br>
+    
+    </form>
+
+    <script>
+        function checkDate() {
+            var currentDate = new Date();
+            console.log(currentDate)
+            var fromDate = new Date(document.getElementsByName("from")[0].value);
+            var toDate = new Date(document.getElementsByName("to")[0].value);
+            if (toDate <= fromDate) {
+                alert("Return date must be greater than leave date");
+                return false;
+            } else if (toDate < currentDate) {
+                lert("From date must be greater than today's date");
+                return false;
+            }
+            return true;
+        }
+        </script>
+
+        </main>
+    
+    </body>
