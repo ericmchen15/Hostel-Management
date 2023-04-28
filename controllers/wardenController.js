@@ -277,6 +277,25 @@ const loadMessDetails = async(req, res) => {
     }
 }
 
+const resolveComplaint = async (req, res) => {
+    try {
+        const complaint = await Complaint.findOneAndUpdate(
+            { complaint_id: req.body.complaint_id, status: 'Pending' },
+            { $set: { status: 'Resolved' } },
+            { new: true }
+        );
+        if (complaint) {
+            res.status(200).json({ message: 'Resolved successfully' });
+        } else {
+            res.status(404).json({ message: 'Complaint not found' });
+        }
+
+    } catch (error) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to resolve Complaint' });
+    }
+}
+
 
 
 module.exports = {
@@ -294,7 +313,8 @@ module.exports = {
     removeBoarder,
     loadPayments,
     viewPaymentFile,
-    loadMessDetails
+    loadMessDetails,
+    resolveComplaint
 }
 
 

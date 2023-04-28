@@ -38,6 +38,7 @@
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Registration No</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                      
                     </tr>
                   </thead>
                  
@@ -61,12 +62,19 @@
                       <td class="align-middle text-center text-sm">
                         <span class="badge badge-sm bg-gradient-success"><%= complaint.regNo %> </span>
                       </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold"><%= complaint.description  %></span>
+                      <td class="align-middle text-center" >
+                        
+                        
+                        <span class="text-secondary text-xs font-weight-bold" ><%= complaint.description  %></span>
                       </td>
 
                       <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">Pending</span>
+                        <h5 class="text-xs font-weight-bold mb-0"><h6><%= complaint.status %></h6> </h5>
+                       
+                        <% if (complaint.status === 'Pending') { %>
+                         <button class="btn btn-sm bg-gradient-success" href="javascript:;" onclick="resolveComplaint('<%= complaint.complaint_id %>')"> Mark as Resolved </button> 
+                        <% } %>                        
+                        
                       </td>
 
                     </tr>
@@ -193,6 +201,32 @@
     </div>
   </div>
   <!--   Core JS Files   -->
+  <script>
+
+
+// function to handle Resolve button click
+function resolveComplaint(complaint_id) {
+  fetch('/warden/view-complaints/resolve', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ complaint_id })
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Resolved successfully');
+      // reload the page to see the updated status
+      location.reload();
+    } else {
+      console.log('Failed to resolve');
+    }
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
+
+  </script>
+
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
