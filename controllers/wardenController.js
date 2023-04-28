@@ -257,6 +257,26 @@ const viewPaymentFile = async(req, res) => {
     }
 }
 
+const loadMessDetails = async(req, res) => {
+    try {
+        const warden = await Warden.findOne({ _id: req.session.user_id });
+        const hostelName = warden.hostel_name;
+
+        const hostel = await Hostel.findOne({ name: hostelName })
+        const mess = hostel.mess;
+
+        console.log(hostelName);
+        console.log(mess);
+
+        const messDetails = [...hostel.mess.entries()];
+
+        res.render('mess-details', { hostelName: hostelName, messDetails: messDetails })
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 
 
 module.exports = {
@@ -273,7 +293,8 @@ module.exports = {
     loadComplaints,
     removeBoarder,
     loadPayments,
-    viewPaymentFile
+    viewPaymentFile,
+    loadMessDetails
 }
 
 

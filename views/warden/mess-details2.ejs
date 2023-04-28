@@ -1,0 +1,33 @@
+
+<%- include('navbar.ejs')  %>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  
+<br>
+
+<h2>Hostel name: <%= hostelName %></h2>
+
+<table class= "table table-hover table-bordered"  >
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Breakfast</th>
+        <th>Lunch</th>
+        <th>Dinner</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let [day, meals] of messDetails) { %>
+        <tr>
+          <td><%= day %></td>
+          <td><%= meals.breakfast %></td>
+          <td><%= meals.lunch %></td>
+          <td><%= meals.dinner %></td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  </main>
+  
+  

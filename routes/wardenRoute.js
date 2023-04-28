@@ -50,5 +50,7 @@ warden_route.get('/view-payments', auth.isLogin, wardenController.loadPayments)
 
 warden_route.get('/view-payment-file', auth.isLogin, wardenController.viewPaymentFile)
 
+warden_route.get('/mess-details', auth.isLogin, wardenController.loadMessDetails)
+
 
 module.exports =  warden_route
