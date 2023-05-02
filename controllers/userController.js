@@ -376,8 +376,6 @@ const updateProfile = async (req, res) => {
             const userData = await User.findByIdAndUpdate({ _id: req.body.user_id }, { $set: { name: req.body.name, email: req.body.email, phone: req.body.mno } })
         }
 
-
-
         res.redirect('/home')
 
     } catch (error) {

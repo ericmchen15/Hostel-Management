@@ -153,7 +153,14 @@ const loadAddMessDetails = async (req, res) => {
         const wardenId = req.session.user_id
 
         const hostelData = await Warden.findOne({ _id: wardenId })
-        res.render("add-mess-details", { hostelName: hostelData.hostel_name })
+        const hostel = await Hostel.findOne({ name: hostelData.hostel_name })
+        const mess = hostel.mess;
+
+        res.render("add-mess-details", { hostelName: hostelData.hostel_name, hostelMess : mess  })
+        
+
+        // console.log(hostelName);
+        //console.log(mess);
     } catch (error) {
         console.log(error.message)
     }
