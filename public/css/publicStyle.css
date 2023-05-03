@@ -92,3 +92,27 @@ body {
     }
   }
   
+  
+  .carousel-item {
+    height: 500px;
+    overflow: hidden;
+  }
+
+  /* Adjust the height of the carousel items based on screen size */
+  @media (max-width: 576px) {
+    .carousel-item {
+      height: 200px;
+    }
+  }
+
+  @media (min-width: 577px) and (max-width: 768px) {
+    .carousel-item {
+      height: 350px;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 992px) {
+    .carousel-item {
+      height: 700px;
+    }
+  }

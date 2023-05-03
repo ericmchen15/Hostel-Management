@@ -16,9 +16,11 @@ const loadDashboard = async (req, res) => {
         const wardenHostel = (await Warden.findOne({ _id: wardenId })).hostel_name
         const hostelData = await Hostel.findOne({ name: wardenHostel})
         const complaintData = await Complaint.find({hostelName: hostelData.name})
+        complaintData.reverse();
         const leaveData = await Leave.find({hostel_name: wardenHostel})
+        leaveData.reverse()
 
-        res.render('dashboard', { wardenName: wardenName, hostel: hostelData, complaints: complaintData, leaves: leaveData, hostelName: hostelData.name })
+        res.render('dashboard', { wardenName: wardenName, hostel: hostelData, complaints: complaintData, leavesList: leaveData, hostelName: hostelData.name })
         console.log(complaintData)
 
     } catch (error) {
@@ -156,6 +158,24 @@ const loadAddMessDetails = async (req, res) => {
         const hostel = await Hostel.findOne({ name: hostelData.hostel_name })
         const mess = hostel.mess;
 
+        res.render("add-mess-details3", { hostelName: hostelData.hostel_name, hostelMess : mess  })
+        
+
+        // console.log(hostelName);
+        //console.log(mess);
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const loadEditMessDetails = async (req, res) => {
+    try {
+        const wardenId = req.session.user_id
+
+        const hostelData = await Warden.findOne({ _id: wardenId })
+        const hostel = await Hostel.findOne({ name: hostelData.hostel_name })
+        const mess = hostel.mess;
+
         res.render("add-mess-details", { hostelName: hostelData.hostel_name, hostelMess : mess  })
         
 
@@ -163,6 +183,21 @@ const loadAddMessDetails = async (req, res) => {
         //console.log(mess);
     } catch (error) {
         console.log(error.message)
+    }
+}
+
+const editMessDetails = async (req, res) => {
+    try {
+        await Hostel.updateOne(
+            { name: (await Warden.findOne({ _id: req.session.user_id })).hostel_name },
+            { $set: { mess: req.body } },
+            { new: true }
+        )
+
+        res.send("Success")
+
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -314,7 +349,9 @@ module.exports = {
     loadLeaves,
     approveLeave,
     rejectLeave,
+    loadEditMessDetails,
     loadAddMessDetails,
+    editMessDetails,
     addMessDetails,
     loadComplaints,
     removeBoarder,

@@ -42,6 +42,10 @@ warden_route.get('/add-mess-details', auth.isLogin, wardenController.loadAddMess
 
 warden_route.post('/add-mess-details', auth.isLogin, wardenController.addMessDetails)
 
+warden_route.get('/edit-mess-details', auth.isLogin, wardenController.loadEditMessDetails)
+
+warden_route.post('/edit-mess-details', auth.isLogin, wardenController.editMessDetails)
+
 warden_route.get("/view-complaints", auth.isLogin, wardenController.loadComplaints)
 
 warden_route.get("/remove-boarder", auth.isLogin, wardenController.removeBoarder)
