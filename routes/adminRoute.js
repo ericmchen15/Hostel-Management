@@ -64,6 +64,8 @@ admin_route.get('/view-allocated', auth.isLogin, adminController.allocatedList)
 
 admin_route.get('/allocated-rooms', auth.isLogin, adminController.allocatedRooms)
 
+admin_route.get('/view-records', auth.isLogin, adminController.viewRecords)
+
 
 admin_route.get('*', function (req, res) {
     res.redirect('/admin')

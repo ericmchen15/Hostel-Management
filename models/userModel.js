@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const DateOnly = require('mongoose-dateonly')(mongoose);
 
 const userSchema = mongoose.Schema({
 
@@ -76,6 +76,16 @@ const userSchema = mongoose.Schema({
         type: String,
         enum: ['approved', 'rejected', 'NA'],
         default: 'NA'
+    },
+    user_created_timestamp: {
+        type: DateOnly
+    },
+    user_vacated_timestamp: {
+        type: DateOnly
+    },
+    user_allocation_batch: {
+        type: String,
+        enum: ['applied','present','past' ]
     }
 
 })
