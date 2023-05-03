@@ -566,13 +566,16 @@ const randomHostel = async (req, res) => {
 
         }
 
-        console.log("allocated", allocatedStudents)
-        console.log("non allocated", nonAllocatedStudents)
+        // console.log("allocated", allocatedStudents)
+        // console.log("non allocated", nonAllocatedStudents)
 
-        const allocatedStudentData = await User.find({ "hostel_allocated.status" : "approved" }) 
-        const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "pending" }) 
-        console.log(nonAllocatedStudentData)
-        res.render('displayAllocated', { studentData: allocatedStudentData, nonAllocatedStudentData: nonAllocatedStudentData})
+        // const allocatedStudentData = await User.find({ "hostel_allocated.status" : "approved" }) 
+        // const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "pending" }) 
+        //console.log(nonAllocatedStudentData)
+        const allocatedStudentData = await User.find({ "user_allocation_batch" : "present" }) 
+        const previouslyAllocatedData = await User.find({ "user_allocation_batch" : "past" }) 
+        const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "rejected" }) 
+        res.render('displayAllocated', { present: allocatedStudentData, past: previouslyAllocatedData, rejected: nonAllocatedStudentData, studentData: allocatedStudentData, nonAllocatedStudentData: nonAllocatedStudentData})
 
     } catch (error) {
         console.log(error.message);
