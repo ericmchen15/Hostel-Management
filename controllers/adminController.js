@@ -377,7 +377,9 @@ const returnSearch = async (req, res) => {
 
 const loadApplications = async(req, res) => {
     try {
-        var userData = await User.find({ "hostel_allocated.status": "pending" }).sort({ percentage: -1 });
+        var userData = await User.find({ "hostel_allocated.status": "pending",
+        user_allocation_batch: {$eq: "applied"}
+    }).sort({ percentage: -1 });
      
         res.render('applied-users', {userData: userData})
         
@@ -389,8 +391,16 @@ const loadApplications = async(req, res) => {
 
 const randomHostel = async (req, res) => {
     try {
+
         let allocatedStudents = []
         let nonAllocatedStudents = []
+
+        await User.updateMany(
+            { user_allocation_batch: 'present' },
+            { $set: { 
+                user_allocation_batch: 'past'
+            } }
+        );
 
         const userData = await User.find({ "hostel_allocated.status": "pending" }).sort({ percentage: -1 });
         const hostelsData = await Hostel.find({ vacancy: { $gt: 0 } });
@@ -461,10 +471,12 @@ const randomHostel = async (req, res) => {
                     }
                 );
 
+
                 await User.updateOne(
                     { _id: userData[i]._id },
                     { $set: { 
-                        hostel_allocated: allocatedData
+                        hostel_allocated: allocatedData,
+                        user_allocation_batch: 'present'
                     } }
                 );
 
@@ -538,7 +550,8 @@ const randomHostel = async (req, res) => {
                 await User.updateOne(
                     { _id: userData[i]._id },
                     { $set: { 
-                        hostel_allocated: allocatedData
+                        hostel_allocated: allocatedData,
+                        user_allocation_batch: 'present'
                     } }
                 );
 
@@ -626,12 +639,27 @@ const vacateAll = async (req, res) => {
 
 const allocatedList = async(req, res) => {
     try {
-        const allocatedStudentData = await User.find({ "hostel_allocated.status" : "approved" }) 
-        const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "pending" }) 
+        const allocatedStudentData = await User.find({ "user_allocation_batch" : "present" }) 
+        const previouslyAllocatedData = await User.find({ "user_allocation_batch" : "past" }) 
+        const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "rejected" }) 
        // console.log(nonAllocatedStudentData)
-        res.render('displayAllocated', { studentData: allocatedStudentData, nonAllocatedStudentData: nonAllocatedStudentData})
+        res.render('displayAllocated', { present: allocatedStudentData, past: previouslyAllocatedData, rejected: nonAllocatedStudentData })
     } catch (error) {
      console.log(error)   
+    }
+}
+
+const viewRecords = async(req,res) => {
+    try {
+        const records = await User.find({
+            user_created_timestamp: { $ne: null },
+            user_vacated_timestamp: { $ne: null }
+          });
+
+          res.render('student-records', { data: records });
+        
+    } catch(error){
+        console.log(error)
     }
 }
 
@@ -656,7 +684,8 @@ module.exports = {
     vacateAll,
     loadApplications,
     allocatedList,
-    allocatedRooms
+    allocatedRooms,
+    viewRecords
 }
 
 

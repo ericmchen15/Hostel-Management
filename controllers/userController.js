@@ -124,7 +124,8 @@ const insertUser = async (req, res) => {
             password: spassword,
             reg_no: req.body.regNo,
             gender: req.body.gender,
-            role: 0
+            role: 0,
+            user_created_timestamp: new Date(),
         })
 
         if (await User.findOne({ reg_no: req.body.reg_no }) || await User.findOne({ email: req.body.email })) {
@@ -133,8 +134,6 @@ const insertUser = async (req, res) => {
             await user.save()
             res.redirect('/')
         }
-
-
 
 
     } catch (error) {
@@ -181,7 +180,8 @@ const applyHostel = async (req, res) => {
                             hostel_name: "NA",
                             room_no: 0,
                             status: "pending"
-                        }
+                        },
+                        user_allocation_batch: 'applied'
 
                     }
                 }, function (err, result) {
@@ -189,7 +189,7 @@ const applyHostel = async (req, res) => {
                         console.log(`error ${err}`);
                     } else {
                         console.log(result);
-                        res.send("SUcceess")
+                        res.send("Succeess")
                         // res.send(`You have been allocated at ${randHostel.hostel_name} room no ${randHostel.room_no}`)
                     }
                 });
@@ -205,51 +205,6 @@ const applyHostel = async (req, res) => {
 
 }
 
-// const applyHostel = async (req, res) => {
-//     try {
-
-//         const randHostel = await randomHostel(req.body.reg_no, req.body.gender, req.body.name, req.session.user_id)
-
-//         if(await User.findOne({reg_no : req.body.reg_no})){
-//             console.log(User.reg_no)
-//             if (!randHostel){
-//                 res.send("You have already been allocated") 
-//             } else {
-//                 User.updateOne({ _id: req.session.user_id },
-//                     {
-//                         $set: {
-//                             dept: req.body.dept,
-//                             semester: req.body.semester,
-//                             address: req.body.address,
-//                             guardian_name: req.body.guardian_name,
-//                             guardian_phone: req.body.guardian_phone,
-//                             percentage: req.body.percentage,
-//                             hostel_allocated: randHostel
-
-
-//                         }
-//                     }, function (err, result) {
-//                         if (err) {
-//                             console.log(`error ${err}`);
-//                         } else {
-//                             console.log(result);
-//                             res.send(`You have been allocated at ${randHostel.hostel_name} room no ${randHostel.room_no}`)
-//                         }
-//                     });
-//             }
-//         }else{
-//             res.send("Invalid Reg no.")
-//         }
-
-
-//     } catch (error) {
-//         console.log(`errrrro ${error.message}`)
-//     }
-
-// }
-
-
-//login user method started
 
 const loginLoad = async (req, res) => {
 
@@ -310,20 +265,14 @@ const loadHome = async (req, res) => {
         const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
         // const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
 
-        let messData = null;
-        let warden = null;
-        let leaveData = null;
+        let messData = "None";
+        let warden = "None";
+        let leaveData = "None";
         if (hostelData) {
-            messData = hostelData.mess;
-            warden = await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name })
-            leaveData = await Leave.find({ reg_no: userData.reg_no })
-        } else {
-            messData = 'None',
-                warden = 'None',
-                leaveData = 'None'
-        }
-
-
+            messData = hostelData.mess ? hostelData.mess : "None";
+            warden = (await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name })) ? (await Warden.findOne({ hostel_name: userData.hostel_allocated.hostel_name })) : "None";
+            leaveData = (await Leave.find({ reg_no: userData.reg_no })) ? leaveData = await Leave.find({ reg_no: userData.reg_no }) : "None";
+        } 
 
         res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData })
     } catch (error) {
@@ -336,10 +285,6 @@ const userLogout = async (req, res) => {
     try {
 
         req.session.destroy()
-        // res.setHeader('Cache-Control', 'no-cache, no-store')
-        // res.setHeader('Pragma', 'no-cache')
-        // res.setHeader('Expires', '0')
-        // res.redirect('/login?cache=false&' + new Date().getTime())
         res.redirect('/login')
 
 
@@ -433,64 +378,6 @@ const loadVacate = async (req, res) => {
 }
 
 
-// const vacateUser = async (req, res) => {
-//     try {
-
-//       // Find the user and update in the database
-//       await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "None", "hostel_allocated.room_no": 0, "hostel_allocated.status": "pending" } });
-
-//       //const user = await User.findOne({ reg_no: req.body.regNo });
-
-//       // Find the hostel documents
-//      // const hostels = await Hostel.find({});
-
-//       console.log(req.body.regNo)
-//       const userHostel = (await User.findById({ _id: req.session.user_id})).hostel_allocated.hostel_name
-//       const userRoom = (await User.findById({ _id: req.session.user_id})).hostel_allocated.room_no
-//       const userDept = (await User.findById({_id: req.session.user_id})).dept
-
-//       const vacancy = userHostel.vacancy;
-//       var deptPath = `dept.${userDept}.vacancy`;
-//       dept_vacancy = userHostel.dept.get(userDept).vacancy
-
-//       await Hostel.updateOne(
-//         { name: userHostel, "rooms.room_no": userRoom },
-//         {
-//             $set: {
-//                 "vacancy": +1,
-//                 "rooms.$.vacant": true,
-//                 "rooms.$.student_reg_no": 'N/A',
-//                 "rooms.$.student_allocated": 'N/A',
-//                 [deptPath]: dept_vacancy + 1
-//             }
-//         }
-//     );
-
-//      // Loop through each hostel document
-//     //   for (let i = 0; i < hostels.length; i++) {
-//     //     const hostel = hostels[i];
-
-//     //     // Loop through the rooms array and update the vacant and student_allocated fields
-//     //     for (let j = 0; j < hostel.rooms.length; j++) {
-//     //       const room = hostel.rooms[j];
-//     //       if (room.student_reg_no === req.body.regNo) {
-//     //         hostel.vacancy++;
-
-//     //         room.vacant = true;
-//     //         room.student_allocated = "";
-//     //         room.student_reg_no = "";
-//     //       }
-//     //     }
-
-//         //Save the updated hostel document back to the database
-//         // await userHostel.save();
-
-//       res.send("User vacated successfully");
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
-
 const vacate = async (req, res) => {
     try {
 
@@ -533,22 +420,11 @@ const vacate = async (req, res) => {
 
 
 const calculateOrderAmount = (items) => {
-    // Replace this constant with a calculation of the order's amount
-    // Calculate the order total on the server to prevent
-    // people from directly manipulating the amount on the client
+
     return 1400;
 };
 
-// const loadPayment = async (req, res) => {
-//     try {
 
-//         res.render('payment', {key: PUBLISHABLE_KEY})
-//         // console.log(stripe.create)
-
-//     } catch (error) {
-//         console.log(error.message)
-//     }
-// }
 
 const loadPayment = async (req, res) => {
     try {
@@ -626,44 +502,6 @@ const createPaymentIntent = async (req, res) => {
         res.send("error")
     }
 }
-
-// const makePayment = async (req, res) => {
-//     try {
-
-//         stripe.customers.create({
-//             email: req.body.stripeEmail,
-//             source: req.body.stripeToken,
-//             name: "XYZ",
-//             address: {
-//                 line1 : 'Lyon Estates, Hill Valley',
-//                 postal_code: '110092',
-//                 city: 'Guwahati',
-//                 state: 'Assam',
-//                 country: 'India'
-//             }
-//         }).then((customer)=>{
-//                 return stripe.paymentIntents.create({
-//                 amount: 5000,
-//                 description: 'Applying Hostel Room',
-//                 currency: 'USD',
-//                 customer: customer.id,
-//                 payment_method: 'pm_card_visa',
-//                 confirm: true
-//             })
-//         }).then((charge)=>{
-//             console.log(charge)
-//             res.send("Success")
-//         })
-//         .catch((error)=>{
-//             res.send(error.message)
-//             console.log(error.message)
-//         })
-
-
-//     } catch (error) {
-//         console.log(error.message)
-//     }
-// }
 
 const loadApplyLeave = async (req, res) => {
     try {
