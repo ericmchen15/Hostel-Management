@@ -222,7 +222,7 @@ const loadComplaints = async (req, res) => {
 
         const hostelData = await Warden.findOne({ _id: wardenId })
         const complaintData = await Complaint.find({ hostelName: hostelData.hostel_name })
-
+        console.log(complaintData)
 
         res.render('view-complaints', { complaints: complaintData, hostelName: hostelData.hostel_name })
     } catch (error) {

@@ -12,7 +12,7 @@
     <%- include('navbar.ejs')  %>
     
   </aside>
-  <main class="main-content position-relative border-radius-lg ">
+ 
     <!-- Navbar -->
   
     <!-- End Navbar -->
@@ -43,6 +43,7 @@
                   </thead>
                  
                   <tbody>
+                    
                     <% complaints.forEach(complaint=> { %>
                     <tr>
                       <td>
@@ -79,7 +80,6 @@
                     
                       <% }) %>
                       
-                  
                     
                   </tbody>
                 </table>
@@ -125,7 +125,7 @@
         </div>
       </footer>
     </div>
-  </main>
+
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
       <i class="fa fa-cog py-2"> </i>
