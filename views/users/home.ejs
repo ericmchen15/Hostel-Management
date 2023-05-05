@@ -1,14 +1,5 @@
 <body class="g-sidenav-show   bg-gray-100">
-    <div class="min-height-300 bg-primary position-absolute w-100"></div>
-    <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
-      <div class="sidenav-header">
-        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html " target="_blank">
-          <img src="/assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
-          <span class="ms-1 font-weight-bold">Student Dashboard</span>
-        </a>
-      </div>
-      <hr class="horizontal dark mt-0">
+    
       <%- include('navbar.ejs')  %>
       <!-- End Navbar -->
       <div class="container-fluid py-4">
@@ -166,30 +157,30 @@
                   <div class="carousel-item h-100 active" style="background-image: url('/assets/img/carousel-1.jpg');
         background-size: cover;">
                     <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
-                      <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
+                      <div class="icon icon-shape icon-sm bg-dark text-center border-radius-md mb-3">
                         <i class="ni ni-camera-compact text-dark opacity-10"></i>
                       </div>
-                      <h5 class="text-white mb-1">Get started with Argon</h5>
+                      <h5 class="text-dark mb-1">Get started with Argon</h5>
                       <p>There’s nothing I really wanted to do in life that I wasn’t able to get good at.</p>
                     </div>
                   </div>
                   <div class="carousel-item h-100" style="background-image: url('/assets/img/carousel-2.jpg');
         background-size: cover;">
                     <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
-                      <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
+                      <div class="icon icon-shape icon-sm bg-dark text-center border-radius-md mb-3">
                         <i class="ni ni-bulb-61 text-dark opacity-10"></i>
                       </div>
-                      <h5 class="text-white mb-1">Faster way to create web pages</h5>
+                      <h5 class="text-dark mb-1">Faster way to create web pages</h5>
                       <p>That’s my skill. I’m not really specifically talented at anything except for the ability to learn.</p>
                     </div>
                   </div>
                   <div class="carousel-item h-100" style="background-image: url('/assets/img/carousel-3.jpg');
         background-size: cover;">
                     <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
-                      <div class="icon icon-shape icon-sm bg-white text-center border-radius-md mb-3">
+                      <div class="icon icon-shape icon-sm bg-dark text-center border-radius-md mb-3">
                         <i class="ni ni-trophy text-dark opacity-10"></i>
                       </div>
-                      <h5 class="text-white mb-1">Share with us your design tips!</h5>
+                      <h5 class="text-dark mb-1">Share with us your design tips!</h5>
                       <p>Don’t be afraid to be wrong because you can’t learn anything from a compliment.</p>
                     </div>
                   </div>
@@ -356,7 +347,7 @@
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-mobile-button text-white opacity-10"></i>
+                        <i class="ni ni-mobile-button text-dark opacity-10"></i>
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Devices</h6>
@@ -370,7 +361,7 @@
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-tag text-white opacity-10"></i>
+                        <i class="ni ni-tag text-dark opacity-10"></i>
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Tickets</h6>
@@ -384,7 +375,7 @@
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-box-2 text-white opacity-10"></i>
+                        <i class="ni ni-box-2 text-dark opacity-10"></i>
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Error logs</h6>
@@ -398,7 +389,7 @@
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="ni ni-satisfied text-white opacity-10"></i>
+                        <i class="ni ni-satisfied text-dark opacity-10"></i>
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">Happy users</h6>
@@ -487,7 +478,7 @@
             <p class="text-sm">Choose between 2 different sidenav types.</p>
           </div>
           <div class="d-flex">
-            <button class="btn bg-gradient-primary w-100 px-3 mb-2 active me-2" data-class="bg-white" onclick="sidebarType(this)">White</button>
+            <button class="btn bg-gradient-primary w-100 px-3 mb-2 active me-2" data-class="bg-dark" onclick="sidebarType(this)">dark</button>
             <button class="btn bg-gradient-primary w-100 px-3 mb-2" data-class="bg-default" onclick="sidebarType(this)">Dark</button>
           </div>
           <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
