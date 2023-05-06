@@ -672,7 +672,6 @@ const viewRecords = async(req,res) => {
 const loadCreateHostelProduct = async(req, res) => {
     try {
         const hostelData = await Hostel.find({"single_seater_id": {$exists:false}})
-        console.log(hostelData)
         res.render('create-hostel-product', {hostels: hostelData})
     } catch (error) {   
         throw new Error(error)

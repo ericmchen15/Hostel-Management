@@ -64,9 +64,11 @@ const validateSession = async (session_id) => {
         const session = await stripe.checkout.sessions.retrieve(
             session_id
           );
-        return (session);
+
+          console.log(session)
+        return(session.payment_status);
     } catch (error) {
-        
+        throw new Error(error)
     }
 }
 

@@ -6,26 +6,13 @@
   <div class="row">
       <div class="card">
           <div class="card-header pb-0 px-3">
-              Apply for Leave
+              Make Payment
           </div>
           <div class="card-body">
 
-          <form action="" method="post" role="form" enctype="multipart/form-data">
-              <div class="mb-3">
-                  <input class="form-control" type="text" name="name" placeholder="Enter Name" required>
-              </div>
+            <h6>You have been allocated at <%= user.hostel_allocated.hostel_name %> Room No <%= user.hostel_allocated.room_no %> </h3>
 
-              <div class="mb-3">
-                <input class="form-control" type="text" name="reg_no" placeholder="Enter Registration Number" required>
-            </div>
-
-            <div class="mb-3">
-              <input type="file" name="image" required>
-          </div>
-
-              <button type="submit" value="submit" class="btn btn-primary">Upload Payment File</button>
-              
-          </form>
+              <a href="/start-payment" class="btn btn-primary">Make Payment</a>
           </div>
 
       </div>
@@ -33,6 +20,12 @@
   </div>
 
 </div>
+
+
+
+
+
+
   </main>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">

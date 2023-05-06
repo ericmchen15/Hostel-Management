@@ -77,6 +77,9 @@ const userSchema = mongoose.Schema({
         enum: ['approved', 'rejected', 'NA'],
         default: 'NA'
     },
+    payment_status_id: {
+        type: String
+    },
     user_created_timestamp: {
         type: DateOnly
     },
@@ -89,7 +92,7 @@ const userSchema = mongoose.Schema({
     },
     user_customer_id: {
         type: String
-    }
+    },
 
 })
 
