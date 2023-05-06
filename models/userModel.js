@@ -86,6 +86,9 @@ const userSchema = mongoose.Schema({
     user_allocation_batch: {
         type: String,
         enum: ['applied','present','past' ]
+    },
+    user_customer_id: {
+        type: String
     }
 
 })
