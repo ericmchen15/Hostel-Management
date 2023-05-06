@@ -38,7 +38,7 @@ admin_route.get('/addHostel', auth.isLogin, adminController.loadAddHostel)
 
 admin_route.post('/addHostel', auth.isLogin, adminController.insertHostel)
 
-admin_route.get('/hostel-details', auth.isLogin, adminController.loadHostelDetails)
+admin_route.get('/hostel-details', auth.isLogin, adminController.allocatedRooms)
 
 admin_route.get('/user-details', auth.isLogin, adminController.loadUserDetails)
 
