@@ -1,0 +1,29 @@
+<!-- EJS template code -->
+<body>
+  <%- include('navbar.ejs')  %>
+
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <br>
+  <h2>Hostels:</h2> <br>
+    <ul>
+      <div class="row">
+        <% hostels.forEach(function(hostel) { %>
+          <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card" style="width: 18rem;">
+              <img src="/hostelImages/gu-img.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title"><%= hostel.name %></h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="/hostels/<%= hostel._id %>" class="btn btn-light">View details</a>
+              </div>
+            </div>
+
+            
+          </div>
+        <% }); %>
+      </div>
+      
+    </main>  
+    
+</body>

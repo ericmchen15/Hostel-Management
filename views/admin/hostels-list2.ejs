@@ -1,0 +1,37 @@
+<%- include('navbar.ejs')  %>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+<div class="container">
+  
+<body>
+   
+  <h3>Hostels data:</h3>
+  
+  
+  <table class="table table-hover table-bordered" width="70%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Contact</th>
+        <th>Capacity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% hostels.forEach(function(hostel) { %>
+        <tr>
+          <td><a href="/admin/hostel-details?id=<%= hostel.name%>&page=1"><%= hostel.name %></a></td>
+          <td><%= hostel.address %></td>
+          <td><%= hostel.contact %></td>
+          <td><%= hostel.rooms.length %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table class="table table-hover table-bordered">
+  
+  </body>
+   
+</div>
+
+</main>

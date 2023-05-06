@@ -82,9 +82,11 @@ const loadHome = async (req, res) => {
        
 
         const complaintData = await Complaint.find({})
+        complaintData.reverse()
         const leaveData = await Leave.find({})
+        leaveData.reverse()
         const userData = await User.findById({ _id: req.session.user_id })
-        res.render('home', { user: userData, leave: leaveData, complaint: complaintData, allocated: allocatedStudents, totalWardens: totalWardens, totalHostels: totalHostels, appliedStudents: appliedStudents })
+        res.render('home', { user: userData, leave: leaveData, complaints: complaintData, allocated: allocatedStudents, totalWardens: totalWardens, totalHostels: totalHostels, appliedStudents: appliedStudents })
     } catch (error) {
         console.log(error.message)
     }
