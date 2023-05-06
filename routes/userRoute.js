@@ -82,6 +82,4 @@ user_route.get('/warden-details/:name', auth.isLogin, userController.wardenDetai
 
 user_route.get('/start-payment', auth.isLogin, userController.startPayment)
 
-user_route.post('/payment', auth.isLogin, uploadImage.single("image") , userController.makePayment)
-
 module.exports = user_route

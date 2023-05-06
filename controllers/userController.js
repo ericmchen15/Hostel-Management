@@ -652,11 +652,10 @@ const wardenDetails = async (req, res) => {
 const startPayment = async (req, res) => {
     try {
 
-        const userData = await User.find({ _id: req.session.user_id})
-        const price_id = await Hostel.find({ name: userData.hostel_allocated.hostel_name })
-
-        const checkoutSession = await createSession(userData.customer_id, price_id)
-
+        const userData = await User.findOne({ _id: req.session.user_id})
+        const price_id = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).single_seater_id
+        const checkoutSession = await createSession(userData.user_customer_id, price_id)
+        
         res.redirect(checkoutSession.url)
 
     } catch (error) {

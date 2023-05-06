@@ -5,6 +5,7 @@ const Warden = require('../models/wardenModel')
 const Department = require('../models/departmentModel')
 const bcrypt = require('bcrypt')
 const Leave = require('../models/leaveModel')
+const { createPriceForProduct } = require('../helpers/payment')
 
 
 const loadLogin = async (req, res) => {
@@ -668,6 +669,32 @@ const viewRecords = async(req,res) => {
     }
 }
 
+const loadCreateHostelProduct = async(req, res) => {
+    try {
+        const hostelData = await Hostel.find({"single_seater_id": {$exists:false}})
+        console.log(hostelData)
+        res.render('create-hostel-product', {hostels: hostelData})
+    } catch (error) {   
+        throw new Error(error)
+    }
+}
+
+const createHostelProduct = async(req,res) => {
+    try {
+        const product_id = await createPriceForProduct(req.body.name, req.body.description, req.body.amount)
+        await Hostel.findOneAndUpdate({ name: req.body.hostel_name },
+            {
+                $set: {
+                    single_seater_id: product_id.id
+                }
+            })
+
+        res.redirect('/admin/add-hostel-product')
+    } catch (error){
+        throw new Error(error)
+    }
+}
+
 
 module.exports = {
     loadLogin,
@@ -690,7 +717,9 @@ module.exports = {
     loadApplications,
     allocatedList,
     allocatedRooms,
-    viewRecords
+    viewRecords,
+    loadCreateHostelProduct,
+    createHostelProduct
 }
 
 

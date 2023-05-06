@@ -66,6 +66,10 @@ admin_route.get('/allocated-rooms', auth.isLogin, adminController.allocatedRooms
 
 admin_route.get('/view-records', auth.isLogin, adminController.viewRecords)
 
+admin_route.get('/add-hostel-product', auth.isLogin, adminController.loadCreateHostelProduct);
+
+admin_route.post("/add-hostel-product", auth.isLogin, adminController.createHostelProduct);
+
 
 admin_route.get('*', function (req, res) {
     res.redirect('/admin')
