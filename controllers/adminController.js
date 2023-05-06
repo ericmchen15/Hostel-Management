@@ -187,7 +187,7 @@ const allocatedRooms = async (req, res) => {
   
       // Filter the rooms array to get all the rooms that have vacant=false
       const rooms = hostel.rooms.filter((room) => !room.vacant);
-  
+      console.log(rooms)
       // Send the list of rooms to the client
       res.render('allocated-rooms', { rooms });
     } catch (error) {
