@@ -80,6 +80,6 @@ user_route.get('/my-complaints', auth.isLogin, userController.loadComplaints)
 
 user_route.get('/warden-details/:name', auth.isLogin, userController.wardenDetails)
 
-user_route.post('/payment', auth.isLogin, uploadImage.single("image") , userController.makePayment)
+user_route.get('/start-payment', auth.isLogin, userController.startPayment)
 
 module.exports = user_route

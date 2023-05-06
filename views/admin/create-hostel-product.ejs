@@ -1,0 +1,28 @@
+
+
+<div class="container">
+    <form action="" method="post">
+
+        <select type="text" name="hostel_name" placeholder="Select the name of hostel" class="form-select" aria-label="Disabled select example" required>
+            <% hostels.forEach(hostel => { %>
+                <option value="<%= hostel.name %>"><%= hostel.name %></option>
+            <% }) %>
+            
+        </select>  
+    
+        <input class="form-control" type="text" name="name" placeholder="Enter Product Name " required>
+        <br>
+    
+        <input class="form-control" type="text" name="description" placeholder="Enter Description" required>
+        <br>
+    
+        <input class="form-control" type="number" name="amount" placeholder="Enter Price" required>
+        <br>
+             
+         
+            <br>
+    
+            <input type="submit" class="btn btn btn-warning" value="Make Payment">
+    
+    </form>
+</div>

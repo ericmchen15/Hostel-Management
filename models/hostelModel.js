@@ -76,6 +76,9 @@ const hostelSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    single_seater_id: {
+        type: String
+    },
     dept: {
         type: Map,
         of: departmentSchema,

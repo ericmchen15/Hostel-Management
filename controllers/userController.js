@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt')
 const moment = require('moment')
 
 const { ObjectId } = require('mongodb');
+const { createNewCustomer, createSession } = require('../helpers/payment');
 const PUBLISHABLE_KEY = process.env.PUBLISHABLE_KEY
 const SECRET_KEY = process.env.SECRET_KEY
 
@@ -124,6 +125,7 @@ const insertUser = async (req, res) => {
             gender: req.body.gender,
             role: 0,
             user_created_timestamp: new Date(),
+            user_customer_id: await createNewCustomer(req.body.name, req.body.email)
         })
 
         if (await User.findOne({ reg_no: req.body.reg_no }) || await User.findOne({ email: req.body.email })) {
@@ -647,6 +649,20 @@ const wardenDetails = async (req, res) => {
 
 }
 
+const startPayment = async (req, res) => {
+    try {
+
+        const userData = await User.findOne({ _id: req.session.user_id})
+        const price_id = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).single_seater_id
+        const checkoutSession = await createSession(userData.user_customer_id, price_id)
+        
+        res.redirect(checkoutSession.url)
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 
 
 module.exports = {
@@ -675,5 +691,6 @@ module.exports = {
     createPaymentIntent,
     loadPaymentSuccess,
     wardenDetails,
-    makePayment
+    makePayment,
+    startPayment
 }
