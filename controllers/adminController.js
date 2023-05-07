@@ -569,12 +569,6 @@ const randomHostel = async (req, res) => {
 
         }
 
-        // console.log("allocated", allocatedStudents)
-        // console.log("non allocated", nonAllocatedStudents)
-
-        // const allocatedStudentData = await User.find({ "hostel_allocated.status" : "approved" }) 
-        // const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "pending" }) 
-        //console.log(nonAllocatedStudentData)
         const allocatedStudentData = await User.find({ "user_allocation_batch" : "present" }) 
         const previouslyAllocatedData = await User.find({ "user_allocation_batch" : "past" }) 
         const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "rejected" }) 
@@ -649,7 +643,7 @@ const allocatedList = async(req, res) => {
         const previouslyAllocatedData = await User.find({ "user_allocation_batch" : "past" }) 
         const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "rejected" }) 
        // console.log(nonAllocatedStudentData)
-        res.render('displayAllocated', { present: allocatedStudentData, past: previouslyAllocatedData, rejected: nonAllocatedStudentData })
+        res.render('allocated', { present: allocatedStudentData, past: previouslyAllocatedData, rejected: nonAllocatedStudentData })
     } catch (error) {
      console.log(error)   
     }

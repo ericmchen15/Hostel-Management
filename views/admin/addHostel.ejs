@@ -11,49 +11,79 @@
       <hr class="horizontal dark mt-0">
       <%- include('navbar.ejs')  %>
       
-   
-    
-      <!-- Navbar -->
-      
-      <!-- End Navbar -->
+  
       <div class="container-fluid py-4">
-        <div class="card p-4">
-            <div class="card-header"> <h2>Add Hostel data</h2></div>
-
-            <form action="" method="post" class="custom-form">
-                <input class="form-control" type="text" name="name" placeholder="Enter Name" required>
-                <br>
-        
+        <div class="row">
+          <div class="card">
+            <div class="card-header pb-0 px-3">
+             Add Hostel
+          </div>
+          <div class="card-body">
+            <form action="" method="post" role="form">
+              <div class="mb-3">
+                <input class="form-control" type="text" name="name" placeholder="Enter Hostel Name" required>
+              </div>
+              
+              <div class="mb-3">
                 <input class="form-control" type="text" name="address" placeholder="Enter address" required>
-                <br>
-        
+              </div>
+      
+
+              <div class="mb-3">
                 <input class="form-control" type="text" name="contact" placeholder="Enter Phone No." required>
-                <br>
-        
+              </div>
+              
+
+              <div class="mb-3">
                 <input class="form-control" type="number" name="capacity" placeholder="Enter capacity" required>
-                <br>
-        
-                <select type="text" name="type" placeholder="Select the type of hostel" required>
+              </div>
+              
+              <div class="mb-3">
+                <select class="form-select" aria-label="Default select example" type="text" name="gender" required>
+                    <option selected disabled>Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
-                </select>  
-                    <br>
-                  
-        
-                    <% departmentsData.forEach(function(dept) { %>
+                  </select>
+              </div>
+
+
+                  <div class="row">
+
+                  <% departmentsData.forEach(function(dept) { %>
+
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Department Name</label>
                         <input type="text" class="form-control" placeholder="<%= dept.name %>" aria-label="Department name" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Department Quota</label>
                         <input type="number" class="form-control" placeholder="Quota" name="dept[<%= dept.name %>][quota]" aria-label="Department quota">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Vacancy</label>
                         <input type="number" class="form-control" placeholder="Vacancy" name="dept[<%= dept.name %>][vacancy]" aria-label="Department quota">
-                        <br>
-                    <% }); %>
-          
-        
-                    <input type="submit" class="btn btn btn-warning" value="Create">
-        
-            </form>
+                      </div>
+                    </div>
+                 
+
+                  <% }); %>
+                </div>
+      
+                  <input type="submit" class="btn btn btn-warning" value="Create">
+      
+          </form>
+          </div>
+            
         </div>
        
   
+        </div>
+
      </div>
   
   
