@@ -178,13 +178,13 @@ function sidebarType(a) {
   if (color == 'bg-white') {
     var textWhites = document.querySelectorAll('.sidenav .text-white');
     for (let i = 0; i < textWhites.length; i++) {
-      textWhites[i].classList.remove('text-white');
+      textWhites[i].classList.remove('text-dark');
       textWhites[i].classList.add('text-dark');
     }
   } else {
     var textDarks = document.querySelectorAll('.sidenav .text-dark');
     for (let i = 0; i < textDarks.length; i++) {
-      textDarks[i].classList.add('text-white');
+      textDarks[i].classList.add('text-dark');
       textDarks[i].classList.remove('text-dark');
     }
   }
@@ -192,7 +192,7 @@ function sidebarType(a) {
   if (color == 'bg-default' && bodyDark) {
     var textDarks = document.querySelectorAll('.navbar-brand .text-dark');
     for (let i = 0; i < textDarks.length; i++) {
-      textDarks[i].classList.add('text-white');
+      textDarks[i].classList.add('text-dark');
       textDarks[i].classList.remove('text-dark');
     }
   }
@@ -277,7 +277,7 @@ function toggleNavLinksColor(type) {
     });
   } else if (type === "transparent") {
     navLinks.forEach(element => {
-      element.classList.add('text-white')
+      element.classList.add('text-dark')
     });
 
     navLinksToggler.forEach(element => {
