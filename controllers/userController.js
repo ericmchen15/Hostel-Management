@@ -330,6 +330,11 @@ const updateProfile = async (req, res) => {
 
 const submitComplaint = async (req, res) => {
     try {
+        const user = await User.findByIdAndUpdate({ _id: req.session.user_id })
+        if (user.hostel_allocated.hostel_name === 'NA') {
+            res.send('<h1>Sorry!</h1> You have not been allocated any room!')
+            return;
+        }
         res.render('complaints')
     } catch (error) {
         console.log(error.message)

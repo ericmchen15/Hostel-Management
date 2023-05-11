@@ -70,6 +70,7 @@ admin_route.get('/add-hostel-product', auth.isLogin, adminController.loadCreateH
 
 admin_route.post("/add-hostel-product", auth.isLogin, adminController.createHostelProduct);
 
+admin_route.get("/viewLeaves", auth.isLogin, adminController.loadLeaves)
 
 admin_route.get('*', function (req, res) {
     res.redirect('/admin')

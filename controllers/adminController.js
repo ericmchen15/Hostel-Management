@@ -572,7 +572,7 @@ const randomHostel = async (req, res) => {
         const allocatedStudentData = await User.find({ "user_allocation_batch" : "present" }) 
         const previouslyAllocatedData = await User.find({ "user_allocation_batch" : "past" }) 
         const nonAllocatedStudentData = await User.find({ "hostel_allocated.status" : "rejected" }) 
-        res.render('displayAllocated', { present: allocatedStudentData, past: previouslyAllocatedData, rejected: nonAllocatedStudentData, studentData: allocatedStudentData, nonAllocatedStudentData: nonAllocatedStudentData})
+        res.render('allocated', { present: allocatedStudentData, past: previouslyAllocatedData, rejected: nonAllocatedStudentData, studentData: allocatedStudentData, nonAllocatedStudentData: nonAllocatedStudentData})
 
     } catch (error) {
         console.log(error.message);
@@ -688,6 +688,24 @@ const createHostelProduct = async(req,res) => {
     }
 }
 
+const loadLeaves = async(req, res) => {
+    try {
+
+        Leave.find({ }, (err, leavesList) => {
+            if (err) {
+                console.log(err);
+                res.send('An error occurred while retrieving leaves.');
+            } else {
+                leavesList.reverse();
+                res.render('leaves', { leavesList: leavesList });
+            }
+        })
+        
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 
 
 module.exports = {
@@ -713,7 +731,8 @@ module.exports = {
     allocatedRooms,
     viewRecords,
     loadCreateHostelProduct,
-    createHostelProduct
+    createHostelProduct,
+    loadLeaves
 }
 
 
