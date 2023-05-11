@@ -119,7 +119,7 @@ const loadUsersList = async (req, res) => {
 
     try {
         const page = req.query.page
-        const limit = 20
+        const limit = 10
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
         var results = {}
@@ -188,7 +188,7 @@ const allocatedRooms = async (req, res) => {
   
       // Filter the rooms array to get all the rooms that have vacant=false
       const rooms = hostel.rooms.filter((room) => !room.vacant);
-      console.log(rooms)
+
       // Send the list of rooms to the client
       res.render('allocated-rooms', { rooms });
     } catch (error) {

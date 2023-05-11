@@ -84,9 +84,16 @@ const logout = async (req, res) => {
 const loadHostelDetails = async (req, res) => {
 
     try {
-
+        const page = req.query.page
+        const limit = 10
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        var results = {}
         const hostelData = await Hostel.findOne({ name: req.query.n })
-        res.render('hostel-details', { hostel: hostelData, hostelName: hostelData.name })
+        const rooms = hostelData.rooms.filter((room) => !room.vacant);
+        results.results = (rooms).slice(startIndex, endIndex);
+        results.currentPage = page        
+        res.render('hostel-details', { room: results, hostelName: hostelData.name })
 
     } catch (error) {
         console.log(error.message)
@@ -96,21 +103,40 @@ const loadHostelDetails = async (req, res) => {
 const loadLeaves = async (req, res) => {
     try {
         const wardenHostel = (await Warden.findOne({ _id: req.session.user_id })).hostel_name
-
-
-        Leave.find({ hostel_name: wardenHostel }, (err, leavesList) => {
-            if (err) {
-                console.log(err);
-                res.send('An error occurred while retrieving leaves.');
-            } else {
-                leavesList.reverse();
-                res.render('leaves', { leavesList: leavesList, hostelName: wardenHostel });
-            }
-        });
+        const leaveData = await Leave.find({ hostel_name: wardenHostel })
+        leaveData.reverse()
+        const page = req.query.page
+        const limit = 5
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        var results = {}
+        results.results = (leaveData).slice(startIndex, endIndex);
+        results.currentPage = page       
+        res.render('leaves', { leavesList: results, hostelName: wardenHostel });
     } catch (error) {
         console.log(error.message);
     }
 };
+
+
+const loadComplaints = async (req, res) => {
+    try {
+        const hostelData = await Warden.findOne({ _id: req.session.user_id })
+        const complaintData = await Complaint.find({ hostelName: hostelData.hostel_name })
+        complaintData.reverse()
+        const page = req.query.page
+        const limit = 5
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        var results = {}
+        results.results = (complaintData).slice(startIndex, endIndex);
+        results.currentPage = page       
+        console.log(results)
+        res.render('view-complaints', { complaints: results, hostelName: hostelData.hostel_name })
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 const approveLeave = async (req, res) => {
     try {
@@ -216,19 +242,7 @@ const addMessDetails = async (req, res) => {
     }
 }
 
-const loadComplaints = async (req, res) => {
-    try {
-        const wardenId = req.session.user_id
 
-        const hostelData = await Warden.findOne({ _id: wardenId })
-        const complaintData = await Complaint.find({ hostelName: hostelData.hostel_name })
-        console.log(complaintData)
-
-        res.render('view-complaints', { complaints: complaintData, hostelName: hostelData.hostel_name })
-    } catch (error) {
-        console.log(error.message)
-    }
-}
 
 const removeBoarder = async (req, res) => {
     try {
