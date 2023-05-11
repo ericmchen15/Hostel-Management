@@ -30,7 +30,7 @@ warden_route.get('/logout' , auth.isLogin , wardenController.logout)
 
 warden_route.get('/dashboard', auth.isLogin, wardenController.loadDashboard)
 
-warden_route.get('/hostel-details', auth.isLogin, wardenController.loadHostelDetails)
+warden_route.get('/boarder-list', auth.isLogin, wardenController.loadHostelDetails)
 
 warden_route.get('/leaves', auth.isLogin, wardenController.loadLeaves)
 

@@ -428,12 +428,15 @@ const calculateOrderAmount = (items) => {
 
 const loadPayment = async (req, res) => {
     try {
-
+        var isPaymentSuccess
         const userData = await User.findOne({ _id: req.session.user_id})
-        const isPaymentSuccess = await validateSession(userData.payment_status_id)
 
-        console.log(isPaymentSuccess)
 
+        if (userData.payment_status_id){
+            isPaymentSuccess = await validateSession(userData.payment_status_id)
+        }
+
+        
 
         if (userData.hostel_allocated.hostel_name == "NA") {
             res.send("Sorry You haven't been alocated to any hostel")
