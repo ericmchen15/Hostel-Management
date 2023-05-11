@@ -689,6 +689,7 @@ const createHostelProduct = async(req,res) => {
 }
 
 
+
 module.exports = {
     loadLogin,
     verifyLogin,
