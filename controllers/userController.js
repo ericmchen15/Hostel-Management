@@ -264,6 +264,7 @@ const loadHome = async (req, res) => {
         // const leaveData = await Leave.find({ reg_no: userData.reg_no})
         const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
         // const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
+        const hostels = await Hostel.find({})
 
         let messData = "None";
         let warden = "None";
@@ -274,7 +275,7 @@ const loadHome = async (req, res) => {
             leaveData = (await Leave.find({ reg_no: userData.reg_no })) ? leaveData = await Leave.find({ reg_no: userData.reg_no }) : "None";
         } 
 
-        res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData })
+        res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData, hostels : hostels, hostel: hostelData })
     } catch (error) {
         console.log(error.message)
     }
