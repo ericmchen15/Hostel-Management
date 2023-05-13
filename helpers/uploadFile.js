@@ -23,7 +23,7 @@ const s3Storage = multerS3({
     },
     key: (req, file, cb) => {
         const ext = path.extname(file.originalname);
-        const fileName = moment(new Date()).format('YYYY-MM-DD') + "_" + req.body.reg_no + "_payment" + ext ;
+        const fileName = req.body.reg_no + ext ;
         cb(null, fileName);
     }
 });

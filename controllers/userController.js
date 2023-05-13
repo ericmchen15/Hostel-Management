@@ -7,6 +7,8 @@ const Department = require('../models/departmentModel')
 const Payment = require('../models/paymentModel')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
+const getImage = require('../helpers/getFile')
+const encode = require('../helpers/encode')
 
 const { ObjectId } = require('mongodb');
 const { createNewCustomer, createSession, validateSession } = require('../helpers/payment');
@@ -641,6 +643,7 @@ const loadComplaints = async (req, res) => {
                 console.log(err);
                 res.send('An error occurred while retrieving complints.');
             } else {
+                complaintList.reverse()
                 res.render('my-complaints', { complaintList: complaintList });
             }
         });
@@ -691,6 +694,29 @@ const startPayment = async (req, res) => {
     }
 }
 
+const loadProfile = async(req, res) => {
+
+    try {
+        const user_data = await User.findOne({_id: req.session.user_id})
+        console.log(user_data)
+
+        const key = user_data.user_profile_image
+
+        console.log(user_data.user_profile_image)
+        console.log(user_data.user_customer_id)
+        const img = await getImage(key);
+
+        const data = await encode(img.Body);
+        const file = `data:image/jpg;base64,${data}`;
+
+        res.render('profile', { file: file, userData : user_data});
+    } 
+    catch (error) {
+        console.log(error)
+    }
+
+}
+
 
 
 module.exports = {
@@ -720,5 +746,6 @@ module.exports = {
     loadPaymentSuccess,
     wardenDetails,
     makePayment,
-    startPayment
+    startPayment,
+    loadProfile
 }
