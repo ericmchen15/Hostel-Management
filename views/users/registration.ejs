@@ -29,7 +29,7 @@
               margin-left: auto;
             margin-right: auto;">
               <div class="card-body">
-                <form role="form" action="/register" method="post">
+                <form role="form" action="/register" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <input type="text" class="form-control" placeholder="Name" name="name" aria-label="Name" required>
                     </div>
@@ -53,7 +53,12 @@
                       </select>
                   </div>
 
-
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Upload Your Photo</label>
+                    <input class="form-control" id="formFile" type="file" name="image" required >
+                    
+                  </div>
+      
                   <div class="mb-3">
                     <input type="password" class="form-control" placeholder="Password" name="password"
                       aria-label="Password" required>

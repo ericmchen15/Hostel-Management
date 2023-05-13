@@ -10,7 +10,6 @@ AWS.config.update({
 let s3 = new AWS.S3();
 
 async function getImage(key) {
-    console.log(key)
     const data = s3
         .getObject({
             Bucket: process.env.BUCKET,

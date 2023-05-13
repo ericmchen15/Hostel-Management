@@ -45,7 +45,7 @@ const createSession = async (customer_id, price_id) => {
             payment_method_types: ['card'],
             mode: 'payment',
             customer: customer_id,
-            success_url: 'https://www.google.com',
+            success_url: 'http://127.0.0.1:3000/payment-success',
             cancel_url: 'https://www.yahoo.com',
             line_items: [
                 {price: price_id , quantity: 1},

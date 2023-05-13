@@ -115,7 +115,7 @@ const loadRegister = async (req, res) => {
 const insertUser = async (req, res) => {
 
     try {
-
+        
         const spassword = await securePassword(req.body.password)
 
         const user = new User({
@@ -126,8 +126,9 @@ const insertUser = async (req, res) => {
             reg_no: req.body.regNo,
             gender: req.body.gender,
             role: 0,
-            user_created_timestamp: new Date(),
-            user_customer_id: await createNewCustomer(req.body.name, req.body.email)
+            user_created_timestamp: getTimestamp(),
+            user_customer_id: await createNewCustomer(req.body.name, req.body.email),
+            user_profile_image: req.file.key
         })
 
         if (await User.findOne({ reg_no: req.body.reg_no }) || await User.findOne({ email: req.body.email })) {
@@ -448,10 +449,10 @@ const loadPayment = async (req, res) => {
 
         if (userData.hostel_allocated.hostel_name == "NA") {
             res.send("Sorry You haven't been alocated to any hostel")
-        } else if (isPaymentSuccess == "paid") {
+        } else if (userData.payment_status == "paid") {
             res.send("You have already made your payment")
         } else {
-            res.render('payment', { user: userData})
+            res.render('payment', { user: userData })
         }
         
 
@@ -496,7 +497,9 @@ const makePayment = async (req, res) => {
 const loadPaymentSuccess = async (req, res) => {
     try {
 
-        res.render('success')
+        updatePayment(req.session.user_id);
+        
+        res.redirect('/home')
         // console.log(stripe.create)
 
     } catch (error) {
@@ -685,14 +688,58 @@ const startPayment = async (req, res) => {
                 $set: {
                     payment_status_id: checkoutSession.id
                 }
-            })
+            });
+
+
+        const paymentData = new Payment({
+            payment_id: checkoutSession.id,
+            date: new Date(),
+            hostel_name: userData.hostel_allocated.hostel_name
+
+        });
+
+        await paymentData.save(); 
         
-        res.redirect(checkoutSession.url)
+        res.redirect(checkoutSession.url);
+
+        
 
     } catch (error) {
         console.log(error)
     }
 }
+
+
+const updatePayment = async (id) => {
+    try {
+        var isPaymentSuccess
+        const userData = await User.findOne({ _id: id})
+
+
+        if (userData.payment_status_id){
+            isPaymentSuccess = await validateSession(userData.payment_status_id)
+        }
+
+        if (isPaymentSuccess == 'paid'){
+            await User.findOneAndUpdate({ _id: id },
+                {
+                    $set: {
+                        payment_status: 'paid'
+                    }
+                })
+        } else {
+            await User.findOneAndUpdate({ _id: id },
+                {
+                    $set: {
+                        payment_status: 'due'
+                    }
+                })
+        }
+
+
+    } catch (error) {
+        throw new Error(error)
+    }
 
 const loadProfile = async(req, res) => {
 
@@ -714,6 +761,7 @@ const loadProfile = async(req, res) => {
     catch (error) {
         console.log(error)
     }
+
 
 }
 
