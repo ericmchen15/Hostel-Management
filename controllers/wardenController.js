@@ -273,7 +273,13 @@ const removeBoarder = async (req, res) => {
             }
         );
 
-        await User.findOneAndUpdate({ reg_no: req.query.q }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "NA" } });
+        await User.findOneAndUpdate({ reg_no: req.query.q }, { $set: 
+            { 
+                "hostel_allocated.hostel_name": "NA", 
+                "hostel_allocated.room_no": 0, 
+                "hostel_allocated.status": "NA",
+                "user_allocation_batch": "left"    
+            } });
 
         res.redirect('/warden/dashboard?message=Successfully removed boarder!');
 
@@ -286,9 +292,15 @@ const removeBoarder = async (req, res) => {
 const loadPayments = async(req, res) => {
     try {
         const wardenId = req.session.user_id
-
         const hostelName = (await Warden.findOne({ _id: wardenId })).hostel_name
         const paymentList = (await Payment.find({hostel_name: hostelName}))
+        var paymentIds = []
+        
+        paymentList.forEach(element => {
+            paymentIds.push(element.payment_id)
+        });
+        
+        
         res.render('view-payments', {paymentList: paymentList, hostelName: hostelName})
         
     } catch (error) {

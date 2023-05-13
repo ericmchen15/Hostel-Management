@@ -28,7 +28,7 @@ const uploadImage = require('../helpers/uploadFile')
 
 user_route.get('/register', auth.isLogout, userController.loadRegister)
 
-user_route.post('/register' , userController.insertUser)
+user_route.post('/register' , uploadImage.single("image"), userController.insertUser)
 
 user_route.get('/login',auth.isLogout , userController.loginLoad)
 

@@ -23,6 +23,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    user_profile_image: {
+        type: String
+    },
     dept: {
         type: String
     },
@@ -74,7 +77,7 @@ const userSchema = mongoose.Schema({
     },
     payment_status : {
         type: String,
-        enum: ['approved', 'rejected', 'NA'],
+        enum: ['paid', 'due', 'NA'],
         default: 'NA'
     },
     payment_status_id: {
@@ -88,7 +91,7 @@ const userSchema = mongoose.Schema({
     },
     user_allocation_batch: {
         type: String,
-        enum: ['applied','present','past' ]
+        enum: ['applied','present','past', 'left' ]
     },
     user_customer_id: {
         type: String
