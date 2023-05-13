@@ -82,4 +82,6 @@ user_route.get('/warden-details/:name', auth.isLogin, userController.wardenDetai
 
 user_route.get('/start-payment', auth.isLogin, userController.startPayment)
 
+user_route.get('/profile', auth.isLogin, userController.loadProfile)
+
 module.exports = user_route

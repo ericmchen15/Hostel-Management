@@ -95,63 +95,55 @@
         </div>
         <div class="row mt-4">
             
-
           <% if(user.hostel_allocated.hostel_name !== 'NA') { %>
             <div class="col-lg-7 mb-lg-0 mb-4">
                 <div class="card mb-4">
                   <div class="card-header pb-0">
-                    <h6>Mess Routine</h6>
+                    <h6>Hostel Details</h6>
                   </div>
                   <div class="card-body px-0 pt-0 pb-2">
-                    <div class="table-responsive p-0">
-                      <table class="table align-items-center mb-0">
-                        <thead>
-                          <tr>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Day</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Breakfast</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lunch</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Dinner</th>   
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                            <% if (mess === 'None') { %>
-                            <% } else { %>
-                            
-                                <% for (let [day, menu] of mess) { %>
-                                    <tr>
-                                        <td>
-                                          <div class="d-flex px-2 py-1">
-                                            <img src="https://png.pngtree.com/png-vector/20190119/ourmid/pngtree-calendar-icon-graphic-design-template-vector-png-image_325812.jpg" class="avatar avatar-sm me-3" alt="user1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                              <h6 class="mb-0 text-sm"><%= day %></h6>
-                                            </div>
-                                          </div>
-                                        </td>
-    
-                                        <td class="text-xs font-weight-bold mb-0">
-                                            <span class="mb-0 text-sm"><%= menu.breakfast %></span>
-                                          </td>
-                                        <td class="text-xs font-weight-bold mb-0">
-                                            <span class="mb-0 text-sm"><%= menu.lunch %></span>
-                                        </td>
-                                        <td class="text-xs font-weight-bold mb-0">
-                                          <span class="mb-0 text-sm"><%= menu.dinner %></span>
-                                        </td>
-                                      </tr>
-                                    <% }; %>
-                            <% } %>
-
-
-
+                    <div class="table-responsive p-2">
+                      <table class="table table-bordered" width="70%">
+                        <tbody class="text-center" style="color: black;">
+                          
+                                <tr>
+                                    <td><strong>Name</strong></td>
+                                    <td><%= hostel.name %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Address</strong></td>
+                                    <td><%= hostel.address %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Contact</strong></td>
+                                    <td><%= hostel.contact %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Type</strong></td>
+                                    <td><%= hostel.type %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Capacity</strong></td>
+                                    <td><%= hostel.capacity %></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Vacancy</strong></td>
+                                    <td><%= hostel.vacancy %></td>
+                                </tr>
+                                
+                                <tr>
+        
+                                </tr>
                         </tbody>
-                      </table>
+                    </table>
                     </div>
                   </div>
                 </div>
               </div>
           <% } %>
           
+      
+
           <div class="col-lg-5">
             <div class="card card-carousel overflow-hidden h-100 p-0">
               <div id="carouselExampleCaptions" class="carousel slide h-100" data-bs-ride="carousel">
@@ -199,6 +191,41 @@
             </div>
           </div>
         </div>
+
+        <div class="card mt-3">
+
+          <div class="card-header">
+           <h6> View Hostels </h6> 
+          </div>
+
+          <div class="container">
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+              <% for(let i=0; i<4; i++) {%>
+  
+                <div class="card mx-2 mb-3" style="width: 18rem;">
+                  <img src="/hostelImages/AT 8 BOYS HOSTEL.jpg" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h6 class="card-title"><%= hostels[i].name %></h6>
+                    <p class="card-text"></p>
+                    <a href="/hostels/<%= hostels[i]._id %>" class="btn btn-dark">View Details</a>
+                  </div>
+                </div>
+              
+              <% } %> 
+    
+              <a href="/hostels-list" class="btn btn-dark d-inline-flex justify-content-center align-items-center rounded-circle" style="width: 60px; height: 60px; margin: auto">
+                View All <i class="fas fa-arrow-right"></i>
+              </a>
+    
+            </div>
+
+            
+  
+          </div>
+        </div>
+       
+
         <div class="row mt-4">
           <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card ">
@@ -499,6 +526,7 @@
         },
       });
     </script>
+
     <script>
       var win = navigator.platform.indexOf('Win') > -1;
       if (win && document.querySelector('#sidenav-scrollbar')) {

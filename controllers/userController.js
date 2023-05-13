@@ -7,6 +7,8 @@ const Department = require('../models/departmentModel')
 const Payment = require('../models/paymentModel')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
+const getImage = require('../helpers/getFile')
+const encode = require('../helpers/encode')
 
 const { ObjectId } = require('mongodb');
 const { createNewCustomer, createSession, validateSession } = require('../helpers/payment');
@@ -265,6 +267,7 @@ const loadHome = async (req, res) => {
         // const leaveData = await Leave.find({ reg_no: userData.reg_no})
         const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
         // const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
+        const hostels = await Hostel.find({})
 
         let messData = "None";
         let warden = "None";
@@ -275,7 +278,7 @@ const loadHome = async (req, res) => {
             leaveData = (await Leave.find({ reg_no: userData.reg_no })) ? leaveData = await Leave.find({ reg_no: userData.reg_no }) : "None";
         } 
 
-        res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData })
+        res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData, hostels : hostels, hostel: hostelData })
     } catch (error) {
         console.log(error.message)
     }
@@ -643,6 +646,7 @@ const loadComplaints = async (req, res) => {
                 console.log(err);
                 res.send('An error occurred while retrieving complints.');
             } else {
+                complaintList.reverse()
                 res.render('my-complaints', { complaintList: complaintList });
             }
         });
@@ -705,6 +709,7 @@ const startPayment = async (req, res) => {
     }
 }
 
+
 const updatePayment = async (id) => {
     try {
         var isPaymentSuccess
@@ -735,6 +740,29 @@ const updatePayment = async (id) => {
     } catch (error) {
         throw new Error(error)
     }
+
+const loadProfile = async(req, res) => {
+
+    try {
+        const user_data = await User.findOne({_id: req.session.user_id})
+        console.log(user_data)
+
+        const key = user_data.user_profile_image
+
+        console.log(user_data.user_profile_image)
+        console.log(user_data.user_customer_id)
+        const img = await getImage(key);
+
+        const data = await encode(img.Body);
+        const file = `data:image/jpg;base64,${data}`;
+
+        res.render('profile', { file: file, userData : user_data});
+    } 
+    catch (error) {
+        console.log(error)
+    }
+
+
 }
 
 
@@ -766,5 +794,6 @@ module.exports = {
     loadPaymentSuccess,
     wardenDetails,
     makePayment,
-    startPayment
+    startPayment,
+    loadProfile
 }
