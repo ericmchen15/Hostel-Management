@@ -479,7 +479,8 @@ const randomHostel = async (req, res) => {
                     { _id: userData[i]._id },
                     { $set: { 
                         hostel_allocated: allocatedData,
-                        user_allocation_batch: 'present'
+                        user_allocation_batch: 'present',
+                        payment_status: 'NA'
                     } }
                 );
 
@@ -554,7 +555,8 @@ const randomHostel = async (req, res) => {
                     { _id: userData[i]._id },
                     { $set: { 
                         hostel_allocated: allocatedData,
-                        user_allocation_batch: 'present'
+                        user_allocation_batch: 'present',
+                        payment_status: 'NA'
                     } }
                 );
 

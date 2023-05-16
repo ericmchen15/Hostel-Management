@@ -65,7 +65,6 @@ const validateSession = async (session_id) => {
             session_id
           );
 
-          console.log(session)
         return(session.payment_status);
     } catch (error) {
         throw new Error(error)

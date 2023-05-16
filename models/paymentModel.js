@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({
-    name: {
+    payment_id :{
       type: String,
-      required: true,
+      required: true
     },
     date: {
       type: Date,
