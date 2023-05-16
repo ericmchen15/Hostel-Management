@@ -21,7 +21,6 @@ const loadDashboard = async (req, res) => {
         leaveData.reverse()
 
         res.render('dashboard', { wardenName: wardenName, hostel: hostelData, complaints: complaintData, leavesList: leaveData, hostelName: hostelData.name })
-        console.log(complaintData)
 
     } catch (error) {
         console.log(error.message)
@@ -131,7 +130,6 @@ const loadComplaints = async (req, res) => {
         var results = {}
         results.results = (complaintData).slice(startIndex, endIndex);
         results.currentPage = page       
-        console.log(results)
         res.render('view-complaints', { complaints: results, hostelName: hostelData.hostel_name })
     } catch (error) {
         console.log(error.message)
@@ -187,8 +185,6 @@ const loadAddMessDetails = async (req, res) => {
         res.render("add-mess-details3", { hostelName: hostelData.hostel_name, hostelMess : mess  })
         
 
-        // console.log(hostelName);
-        //console.log(mess);
     } catch (error) {
         console.log(error.message)
     }
@@ -293,7 +289,7 @@ const loadPayments = async(req, res) => {
     try {
         const wardenId = req.session.user_id
         const hostelName = (await Warden.findOne({ _id: wardenId })).hostel_name
-        const paymentList = (await Payment.find({hostel_name: hostelName}))
+        const paymentList = (await Payment.find({hostel_name: hostelName, $orderby: { date : -1 }}))
         var paymentIds = []
         
         paymentList.forEach(element => {
@@ -333,8 +329,6 @@ const loadMessDetails = async(req, res) => {
         const hostel = await Hostel.findOne({ name: hostelName })
         const mess = hostel.mess;
 
-        console.log(hostelName);
-        console.log(mess);
 
         const messDetails = [...hostel.mess.entries()];
 
