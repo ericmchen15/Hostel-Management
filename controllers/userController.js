@@ -168,7 +168,7 @@ const loadApplyHostel = async (req, res) => {
 const applyHostel = async (req, res) => {
     try {
         if (await User.findOne({ reg_no: req.body.reg_no })) {
-            console.log(User.reg_no)
+
 
             User.updateOne({ _id: req.session.user_id },
                 {
@@ -264,10 +264,9 @@ const loadHome = async (req, res) => {
     try {
 
         const userData = await User.findById({ _id: req.session.user_id })
-        // const leaveData = await Leave.find({ reg_no: userData.reg_no})
         const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
-        // const messData = (await Hostel.findOne({ name: userData.hostel_allocated.hostel_name })).mess
         const hostels = await Hostel.find({})
+        
 
         let messData = "None";
         let warden = "None";
@@ -302,7 +301,7 @@ const editLoad = async (req, res) => {
     try {
         const id = req.query.id
 
-        const userData = await User.findById({ _id: id })
+        const userData = await User.findById({ _id: req.session.user_id })
 
         if (userData) {
             res.render('edit', { user: userData })
@@ -336,7 +335,7 @@ const submitComplaint = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate({ _id: req.session.user_id })
         if (user.hostel_allocated.hostel_name === 'NA') {
-            res.send('<h1>Sorry!</h1> You have not been allocated any room!')
+            res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
             return;
         }
         res.render('complaints')
@@ -376,7 +375,7 @@ const loadVacate = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate({ _id: req.session.user_id })
         if (user.hostel_allocated.hostel_name === 'NA') {
-            res.send('Sorry! You have not been allocated any room!')
+            res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
             return;
         }
         res.render('vacate')
@@ -440,15 +439,15 @@ const loadPayment = async (req, res) => {
         var isPaymentSuccess
         const userData = await User.findOne({ _id: req.session.user_id})
 
-
         if (userData.payment_status_id){
             isPaymentSuccess = await validateSession(userData.payment_status_id)
         }
 
         
+        
 
         if (userData.hostel_allocated.hostel_name == "NA") {
-            res.send("Sorry You haven't been alocated to any hostel")
+            res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
         } else if (userData.payment_status == "paid") {
             res.send("You have already made your payment")
         } else {
@@ -534,7 +533,7 @@ const loadApplyLeave = async (req, res) => {
 
         const hostel_name = ((await User.findOne({ _id: req.session.user_id })).hostel_allocated).hostel_name
         if (hostel_name === 'NA') {
-            res.send("<h2>Sorry!!!</h2> \n You can't apply for leave since you've not been allocated a room in any Hostel yet.")
+            res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
         }
         else {
             res.render('apply-leave')
@@ -568,15 +567,15 @@ const applyLeave = async (req, res) => {
 
 const loadLeave = async (req, res) => {
     try {
-        const reg_no = ((await User.findOne({ _id: req.session.user_id })).reg_no)
-        console.log(reg_no)
-        Leave.find({ reg_no: reg_no }, (err, leavesList) => {
-            if (err) {
-                console.log(err);
-                res.send('An error occurred while retrieving leaves.');
+        const userData = await User.findOne({ _id: req.session.user_id})
+
+        
+        Leave.find({ reg_no: userData.reg_no }, (err, leavesList) => {
+            if (userData.hostel_allocated.hostel_name == "NA") {
+                res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
             } else {
-                leavesList.reverse()
                 res.render('leaves', { leavesList: leavesList });
+               
             }
         });
     } catch (error) {
@@ -618,17 +617,15 @@ const loadMessDetails = async (req, res) => {
         const user = await User.findOne({ _id: req.session.user_id });
         const hostelName = user.hostel_allocated.hostel_name;
 
-        const hostel = await Hostel.findOne({ name: hostelName })
-        const mess = hostel.mess;
-
-        console.log(hostelName);
-        console.log(mess);
 
 
-        if (hostelName === 'undefined') {
-            res.send("You haven't been allocated at any hostel.")
+        if (hostelName === 'NA') {
+            res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
             return;
         }
+
+        const hostel = await Hostel.findOne({ name: hostelName })
+        const mess = hostel.mess;
 
         const messDetails = [...hostel.mess.entries()];
 
@@ -641,14 +638,16 @@ const loadMessDetails = async (req, res) => {
 
 const loadComplaints = async (req, res) => {
     try {
+        const userData = await User.findOne({ _id: req.session.user_id})
+        
         Complaint.find({ userId: req.session.user_id }, (err, complaintList) => {
-            if (err) {
-                console.log(err);
-                res.send('An error occurred while retrieving complints.');
+            
+            if (userData.hostel_allocated.hostel_name == "NA") {
+                res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
             } else {
-                complaintList.reverse()
                 res.render('my-complaints', { complaintList: complaintList });
             }
+            
         });
     } catch (error) {
         console.log(error.message);
@@ -740,18 +739,13 @@ const updatePayment = async (id) => {
     } catch (error) {
         throw new Error(error)
     }
+}
 
 const loadProfile = async(req, res) => {
 
     try {
         const user_data = await User.findOne({_id: req.session.user_id})
-        console.log(user_data)
-
-        const key = user_data.user_profile_image
-
-        console.log(user_data.user_profile_image)
-        console.log(user_data.user_customer_id)
-        const img = await getImage(key);
+        const img = await getImage(user_data.user_profile_image);
 
         const data = await encode(img.Body);
         const file = `data:image/jpg;base64,${data}`;
