@@ -14,7 +14,7 @@ sudo apt-get -y install nodejs
 # Create an Nginx server block configuration file for your Node.js app
 sudo tee /etc/nginx/sites-available/hostel-mgmt <<EOF
 server {
-    listen 80;
+    listen 443;
 
     location / {
         proxy_pass http://localhost:3000;
