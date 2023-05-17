@@ -4,6 +4,7 @@ const Complaint = require('../models/complaintModel');
 const Warden = require('../models/wardenModel')
 const Leave = require('../models/leaveModel')
 const Department = require('../models/departmentModel')
+const Vacate = require('../models/vacateModel')
 const Payment = require('../models/paymentModel')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
@@ -756,8 +757,44 @@ const loadProfile = async(req, res) => {
         console.log(error)
     }
 
-
 }
+
+const loadVacateHostel = async (req, res) => {
+    try {
+
+        const hostel_name = ((await User.findOne({ _id: req.session.user_id })).hostel_allocated).hostel_name
+        if (hostel_name === 'NA') {
+            res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
+        }
+        else {
+            res.render('vacate')
+        }
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const applyVacate = async(req, res) => {
+
+    try{
+        const vacateData = new Vacate({
+            reg_no: ((await User.findOne({ _id: req.session.user_id })).reg_no),
+            vacate_id: new ObjectId(),
+            reason: req.body.reason,
+            hostel_name: ((await User.findOne({ _id: req.session.user_id })).hostel_allocated).hostel_name
+        })
+
+
+        await vacateData.save()
+        res.redirect('/home')
+        console.log('success')
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
 
 
 
@@ -789,5 +826,7 @@ module.exports = {
     wardenDetails,
     makePayment,
     startPayment,
-    loadProfile
+    loadProfile,
+    loadVacateHostel,
+    applyVacate
 }

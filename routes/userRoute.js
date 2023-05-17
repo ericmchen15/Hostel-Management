@@ -54,7 +54,7 @@ user_route.post('/complaints', auth.isLogin, userController.saveComplaint);
 
 user_route.get('/vacate-user', auth.isLogin, userController.loadVacate);
 
-user_route.post('/vacate-user', auth.isLogin, userController.vacate);
+// user_route.post('/vacate-user', auth.isLogin, userController.vacate);
 
 user_route.get('/payment', auth.isLogin, userController.loadPayment)
 
@@ -83,5 +83,9 @@ user_route.get('/warden-details/:name', auth.isLogin, userController.wardenDetai
 user_route.get('/start-payment', auth.isLogin, userController.startPayment)
 
 user_route.get('/profile', auth.isLogin, userController.loadProfile)
+
+user_route.get('/vacate-room', auth.isLogin, userController.loadVacateHostel)
+
+user_route.post('/vacate-room', auth.isLogin, userController.applyVacate)
 
 module.exports = user_route

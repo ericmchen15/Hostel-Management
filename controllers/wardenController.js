@@ -4,6 +4,7 @@ const Complaint = require('../models/complaintModel')
 const Warden = require('../models/wardenModel')
 const bcrypt = require('bcrypt')
 const Leave = require('../models/leaveModel')
+const Vacate = require('../models/vacateModel')
 const Payment = require('../models/paymentModel')
 const getImage = require('../helpers/getFile')
 const encode = require('../helpers/encode')
@@ -247,6 +248,7 @@ const addMessDetails = async (req, res) => {
 const removeBoarder = async (req, res) => {
     try {
         const userData = await User.findOne({ reg_no: req.query.q })
+        console.log("user data: " , userData)
         const userHostel = userData.hostel_allocated.hostel_name
         const userRoom = userData.hostel_allocated.room_no
         const userDept = userData.dept
@@ -364,6 +366,151 @@ const resolveComplaint = async (req, res) => {
     }
 }
 
+const loadVacates = async(req, res) => {
+
+    try {
+        const wardenHostel = (await Warden.findOne({ _id: req.session.user_id })).hostel_name
+        const vacateData = await Vacate.find({ hostel_name: wardenHostel })
+        vacateData.reverse()
+
+        const page = req.query.page
+        const limit = 5
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        var results = {}
+        results.results = (vacateData).slice(startIndex, endIndex);
+        results.currentPage = page   
+        
+        res.render('vacate-applications',{ vacateList : vacateData, hostelName: wardenHostel})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const approveVacate = async (req, res) => {
+    try {
+
+        const regNo = parseInt(req.body.reg_no)
+        const userData = await User.findOne({ reg_no : regNo })
+        console.log("User data: ", userData)
+        console.log("Reg no.: ", regNo)
+        const userHostel = userData.hostel_allocated.hostel_name
+        const userRoom = userData.hostel_allocated.room_no
+        const userDept = userData.dept
+
+        const hostelData = await Hostel.findOne({ name: userHostel })
+
+        const vacancy = hostelData.vacancy;
+
+        var deptPath = `dept.${userDept}.vacancy`;
+        console.log("Dept Path: ", deptPath)
+        var dept_vacancy = parseInt(hostelData.dept.get(userDept).vacancy)
+        console.log("Dept vacancy: ", dept_vacancy)
+
+        await Hostel.updateOne(
+            { name: userHostel, "rooms.room_no": userRoom },
+            {
+                $set: {
+                    "vacancy": vacancy + 1,
+                    "rooms.$.vacant": true,
+                    "rooms.$.student_reg_no": 'NA',
+                    "rooms.$.student_allocated": 'NA',
+                    [deptPath]: dept_vacancy + 1
+                }
+            }
+        );
+
+        await User.findOneAndUpdate({ reg_no: regNo }, { $set: 
+            { 
+                "hostel_allocated.hostel_name": "NA", 
+                "hostel_allocated.room_no": 0, 
+                "hostel_allocated.status": "NA",
+                "user_allocation_batch": "left"    
+            } });
+
+        const vacate = await Vacate.findOneAndUpdate(
+                { vacate_id: req.body.vacate_id, status: 'pending' },
+                { $set: { status: 'approved' } },
+                { new: true }
+            );
+
+        if (vacate) {
+        res.redirect('/warden/dashboard?message=Successfully removed boarder!');
+           // res.status(200).json({ message: 'Application approved successfully' });
+        } else {
+            res.status(404).json({ message: 'Application not found' });
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to approve ' });
+    }
+}
+
+const rejectVacate = async (req, res) => {
+    try {
+        const vacate = await Vacate.findOneAndUpdate(
+            { vacate_id: req.body.vacate_id, status: 'pending' },
+            { $set: { status: 'rejected' } },
+            { new: true }
+        );
+        if (vacate) {
+            res.status(200).json({ message: 'Leave rejected successfully' });
+        } else {
+            res.status(404).json({ message: 'Leave not found' });
+        }
+
+    } catch (error) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to reject leave' });
+    }
+}
+
+const vacateBoarder = async (req, res) => {
+    try {
+        const userData = await User.findOne({ reg_no: req.body.reg_no })
+        const userHostel = userData.hostel_allocated.hostel_name
+        const userRoom = userData.hostel_allocated.room_no
+        const userDept = userData.dept
+
+        const hostelData = await Hostel.findOne({ name: userHostel })
+
+        const vacancy = hostelData.vacancy;
+
+        var deptPath = `dept.${userDept}.vacancy`;
+        console.log("Dept Path: ", deptPath)
+        var dept_vacancy = parseInt(hostelData.dept.get(userDept).vacancy)
+        console.log("Dept vacancy: ", dept_vacancy)
+
+        await Hostel.updateOne(
+            { name: userHostel, "rooms.room_no": userRoom },
+            {
+                $set: {
+                    "vacancy": vacancy + 1,
+                    "rooms.$.vacant": true,
+                    "rooms.$.student_reg_no": 'NA',
+                    "rooms.$.student_allocated": 'NA',
+                    [deptPath]: dept_vacancy + 1
+                }
+            }
+        );
+
+        await User.findOneAndUpdate({ reg_no: req.query.q }, { $set: 
+            { 
+                "hostel_allocated.hostel_name": "NA", 
+                "hostel_allocated.room_no": 0, 
+                "hostel_allocated.status": "NA",
+                "user_allocation_batch": "left"    
+            } });
+
+        res.redirect('/warden/dashboard?message=Successfully removed boarder!');
+
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 
 
 module.exports = {
@@ -384,7 +531,11 @@ module.exports = {
     loadPayments,
     viewPaymentFile,
     loadMessDetails,
-    resolveComplaint
+    resolveComplaint,
+    loadVacates,
+    approveVacate,
+    rejectVacate
+
 }
 
 

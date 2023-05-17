@@ -58,5 +58,10 @@ warden_route.get('/mess-details', auth.isLogin, wardenController.loadMessDetails
 
 warden_route.post('/view-complaints/resolve', auth.isLogin, wardenController.resolveComplaint)
 
+warden_route.get('/vacates', auth.isLogin, wardenController.loadVacates )
+
+warden_route.post('/vacates/approve', auth.isLogin, wardenController.approveVacate)
+
+warden_route.post('/vacates/reject', auth.isLogin, wardenController.rejectVacate)
 
 module.exports =  warden_route
