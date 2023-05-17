@@ -16,7 +16,7 @@ user_route.set('views', './views/users')
 
 const bodyParser = require('body-parser')
 user_route.use(bodyParser.json())
-user_route.use(bodyParser.urlencoded({extended:true}))
+user_route.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
 
 
 const userController = require("../controllers/userController")
@@ -63,6 +63,8 @@ user_route.get('/payment', auth.isLogin, userController.loadPayment)
 user_route.post('/create-payment', auth.isLogin, userController.createPaymentIntent)
 
 user_route.get('/payment-success', auth.isLogin, userController.loadPaymentSuccess)
+
+user_route.get('/payment-fail', auth.isLogin, userController.loadPaymentFail)
 
 user_route.get('/apply-leave', auth.isLogin, userController.loadApplyLeave)
 

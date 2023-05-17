@@ -447,11 +447,11 @@ const randomHostel = async (req, res) => {
                 vacantRooms = allocatedHostel.rooms.filter(room => room.vacant );
 
                 allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
-                console.log("\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
+                // console.log("\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
 
                 var deptPath = `dept.${userData[i].dept}.vacancy`;
                 dept_vacancy = allocatedHostel.dept.get(userDept).vacancy
-                console.log('Dept vacancy:', dept_vacancy)
+                // console.log('Dept vacancy:', dept_vacancy)
 
                 allocatedData = ({
                     'hostel_name': allocatedHostel.name,
@@ -524,11 +524,11 @@ const randomHostel = async (req, res) => {
 
                 vacantRooms = allocatedHostel.rooms.filter(room => room.vacant );
                 allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
-                console.log("\n\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
+                // console.log("\n\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
 
                 deptPath = `dept.${userData[i].dept}.vacancy`;
                 dept_vacancy = allocatedHostel.dept.get(userDept).vacancy
-                console.log('Dept vacancy:', dept_vacancy)
+                // console.log('Dept vacancy:', dept_vacancy)
 
                 allocatedData = ({
                     'hostel_name': allocatedHostel.name,
