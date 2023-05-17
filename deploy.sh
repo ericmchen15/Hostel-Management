@@ -14,7 +14,7 @@ sudo apt-get -y install nodejs
 # Create an Nginx server block configuration file for your Node.js app
 sudo tee /etc/nginx/sites-available/hostel-mgmt <<EOF
 server {
-    listen 443;
+    listen 80;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -39,6 +39,8 @@ cp ~/.env ~/app
 sudo systemctl start nginx
 
 npm i
+
+sudo npm uninstall pm2 -g
 
 sudo npm install pm2 -g
 
