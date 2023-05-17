@@ -26,71 +26,73 @@
     
               </div>
              
-              <table class="table table-hover table-bordered" width="70%">
-                <tbody>
-                    <% userData.forEach(function(user) {
-                        if (user) { %>
-                        <tr>
-                            <td><strong>Name</strong></td>
-                            <td><%= user.name %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Email</strong></td>
-                            <td class="text-lowercase"><%= user.email %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Registration No.</strong></td>
-                            <td><%= user.reg_no %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Phone</strong></td>
-                            <td><%= user.phone %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Department</strong></td>
-                            <td><%= user.dept %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Semester</strong></td>
-                            <td><%= user.semester %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Guardian Name</strong></td>
-                            <td><%= user.guardian_name %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Guardian Phone</strong></td>
-                            <td><%= user.guardian_phone %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Address</strong></td>
-                            <td><%= user.address %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gender</strong></td>
-                            <td><%= user.gender %></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Hostel Name</strong></td>
-                            <td>
-                                <% if (user.hostel_allocated) { %>  
-                                <%= user.hostel_allocated.hostel_name %>
-                                <% } %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Room No.</strong></td>
-                            <td>
-                                <% if (user.hostel_allocated) { %>
-                                <%= user.hostel_allocated.room_no %>
-                                <% } %>
-                            </td>
-                        </tr>
-                      
-                        <% } %>
-                    <% }); %>
-                </tbody>
-            </table>
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered text-center">
+                    <tbody>
+                        <% userData.forEach(function(user) {
+                            if (user) { %>
+                            <tr>
+                                <td><strong>Name</strong></td>
+                                <td><%= user.name %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td class="text-lowercase"><%= user.email %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Registration No.</strong></td>
+                                <td><%= user.reg_no %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phone</strong></td>
+                                <td><%= user.phone %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Department</strong></td>
+                                <td><%= user.dept %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Semester</strong></td>
+                                <td><%= user.semester %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Guardian Name</strong></td>
+                                <td><%= user.guardian_name %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Guardian Phone</strong></td>
+                                <td><%= user.guardian_phone %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Address</strong></td>
+                                <td><%= user.address %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender</strong></td>
+                                <td><%= user.gender %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hostel Name</strong></td>
+                                <td>
+                                    <% if (user.hostel_allocated) { %>  
+                                    <%= user.hostel_allocated.hostel_name %>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Room No.</strong></td>
+                                <td>
+                                    <% if (user.hostel_allocated) { %>
+                                    <%= user.hostel_allocated.room_no %>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <% } %>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            
     
     
           

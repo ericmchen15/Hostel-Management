@@ -29,7 +29,7 @@
               margin-left: auto;
             margin-right: auto;">
               <div class="card-body">
-                <form role="form" action="/register" method="post" enctype="multipart/form-data">
+                <form role="form" action="/register" onsubmit="return matchPassword()" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <input type="text" class="form-control" placeholder="Name" name="name" aria-label="Name" required>
                     </div>
@@ -60,9 +60,15 @@
                   </div>
       
                   <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Password" name="password"
+                    <input type="password" class="form-control" placeholder="Password" name="password" id="pw1"
                       aria-label="Password" required>
                   </div>
+
+                  <div class="mb-3">
+                    <input type="password" class="form-control" placeholder="Confirm Password" id="pw2"
+                      aria-label="Password" required>
+                  </div>
+
                   <% if(typeof message !=='undefined' ){ %>
   
                     <lable style="color: red; font-size: small;">
@@ -153,6 +159,23 @@
         }
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
       }
+    </script>
+
+    <script>
+      function matchPassword() {  
+     var pw1 = document.getElementById("pw1").value;  
+     var pw2 = document.getElementById("pw2").value;  
+     console.log(pw1, pw2)
+      if(pw1 != pw2)  
+      {   
+        alert("Passwords did not match");  
+        return false;
+      } 
+      else{
+          return true
+        }
+
+} 
     </script>
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

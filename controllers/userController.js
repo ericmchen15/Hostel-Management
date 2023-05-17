@@ -193,8 +193,8 @@ const applyHostel = async (req, res) => {
                         console.log(`error ${err}`);
                     } else {
                         console.log(result);
-                        res.send("Succeess")
-                        // res.send(`You have been allocated at ${randHostel.hostel_name} room no ${randHostel.room_no}`)
+                        res.redirect('/home');
+                       
                     }
                 });
 

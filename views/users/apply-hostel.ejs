@@ -28,7 +28,7 @@
                 </div>
         
                 <div class="mb-3">
-                    <input class="form-control" type="number" name="percentage" placeholder="Enter percentage" value="60" step="any"
+                    <input class="form-control" type="number" name="percentage" placeholder="Enter your percentage" step="any"
                     required>
                 </div>
 
@@ -39,7 +39,7 @@
 
                 <div class="mb-3">
                     <select type="text" name="dept" class="form-select" id="inlineFormCustomSelect">
-                        <option selected disabled>Department</option>
+                        <option selected disabled>Select your Department</option>
                         <% departmentsData.forEach(function(dept) { %>
                             <option  value="<%= dept.name %>">
                                 <%= dept.name %>

@@ -96,7 +96,7 @@ td {
   }
 
   .carousel-item {
-    height: 500px;
+    height: 650px;
     overflow: hidden;
   }
 
@@ -115,6 +115,6 @@ td {
 
   @media (min-width: 769px) and (max-width: 992px) {
     .carousel-item {
-      height: 700px;
+      height: 750px;
     }
   }
