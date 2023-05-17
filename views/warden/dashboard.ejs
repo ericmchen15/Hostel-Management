@@ -167,7 +167,7 @@
                
                 <tbody>
                  
-                  <% for(let i=0; i<4; i++) { %>
+                  <% for(let i=0; i<complaints.length; i++) { %>
                   <tr>
                     <td>
                       <div class="d-flex px-2 py-1">
@@ -220,7 +220,7 @@
             <div class="card-body">
               <ul class="list-group">
                 <% if (leavesList.length ) {
-                  for(let i=0; i<3; i++) { %>
+                  for(let i=0; i<leavesList.length; i++) { %>
                 <li class="list-group-item border-0 d-flex p-3 mb-1 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
                     <span class="text-xs" >Student Reg. No. : <span class="text-dark font-weight-bold ms-sm-2"> <%= leavesList[i].reg_no %> </span></span>
