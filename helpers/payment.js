@@ -1,6 +1,8 @@
 require('dotenv').config();
 const process = require('process');
 const stripe_key = process.env.STRIPE_KEY
+const success_url = process.env.SUCCESS_URL
+const fail_url = process.env.FAIL_URL
 const stripe = require('stripe')(stripe_key)
 
 const createNewCustomer = async(name, email) => {
@@ -45,8 +47,8 @@ const createSession = async (customer_id, price_id) => {
             payment_method_types: ['card'],
             mode: 'payment',
             customer: customer_id,
-            success_url: 'http://127.0.0.1:3000/payment-success',
-            cancel_url: 'https://www.yahoo.com',
+            success_url: success_url,
+            cancel_url: fail_url,
             line_items: [
                 {price: price_id , quantity: 1},
               ]

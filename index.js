@@ -33,7 +33,7 @@ app.use(expressLayouts);
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use(nocache())
-app.use(express.json());
+app.use(express.json({limit: "10mb", extended: true}))
 
 //for public routes 
 const publicRoute = require("./routes/publicRoute")

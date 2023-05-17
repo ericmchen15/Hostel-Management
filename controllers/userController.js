@@ -153,7 +153,7 @@ const loadApplyHostel = async (req, res) => {
         const userHostelStatus = (await User.findOne({ reg_no: userRegNo })).hostel_allocated.status
 
         if (userHostel !== 'NA' || (userHostelStatus === 'pending' || userHostelStatus === 'approved')) {
-            res.send('You have already applied for Hostel.')
+            res.send('<script>alert("You have already applied for hostel. Please click ok to proceed"); window.location.href = "/home";</script>');
             return;
         }
 
@@ -192,13 +192,13 @@ const applyHostel = async (req, res) => {
                         console.log(`error ${err}`);
                     } else {
                         console.log(result);
-                        res.send("Succeess")
+                        res.send('<script>alert("Success"); window.location.href = "/home";</script>');
                         // res.send(`You have been allocated at ${randHostel.hostel_name} room no ${randHostel.room_no}`)
                     }
                 });
 
         } else {
-            res.send("Invalid Reg no.")
+            res.send('<script>alert("Invalid Registration No"); window.location.href = "/apply-hostel";</script>');
         }
 
 
@@ -419,7 +419,7 @@ const vacate = async (req, res) => {
 
         await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { "hostel_allocated.hostel_name": "NA", "hostel_allocated.room_no": 0, "hostel_allocated.status": "NA" } });
 
-        res.send("Vacated successfully.")
+        res.send('<script>alert("Vacate Applied Successfully"); window.location.href = "/home";</script>');
 
     } catch (error) {
         console.log(error)
@@ -444,12 +444,10 @@ const loadPayment = async (req, res) => {
         }
 
         
-        
-
         if (userData.hostel_allocated.hostel_name == "NA") {
             res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
         } else if (userData.payment_status == "paid") {
-            res.send("You have already made your payment")
+            res.send('<script>alert("You have already made your payment."); window.location.href = "/home";</script>');
         } else {
             res.render('payment', { user: userData })
         }
@@ -496,10 +494,33 @@ const makePayment = async (req, res) => {
 const loadPaymentSuccess = async (req, res) => {
     try {
 
-        updatePayment(req.session.user_id);
-        
-        res.redirect('/home')
-        // console.log(stripe.create)
+        if (req.session.allow){
+            updatePayment(req.session.user_id, 'success');
+            delete req.session.allow;
+            res.send('<script>alert("Success"); window.location.href = "/home";</script>');
+
+        } else {
+            res.send('<script>alert("An unexpected errror occurred"); window.location.href = "/home";</script>');
+        }
+
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const loadPaymentFail = async (req, res) => {
+    try {
+
+        if (req.session.allow){
+            updatePayment(req.session.user_id, 'fail');
+            delete req.session.allow;
+            res.send('<script>alert("Failed"); window.location.href = "/home";</script>');
+
+        } else {
+            res.send('<script>alert("An unexpected errror occurred"); window.location.href = "/home";</script>');
+        }
+
 
     } catch (error) {
         console.log(error.message)
@@ -699,9 +720,9 @@ const startPayment = async (req, res) => {
 
         await paymentData.save(); 
         
-        res.redirect(checkoutSession.url);
+        req.session.allow = true
 
-        
+        res.redirect(checkoutSession.url);
 
     } catch (error) {
         console.log(error)
@@ -709,7 +730,7 @@ const startPayment = async (req, res) => {
 }
 
 
-const updatePayment = async (id) => {
+const updatePayment = async (id, status) => {
     try {
         var isPaymentSuccess
         const userData = await User.findOne({ _id: id})
@@ -719,14 +740,14 @@ const updatePayment = async (id) => {
             isPaymentSuccess = await validateSession(userData.payment_status_id)
         }
 
-        if (isPaymentSuccess == 'paid'){
+        if (isPaymentSuccess == 'paid' && status == 'success'){
             await User.findOneAndUpdate({ _id: id },
                 {
                     $set: {
                         payment_status: 'paid'
                     }
                 })
-        } else {
+        } else if (status == 'fail') {
             await User.findOneAndUpdate({ _id: id },
                 {
                     $set: {
@@ -789,5 +810,6 @@ module.exports = {
     wardenDetails,
     makePayment,
     startPayment,
-    loadProfile
+    loadProfile,
+    loadPaymentFail
 }
