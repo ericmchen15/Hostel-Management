@@ -5,6 +5,7 @@ const Warden = require('../models/wardenModel')
 const Department = require('../models/departmentModel')
 const bcrypt = require('bcrypt')
 const Leave = require('../models/leaveModel')
+const map_rooms = require('../helpers/room_bed_map')
 const { createPriceForProduct } = require('../helpers/payment')
 
 
@@ -219,25 +220,26 @@ const insertHostel = async (req, res) => {
 
         var cap = req.body.capacity
 
-        var rooms = []
+        var beds = []
 
         for (let i = 0; i < cap; i++) {
-            rooms.push({
-                room_no: i + 1
+            beds.push({
+                bed_no: i + 1
             })
         }
 
-        console.log(rooms)
+       // console.log(rooms)
 
         const hostel = new Hostel({
+            id : req.body.id,
             name: req.body.name,
             address: req.body.address,
             capacity: req.body.capacity,
             vacancy: req.body.capacity,
-            type: req.body.type,
+            type: req.body.gender,
             contact: req.body.contact,
             dept: req.body.dept,
-            rooms: rooms
+            beds: beds
 
         });
 
@@ -415,8 +417,8 @@ const randomHostel = async (req, res) => {
         for (let i = 0; i < userData.length; i++) {
             var allocatedData 
             var allocatedHostel = ''
-            var allocatedRoom = ''
-            var vacantRooms = []
+            var allocatedBed = ''
+            var vacantBeds = []
             const userDept = userData[i].dept
             // console.log("user dept: ", userDept)
 
@@ -444,31 +446,35 @@ const randomHostel = async (req, res) => {
                 allocatedHostel = dept_boys_hos[Math.floor(Math.random() * dept_boys_hos.length)];
                 hos_vacancy = allocatedHostel.vacancy
 
-                vacantRooms = allocatedHostel.rooms.filter(room => room.vacant );
+                vacantBeds = allocatedHostel.beds.filter(bed => bed.vacant );
 
-                allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
+                allocatedBed = vacantBeds[Math.floor(Math.random() * vacantBeds.length)].bed_no;
+                console.log("allocatedBed : ", allocatedBed)
                 // console.log("\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
 
                 var deptPath = `dept.${userData[i].dept}.vacancy`;
                 dept_vacancy = allocatedHostel.dept.get(userDept).vacancy
                 // console.log('Dept vacancy:', dept_vacancy)
 
+                const room_no = map_rooms(allocatedHostel, allocatedBed)
+
                 allocatedData = ({
                     'hostel_name': allocatedHostel.name,
-                    'room_no': allocatedRoom,
+                    'bed_no': allocatedBed,
+                    'room_no' : room_no,
                     'status': "approved"
                 })
 
                 // console.log(allocatedData)
                 
                 await Hostel.updateOne(
-                    { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
+                    { name: allocatedHostel.name, "beds.bed_no": allocatedBed },
                     {
                         $set: {
                             "vacancy": hos_vacancy-1,
-                            "rooms.$.vacant": false,
-                            "rooms.$.student_reg_no": userData[i].reg_no,
-                            "rooms.$.student_allocated": userData[i].name,
+                            "beds.$.vacant": false,
+                            "beds.$.student_reg_no": userData[i].reg_no,
+                            "beds.$.student_allocated": userData[i].name,
                             [deptPath]: dept_vacancy - 1
                         }
                     }
@@ -522,30 +528,33 @@ const randomHostel = async (req, res) => {
                 allocatedHostel = dept_girls_hos[Math.floor(Math.random() * dept_girls_hos.length)];
                 hos_vacancy = allocatedHostel.vacancy
 
-                vacantRooms = allocatedHostel.rooms.filter(room => room.vacant );
-                allocatedRoom = vacantRooms[Math.floor(Math.random() * vacantRooms.length)].room_no;
+                vacantBeds = allocatedHostel.beds.filter(bed => bed.vacant );
+                allocatedBed = vacantBeds[Math.floor(Math.random() * vacantBeds.length)].bed_no;
                 // console.log("\n\nallocated room ", allocatedRoom, "allocated hostel", allocatedHostel.name, userData[i].name, "vacancy", hos_vacancy-1, "Dept:", userData[i].dept, "\n")
 
                 deptPath = `dept.${userData[i].dept}.vacancy`;
                 dept_vacancy = allocatedHostel.dept.get(userDept).vacancy
                 // console.log('Dept vacancy:', dept_vacancy)
 
+                const room_no = map_rooms(allocatedHostel, allocatedBed)
+
                 allocatedData = ({
                     'hostel_name': allocatedHostel.name,
-                    'room_no': allocatedRoom,
+                    'room_no' : room_no,
+                    'bed_no': allocatedBed,
                     'status': "approved"
                 })
 
                 // console.log(allocatedData)
 
                 await Hostel.updateOne(
-                    { name: allocatedHostel.name, "rooms.room_no": allocatedRoom },
+                    { name: allocatedHostel.name, "beds.bed_no": allocatedBed },
                     {
                         $set: {
                             "vacancy": hos_vacancy-1,
-                            "rooms.$.vacant": false,
-                            "rooms.$.student_reg_no": userData[i].reg_no,
-                            "rooms.$.student_allocated": userData[i].name,
+                            "beds.$.vacant": false,
+                            "beds.$.student_reg_no": userData[i].reg_no,
+                            "beds.$.student_allocated": userData[i].name,
                             [deptPath]: dept_vacancy - 1
                         }
                     }

@@ -58,7 +58,14 @@
                       <div class="numbers">
                         <p class="text-sm mb-0 text-uppercase font-weight-bold">Room No</p>
                         <h5 class="font-weight-bolder">
-                          <%= user.hostel_allocated.room_no %>
+                          <% if(user.hostel_allocated.room_no === 0) {%>
+                          NA
+                          <% } else if(user.hostel_allocated.room_no !== 'undefined' ) { %>
+                            <%= user.hostel_allocated.room_no %>
+                          <% } else{ %>
+                            NA 
+                          <% } %>
+
                         </h5>
                       </div>
                     </div>
@@ -294,7 +301,7 @@
           <div class="container">
 
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-              <% for(let i=0; i<4; i++) { %>
+              <% for(let i=0; i<1; i++) { %>
                 <div class="col mb-4">
                   <div class="card h-100 shadow-sm bg-gray-100">
                     <img src="/hostelImages/AT 8 BOYS HOSTEL.jpg" class="card-img-top" alt="...">

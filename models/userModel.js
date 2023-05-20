@@ -72,6 +72,11 @@ const userSchema = mongoose.Schema({
             type: Number,
             default: 0,
             required: true
+        },
+        bed_no : {
+            type: Number,
+            default: 0,
+            required: true
         }
 
     },

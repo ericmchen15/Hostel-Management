@@ -90,8 +90,8 @@ const loadHostelDetails = async (req, res) => {
         const endIndex = page * limit;
         var results = {}
         const hostelData = await Hostel.findOne({ name: req.query.n })
-        const rooms = hostelData.rooms.filter((room) => !room.vacant);
-        results.results = (rooms).slice(startIndex, endIndex);
+        const beds = hostelData.beds.filter((bed) => !bed.vacant);
+        results.results = (beds).slice(startIndex, endIndex);
         results.currentPage = page        
         res.render('hostel-details', { room: results, hostelName: hostelData.name })
 
@@ -246,7 +246,7 @@ const removeBoarder = async (req, res) => {
         const userData = await User.findOne({ reg_no: req.query.q })
         console.log("user data: " , userData)
         const userHostel = userData.hostel_allocated.hostel_name
-        const userRoom = userData.hostel_allocated.room_no
+        const userBed = userData.hostel_allocated.bed_no
         const userDept = userData.dept
 
         const hostelData = await Hostel.findOne({ name: userHostel })
@@ -259,13 +259,13 @@ const removeBoarder = async (req, res) => {
         console.log("Dept vacancy: ", dept_vacancy)
 
         await Hostel.updateOne(
-            { name: userHostel, "rooms.room_no": userRoom },
+            { name: userHostel, "beds.bed_no": userBed },
             {
                 $set: {
                     "vacancy": vacancy + 1,
-                    "rooms.$.vacant": true,
-                    "rooms.$.student_reg_no": 'NA',
-                    "rooms.$.student_allocated": 'NA',
+                    "beds.$.vacant": true,
+                    "beds.$.student_reg_no": 'NA',
+                    "beds.$.student_allocated": 'NA',
                     [deptPath]: dept_vacancy + 1
                 }
             }
@@ -274,8 +274,9 @@ const removeBoarder = async (req, res) => {
         await User.findOneAndUpdate({ reg_no: req.query.q }, { $set: 
             { 
                 "hostel_allocated.hostel_name": "NA", 
-                "hostel_allocated.room_no": 0, 
+                "hostel_allocated.bed_no": 0, 
                 "hostel_allocated.status": "NA",
+                "hostel_allocated.room_no" : 0,
                 "user_allocation_batch": "left"    
             } });
 
@@ -389,7 +390,7 @@ const approveVacate = async (req, res) => {
         console.log("User data: ", userData)
         console.log("Reg no.: ", regNo)
         const userHostel = userData.hostel_allocated.hostel_name
-        const userRoom = userData.hostel_allocated.room_no
+        const userBed = userData.hostel_allocated.bed_no
         const userDept = userData.dept
 
         const hostelData = await Hostel.findOne({ name: userHostel })
@@ -402,13 +403,13 @@ const approveVacate = async (req, res) => {
         console.log("Dept vacancy: ", dept_vacancy)
 
         await Hostel.updateOne(
-            { name: userHostel, "rooms.room_no": userRoom },
+            { name: userHostel, "beds.bed_no": userBed },
             {
                 $set: {
                     "vacancy": vacancy + 1,
-                    "rooms.$.vacant": true,
-                    "rooms.$.student_reg_no": 'NA',
-                    "rooms.$.student_allocated": 'NA',
+                    "beds.$.vacant": true,
+                    "beds.$.student_reg_no": 'NA',
+                    "beds.$.student_allocated": 'NA',
                     [deptPath]: dept_vacancy + 1
                 }
             }
@@ -417,6 +418,7 @@ const approveVacate = async (req, res) => {
         await User.findOneAndUpdate({ reg_no: regNo }, { $set: 
             { 
                 "hostel_allocated.hostel_name": "NA", 
+                "hostel_allocated.bed_no": 0, 
                 "hostel_allocated.room_no": 0, 
                 "hostel_allocated.status": "NA",
                 "user_allocation_batch": "left"    

@@ -27,8 +27,9 @@ const departmentSchema = new mongoose.Schema({
       },
   });
 
-const roomSchema = new mongoose.Schema({
-    room_no: {
+const bedSchema = new mongoose.Schema({
+
+    bed_no: {
         type: Number,
         required: true
     },
@@ -50,7 +51,13 @@ const roomSchema = new mongoose.Schema({
 });
 
 
+
 const hostelSchema = mongoose.Schema({
+
+    id:{
+        type: String,
+        required: true
+    },
 
     name: {
         type: String,
@@ -89,7 +96,12 @@ const hostelSchema = mongoose.Schema({
         of: messSchema,
         default: new Map()
     },
-    rooms: [roomSchema]
+
+    totalRooms : {
+        type: Number     
+    },
+
+    beds: [bedSchema]
 
 })
 
