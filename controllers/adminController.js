@@ -124,7 +124,7 @@ const loadUsersList = async (req, res) => {
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
         var results = {}
-        const usersData = await User.find({ role: 0 })
+        const usersData = await User.find({ role: 0, 'hostel_allocated.hostel_name': { $ne: 'NA' } })
         results.results = (usersData).slice(startIndex, endIndex);
         results.currentPage = page
         res.render('users-list', { userData: results })
@@ -188,10 +188,13 @@ const allocatedRooms = async (req, res) => {
       const hostel = await Hostel.findOne({ name: hostelName });
   
       // Filter the rooms array to get all the rooms that have vacant=false
-      const rooms = hostel.rooms.filter((room) => !room.vacant);
+      const beds = hostel.beds.filter((bed) => !bed.vacant);
 
+      const users = await User.find({ "hostel_allocated.hostel_name" : hostelName })
+
+      console.log(users)
       // Send the list of rooms to the client
-      res.render('allocated-rooms', { rooms });
+      res.render('allocated-rooms', { beds, users });
     } catch (error) {
       console.log(error.message);
     }
