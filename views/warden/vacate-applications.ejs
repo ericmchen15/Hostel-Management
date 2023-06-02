@@ -32,11 +32,24 @@
               </div>
               <div class="card-body pt-4 p-3">
                 <ul class="list-group">
-                  <% if (vacateList.length ) { vacateList.forEach(function(vacate) { %>
+                  <% if (vacateList.length ) { vacateList.forEach(function(vacate) { 
+                    var paymentStatus;
+                    for (var i = 0; i < userData.length; i++) {
+                      if (userData[i].reg_no === vacate.reg_no) {
+                        paymentStatus = userData[i].payment_status;
+                        break;
+                      }
+                    }
+                    %>
+                    
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
                         <h6 class="mb-3 text-sm">Student : <%= vacate.reg_no %>
                         </h6>
+
+                        <h6 class="mb-3 text-sm">Payment status : <%= paymentStatus %>
+                        </h6>
+
                         <span class="mb-2 text-xs">Reason: <span class="text-dark font-weight-bold ms-sm-2">
                             <%= vacate.reason %>
                           </span></span>
@@ -83,7 +96,7 @@
                 </ul>
               </div>
               <% let totalPages; if (vacateList.length.capacity % 5 ==0) { totalPages=vacateList.results.length.capacity / 5;
-                } else { totalPages=Math.floor(vacateList.length / 5) + 2; } %>
+                } else { totalPages=Math.floor(vacateList.length / 5) + 1; } %>
   
   
                 <nav aria-label="Page navigation example">

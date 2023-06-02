@@ -3,21 +3,25 @@
     <%- include('navbar.ejs')  %>
     <!-- End Navbar -->
 <div class="container-fluid py-4">
-  <div class="row">
-      <div class="card">
-          <div class="card-header pb-0 px-3">
-              Make Payment
+  
+    <div class="row justify-content-center">
+      <div class="col-10 col-md-8 col-lg-6">
+        <div class="card">
+          <div class="card-header pb-0 px-3 text-center">
+            Make Payment
           </div>
           <div class="card-body">
-
-            <h6>You have been allocated at <%= user.hostel_allocated.hostel_name %> Room No <%= user.hostel_allocated.room_no %> </h3>
-
+            <h6 class="text-center">
+              You have been allocated at <%= user.hostel_allocated.hostel_name %> Room No <%= user.hostel_allocated.room_no %>
+            </h6>
+            <div class="text-center ">
               <a href="/start-payment" class="btn btn-dark">Make Payment</a>
+            </div>
           </div>
-
+        </div>
       </div>
-      
-  </div>
+    </div>
+    
 
 </div>
 

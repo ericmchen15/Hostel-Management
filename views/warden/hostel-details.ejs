@@ -32,61 +32,56 @@
                         <thead>
                           <tr>
                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Room No</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Vacant
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 pe-2">
+                              Student Allocated
                             </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                              Student Allocated</th>
+                              Registration No.
+                            </th>
                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                              Registration No.</th>
-                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                              Action</th>
+                              Action
+                            </th>
                           </tr>
                         </thead>
-
                         <tbody>
-
                           <% for(i=0; i<room.results.length ; i++){ %>
-                            <tr>
-                              <td>
-                                <div class="d-flex px-2 py-1">
-
-                                  <div class="d-flex flex-column justify-content-center">
-                                    <h6 class="mb-0 text-sm">
-                                      <%= room.results[i].bed_no %>
-                                    </h6>
-                                  </div>
+                          <tr>
+                            <td class="px-2">
+                              <div class="d-flex px-3 py-1">
+                                <div class="d-flex flex-column justify-content-center">
+                                  <h6 class="mb-0 text-sm font-weight-bold">
+                                    <%= room.results[i].bed_no %>
+                                  </h6>
                                 </div>
-                              </td>
-                              <td>
-                                <p class="text-xs font-weight-bold mb-0">
-                                  <%= room.results[i].vacant %>
-                                </p>
-                              </td>
-                              <td class="align-middle text-center text-sm">
-                                <p class="text-xs font-weight-bold mb-0">
-                                  <%= room.results[i].student_allocated %>
-                                </p>
-                              </td>
-                              <td class="align-middle text-center">
-                                <p class="text-xs font-weight-bold mb-0">
-                                  <%= room.results[i].student_reg_no %>
-                                </p>
-                              </td>
-                              <td class="align-middle text-center">
-                                <a href="/warden/remove-boarder?q=<%= room.results[i].student_reg_no %>"
-                                  class="text-secondary font-weight-bold text-xs" data-toggle="tooltip">
-                                  <p class="text-xs font-weight-bold mb-0">Remove</p>
-                                </a>
-                              </td>
-                            </tr>
-
-                            <% } %>
-
-                              <% let totalPages; if (room.results.length.capacity % 10==0) {
-                                totalPages=room.results.length.capacity / 10; } else {
-                                totalPages=Math.floor(room.results.length / 10) + 1; } %>
+                              </div>
+                            </td>
+                            <td class="text-xs text-center ps-2 pe-2">
+                              <p class="mb-0 text-sm font-weight-bold">
+                                <%= room.results[i].student_allocated %>
+                              </p>
+                            </td>
+                            <td class="align-middle text-center">
+                              <p class="mb-0 text-sm font-weight-bold">
+                                <%= room.results[i].student_reg_no %>
+                              </p>
+                            </td>
+                            <td class="align-middle text-center">
+                              <a href="/warden/remove-boarder?q=<%= room.results[i].student_reg_no %>"
+                                class="text-secondary font-weight-bold text-xs" data-toggle="tooltip">
+                                <p class="text-xm font-weight-bold mb-0">Remove</p>
+                              </a>
+                            </td>
+                          </tr>
+                          <% } %>
+                          <% let totalPages;
+                             if (room.results.length.capacity % 10 == 0) {
+                               totalPages = room.results.length.capacity / 10;
+                             } else {
+                               totalPages = Math.floor(room.results.length / 10) + 1;
+                             } %>
                         </tbody>
                       </table>
+                      
 
                       <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">

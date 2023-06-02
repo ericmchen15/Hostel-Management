@@ -365,6 +365,7 @@ const loadVacates = async(req, res) => {
 
     try {
         const wardenHostel = (await Warden.findOne({ _id: req.session.user_id })).hostel_name
+        const userData = await User.find({})
         const vacateData = await Vacate.find({ hostel_name: wardenHostel })
         vacateData.reverse()
 
@@ -376,7 +377,7 @@ const loadVacates = async(req, res) => {
         results.results = (vacateData).slice(startIndex, endIndex);
         results.currentPage = page   
         
-        res.render('vacate-applications',{ vacateList : vacateData, hostelName: wardenHostel})
+        res.render('vacate-applications',{ vacateList : vacateData, hostelName: wardenHostel, userData : userData})
     } catch (error) {
         console.log(error)
     }

@@ -6,64 +6,46 @@
   <div class="row">
     <div class="card mb-4">
       <div class="card-header pb-0">
-        <h6>Leaves</h6>
+        <h6> My Leaves</h6>
 
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
+
           <% if(leavesList.length === 0) { %>
 
             <p>No leaves applied.</p>
     
-            <% } else { %>
-          <table class="table align-items-center mb-0">
-            <thead>
-              <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reason</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">From</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">To</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% leavesList.forEach(function(leave) { %>
-                <tr>
-                  <td>
-                    <div class="d-flex px-2 py-1">
-                      <div>
-                        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <!-- <h6 class="mb-0 text-sm">Reason</h6> -->
-                        <p class="text-xs text-secondary mb-0"><%= leave.reason %></p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0"><%= leave.from %></p>
-                  </td>
-                  <td class="align-middle ">
-                    <span class="text-xs font-weight-bold mb-0""><%= leave.to %></span>
-                  </td>
+            <%} else { leavesList.forEach(leave => { %>
+              <ul class="list-group">
+         
+                <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                  <div class="d-flex flex-column">
+                    
+                    <span class="mb-2 text-xs">Reason: <span class="text-dark font-weight-bold ms-sm-2">
+                      <%= leave.reason %>
+                    </span></span>
+                    <span class="mb-2 text-xs">From: <span class="text-dark font-weight-bold ms-sm-2">
+                        <%= leave.from %>
+                      </span></span>
+                    <span class="mb-2 text-xs">To: <span class="text-dark ms-sm-2 font-weight-bold">
+                        <%= leave.to %>
+                      </span></span>
+                    <span class="mb-2 text-xs">Status: <span class="text-dark ms-sm-2 font-weight-bold">
+                        <%= leave.status %>
+                      </span></span>
   
-                  <td class="align-middle text-sm">
-
-                    <% if (leave.status == 'approved') { %>
-                      <span class="badge badge-sm bg-gradient-success"><%= leave.status %></span>
-                      <% } else if (leave.status == 'rejected') { %>
-                        <span class="badge badge-sm bg-gradient-danger"><%= leave.status %></span>
-                      <% } else { %>
-                        <span class="badge badge-sm bg-gradient-warning"><%= leave.status %></span>
-                      <% } %>
-
-                  </td>
+                    </span>
   
-                </tr>
-              <% }); %>
-
-            </tbody>
-          </table>
-          <% } %>
+  
+                  </div>
+  
+                </li>
+  
+                
+  
+            </ul>
+          <% }) } %>
         </div>
       </div>
     </div>
