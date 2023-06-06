@@ -6,9 +6,8 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" 
-        target="_blank">
-        <img src="/assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
+      <a class="navbar-brand m-0" target="_blank">
+        
         <span class="ms-1 font-weight-bold">Admin Dashboard</span>
       </a>
     </div>
@@ -33,9 +32,11 @@
                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email
                           </th>
-                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone No
+                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                            Phone No
                           </th>
-                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hostel
+                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                            Hostel
                           </th>
                         </tr>
                       </thead>
@@ -49,11 +50,13 @@
                             <tr>
                               <td>
                                 <div class="d-flex px-2 py-1">
-                                  
-                                    <p class="fw-bold text-dark">
-                                      <a href="/admin/user-details/?id=<%= userData.results[i].reg_no %>"><%= userData.results[i].name %></a>
-                                    </p>
-                                  
+
+                                  <p class="fw-bold text-dark">
+                                    <a href="/admin/user-details/?id=<%= userData.results[i].reg_no %>">
+                                      <%= userData.results[i].name %>
+                                    </a>
+                                  </p>
+
                                 </div>
                               </td>
                               <td>
@@ -63,21 +66,23 @@
                               </td>
                               <td class="align-middle text-center">
                                 <p class="d-flex flex-column justify-content-center fw-bold text-dark">
-                                  
+
                                   <%= userData.results[i].phone %>
-                                  </p>
-                                
+                                </p>
+
                               </td>
 
-                              <td class="align-middle text-center" >
+                              <td class="align-middle text-center">
                                 <p class="text-secondary text-xm font-weight-bold">
-                                 
-                                      <a href="/admin/hostel-details?id=<%= userData.results[i].hostel_allocated.hostel_name %>">
-                                        <%= userData.results[i].hostel_allocated.hostel_name %></a>
-                               
-                                  
-                                  </p>
-                                
+
+                                  <a
+                                    href="/admin/hostel-details?id=<%= userData.results[i].hostel_allocated.hostel_name %>">
+                                    <%= userData.results[i].hostel_allocated.hostel_name %>
+                                  </a>
+
+
+                                </p>
+
 
                               </td>
 
@@ -91,33 +96,25 @@
                               <% } %>
                                 <% let totalPages; if (userData.results.length.capacity % 10==0) {
                                   totalPages=userData.results.length.capacity / 10; } else {
-                                  totalPages=Math.floor(userData.results.length / 10) + 2; } %>
-
-                                  
+                                  totalPages=Math.floor(userData.results.length / 10) + 1; } %>
                       </tbody>
                     </table>
-
                     <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-center">
-                                      <% for (let i=1; i <=totalPages; i++) { %>
-                                        <li class="page-item"><a class="page-link"
-                                            href="/admin/dashboard/users-list?page=<%= i %>">
-                                            <%=i%>
-                                          </a></li>
-                                        <% } %>
+                      <ul class="pagination justify-content-center">
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                          <li class="page-item"><a class="page-link" href="/admin/dashboard/users-list?page=<%= i %>">
+                              <%=i%>
+                            </a></li>
+                          <% } %>
 
-                                    </ul>
-                                  </nav>
+                      </ul>
+                    </nav>
                   </div>
                 </div>
                 <% } %>
-
           </div>
-
         </div>
-
       </div>
-
       </div>
       </main>
 
@@ -127,89 +124,7 @@
       <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
       <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
       <script src="/assets/js/plugins/chartjs.min.js"></script>
-      <script>
-        var ctx1 = document.getElementById("chart-line").getContext("2d");
 
-        var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-        gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
-        gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
-        gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
-        new Chart(ctx1, {
-          type: "line",
-          data: {
-            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
-              label: "Mobile apps",
-              tension: 0.4,
-              borderWidth: 0,
-              pointRadius: 0,
-              borderColor: "#5e72e4",
-              backgroundColor: gradientStroke1,
-              borderWidth: 3,
-              fill: true,
-              data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-              maxBarThickness: 6
-
-            }],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              }
-            },
-            interaction: {
-              intersect: false,
-              mode: 'index',
-            },
-            scales: {
-              y: {
-                grid: {
-                  drawBorder: false,
-                  display: true,
-                  drawOnChartArea: true,
-                  drawTicks: false,
-                  borderDash: [5, 5]
-                },
-                ticks: {
-                  display: true,
-                  padding: 10,
-                  color: '#fbfbfb',
-                  font: {
-                    size: 11,
-                    family: "Open Sans",
-                    style: 'normal',
-                    lineHeight: 2
-                  },
-                }
-              },
-              x: {
-                grid: {
-                  drawBorder: false,
-                  display: false,
-                  drawOnChartArea: false,
-                  drawTicks: false,
-                  borderDash: [5, 5]
-                },
-                ticks: {
-                  display: true,
-                  color: '#ccc',
-                  padding: 20,
-                  font: {
-                    size: 11,
-                    family: "Open Sans",
-                    style: 'normal',
-                    lineHeight: 2
-                  },
-                }
-              },
-            },
-          },
-        });
-      </script>
       <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {

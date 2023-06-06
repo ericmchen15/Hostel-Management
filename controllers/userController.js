@@ -436,7 +436,7 @@ const calculateOrderAmount = (items) => {
 
 
 const loadPayment = async (req, res) => {
-    try {
+    try {Payment
         var isPaymentSuccess
         const userData = await User.findOne({ _id: req.session.user_id})
 
@@ -715,8 +715,9 @@ const startPayment = async (req, res) => {
         const paymentData = new Payment({
             payment_id: checkoutSession.id,
             date: new Date(),
-            hostel_name: userData.hostel_allocated.hostel_name
-
+            hostel_name: userData.hostel_allocated.hostel_name,
+            user_name: userData.name,
+            reg_no: userData.reg_no
         });
 
         await paymentData.save(); 
@@ -735,6 +736,7 @@ const updatePayment = async (id, status) => {
     try {
         var isPaymentSuccess
         const userData = await User.findOne({ _id: id})
+        const paymentData = await Payment.findOne({ reg_no: userData.reg_no })
 
 
         if (userData.payment_status_id){
@@ -748,11 +750,26 @@ const updatePayment = async (id, status) => {
                         payment_status: 'paid'
                     }
                 })
+            
+            await Payment.findOneAndUpdate({ reg_no: userData.reg_no }, 
+                {
+                    $set: {
+                        status: 'paid'
+                    }
+                })
+            
         } else if (status == 'fail') {
             await User.findOneAndUpdate({ _id: id },
                 {
                     $set: {
                         payment_status: 'due'
+                    }
+                })
+            
+            await paidPayment.findOneAndUpdate({ reg_no: userData.reg_no }, 
+                {
+                    $set: {
+                        status: 'due'
                     }
                 })
         }
