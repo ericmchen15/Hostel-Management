@@ -6,15 +6,16 @@
   <div class="row">
     <div class="card mb-4">
       <div class="card-header pb-0">
-        <h6> My Leaves</h6>
-
+        My Leaves
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
 
           <% if(leavesList.length === 0) { %>
 
-            <p>No leaves applied.</p>
+            <ul class="list-group">
+              <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">No leaves applied</li>
+            </ul>
     
             <%} else { leavesList.forEach(leave => { %>
               <ul class="list-group">

@@ -720,9 +720,20 @@ const loadLeaves = async(req, res) => {
     }
 }
 
+const loadWardenData = async (req, res) => {
+    try {
+        const wardenData = await Warden.find({});
+
+        res.render('warden', {wardens: wardenData})
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 
 
 module.exports = {
+
     loadLogin,
     verifyLogin,
     loadHome,
@@ -746,7 +757,8 @@ module.exports = {
     viewRecords,
     loadCreateHostelProduct,
     createHostelProduct,
-    loadLeaves
+    loadLeaves,
+    loadWardenData
 }
 
 
