@@ -2,39 +2,74 @@
       <%- include('navbar.ejs')  %>
 
       <!-- End Navbar -->
- <div class="container-fluid py-4">
+ <div class="container-fluid py-4 " style="min-height: 95vh; display: flex; flex-direction: column;">
     <div class="row">
         <div class="card mx-auto">
-            <div class="card-header pb-0 px-3">
-              Apply for Leave
+            <div class="card-header pb-0">
+              <strong>Apply for Leave</strong> 
             </div>
             <div class="card-body">
 
-            <form action="" method="post" role="form">
+              <form action="" method="post" role="form">
                 <div class="mb-3">
-                    <input class="form-control" type="text" name="reason" placeholder="Reason for Leave" required>
+                    <textarea class="form-control" name="reason" rows="4" placeholder="Reason for Leave" required></textarea>
                 </div>
-                <div class="mb-3">
-                    <div class="row">
-                        <div class="col">
-                          <label for="from">Leave Date</label>
-                          <input type="date" class="form-control" name="from" placeholder="Leaving Date" required>
-                        </div>
-                        <div class="col">
-                          <label for="to">Return Date</label>
-                          <input type="date" class="form-control" name="to" placeholder="Returning Date" required>
-                        </div>
-                      </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="from">Leave Date</label>
+                        <input type="date" class="form-control" name="from" required>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn btn-dark">Apply</button>
-                
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="to">Return Date</label>
+                        <input type="date" class="form-control" name="to" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-dark mt-4">Apply</button>
             </form>
+            
             </div>
 
         </div>
         
     </div>
+
+    <footer class="footer pt-3 mt-auto ">
+      <div class="container-fluid">
+        <div class="row align-items-center justify-content-lg-between">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="copyright text-center text-sm text-muted text-lg-start">
+              &copy; 2023 Hostel Management System. All rights reserved.
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+              <li class="nav-item">
+                <a href="https://www.linkedin.com/in/bhupen-basumatary/" target="_blank" class="text-secondary me-xl-4 me-4">
+                  <span class="text-lg fab fa-linkedin"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="https://twitter.com/bhupenb3" target="_blank" class="text-secondary me-xl-4 me-4">
+                  <span class="text-lg fab fa-twitter"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="https://bbhupen.medium.com" target="_blank" class="text-secondary me-xl-4 me-4">
+                  <span class="text-lg fab fa-medium"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="https://github.com/bbhupen" target="_blank" class="text-secondary me-xl-4 me-4">
+                  <span class="text-lg fab fa-github"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
 
  </div>
     </main>

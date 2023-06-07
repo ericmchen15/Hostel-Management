@@ -16,12 +16,12 @@
 
 
 
-      <div class="container-fluid py-4">
+      <div class="container-fluid py-4" style="min-height: 88vh; display: flex; flex-direction: column;">
 
         <div class="row">
           <div class="card ">
-            <div class="card-header pb-0">
-              Applied Students
+            <div class="card-header">
+             <strong>Applied Students</strong> 
             </div>
             <div class="card-body">
               <div class="table-responsive p-0">
@@ -29,14 +29,14 @@
                 <% if (userData.length===0) { %>
                   <table class="table align-items-center mb-0">
                     <thead>
-                      <tr>
+                      <tr class="h5">
                         No students to to Display!
-                      </tr><br>
-                      <tr>Check out the allocated students' details:</tr>
+                      </tr> <br>
+                      <tr class="h5">Check out the allocated students' details:</tr>
                     </thead>
                   </table>
 
-                  <button type="button" onclick="location.href='/admin/view-allocated'" class="btn btn-warning">View
+                  <button type="button" onclick="location.href='/admin/view-allocated'" class="btn btn-warning mt-3">View
                     Allocated Students</button>
                   <% } else { %>
                     <table class="table align-items-center mb-0">
@@ -122,6 +122,43 @@
           </div>
         </div>
       </div>
+      <footer class="footer pt-3 mt-auto ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                &copy; 2023 Hostel Management System. All rights reserved.
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                <li class="nav-item">
+                  <a href="https://www.linkedin.com/in/bhupen-basumatary/" target="_blank" class="text-secondary me-xl-4 me-4">
+                    <span class="text-lg fab fa-linkedin"></span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://twitter.com/bhupenb3" target="_blank" class="text-secondary me-xl-4 me-4">
+                    <span class="text-lg fab fa-twitter"></span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://bbhupen.medium.com" target="_blank" class="text-secondary me-xl-4 me-4">
+                    <span class="text-lg fab fa-medium"></span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://github.com/bbhupen" target="_blank" class="text-secondary me-xl-4 me-4">
+                    <span class="text-lg fab fa-github"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+        </div>
+      </footer>
+
       </div>
       </main>
 
