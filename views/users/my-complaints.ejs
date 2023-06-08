@@ -1,12 +1,14 @@
+
 <body class="g-sidenav-show   bg-gray-100">
+
 
   <%- include('navbar.ejs') %>
     <!-- End Navbar -->
     <div class="container-fluid py-4" style="min-height: 95vh; display: flex; flex-direction: column;">
       <div class="row">
         <div class="card mb-4">
-          <div class="card-header pb-0">
-            My Complaints
+          <div class="card-header pb-3 px-5">
+           <strong> My Complaints </strong>
           </div>
           <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
@@ -14,49 +16,29 @@
 
                 <p class="text-center">You have not submitted any complaints yet.</p>
                 <% } else { %>
-                  <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Complaint
-                          Details</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Submitted
-                          as:</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status:
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% complaintList.forEach(complaint=> { %>
-                        <tr>
-                          <td>
-                            <div class="d-flex px-2 py-1">
-                              <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm">
-                                  <%= complaint.title %>
-                                </h6>
-                                <p class="text-xs text-secondary mb-0">
-                                  <%= complaint.description %>
-                                </p>
-                              </div>
+                  <div >
+                    <div class="container">
+                      <% complaintList.forEach(complaint => { %>
+                      <div class="row mb-4">
+                        <div class="col">
+                          <div class="card mx-0 mt-2">
+                            <div class="card-body">
+                              <h5 class="card-title"><%= complaint.title %></h5>
+                              <p class="card-text"><%= complaint.description %></p>
+                              <p class="mb-0"><strong>Submitted by:</strong> <%= complaint.submittedBy %></p>
+                              <p class="mb-0"><strong>Submitted on:</strong> <%= complaint.date %></p>
+                              <p class="mb-0"><strong>Status:</strong> <%= complaint.status %></p>
                             </div>
-                          </td>
-                          <td>
-                            <p class="text-xs font-weight-bold mb-0">
-                              <%= complaint.submittedBy %>
-                            </p>
-                          </td>
-
-                          <td>
-                            <p class="text-xs font-weight-bold mb-0">
-                              <%= complaint.status %>
-                            </p>
-                          </td>
-
-                        </tr>
-                        <% }); %>
-
-                    </tbody>
-                  </table>
+                          </div>
+                        </div>
+                      </div>
+                      <% }); %>
+                    </div>
+                    
+                  </div>
+                  
+                  
+                  
                   <% } %>
             </div>
           </div>
@@ -201,6 +183,7 @@
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
       }
     </script>
+
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

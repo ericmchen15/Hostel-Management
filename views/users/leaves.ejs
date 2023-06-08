@@ -5,50 +5,48 @@
 <div class="container-fluid py-4" style="min-height: 95vh; display: flex; flex-direction: column;">
   <div class="row">
     <div class="card mb-4">
-      <div class="card-header pb-0">
-        My Leaves
+      <div class="card-header pb-2 px-2">
+        <strong> My Leaves </strong>
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
-
           <% if(leavesList.length === 0) { %>
-
             <ul class="list-group">
-              <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">No leaves applied</li>
+              <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                No leaves applied
+              </li>
             </ul>
-    
-            <%} else { leavesList.forEach(leave => { %>
+          <% } else { 
+            leavesList.forEach(leave => { %>
               <ul class="list-group">
-         
                 <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
-                    
-                    <span class="mb-2 text-xs">Reason: <span class="text-dark font-weight-bold ms-sm-2">
+                    <span class="mb-2 text-md">
+                      <strong>Reason:</strong>
                       <%= leave.reason %>
-                    </span></span>
-                    <span class="mb-2 text-xs">From: <span class="text-dark font-weight-bold ms-sm-2">
-                        <%= leave.from %>
-                      </span></span>
-                    <span class="mb-2 text-xs">To: <span class="text-dark ms-sm-2 font-weight-bold">
-                        <%= leave.to %>
-                      </span></span>
-                    <span class="mb-2 text-xs">Status: <span class="text-dark ms-sm-2 font-weight-bold">
-                        <%= leave.status %>
-                      </span></span>
-  
                     </span>
-  
-  
+                    <span class="mb-2 text-md">
+                      <strong>From:</strong>
+                      <%= leave.from %>
+                    </span>
+                    <span class="mb-2 text-md">
+                      <strong>To:</strong>
+                      <%= leave.to %>
+                    </span>
+                    <span class="mb-2 text-md">
+                      <strong>Status:</strong>
+                      <span class="text-capitalize">
+                        <%= leave.status %>
+                      </span>
+                    </span>
                   </div>
-  
                 </li>
-  
-                
-  
-            </ul>
+              </ul>
           <% }) } %>
         </div>
       </div>
+      
+      
     </div>
       
   </div>

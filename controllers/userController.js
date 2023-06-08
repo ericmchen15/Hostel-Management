@@ -353,6 +353,7 @@ const saveComplaint = async (req, res) => {
             title: req.body.title,
             description: req.body.description,
             hostelName: (await User.findOne({ _id: req.session.user_id })).hostel_allocated.hostel_name,
+            date: Date.now(),
             submittedBy: req.body.submittedBy,
             regNo: req.body.regNo,
             userId: req.session.user_id
@@ -671,6 +672,7 @@ const loadComplaints = async (req, res) => {
             if (userData.hostel_allocated.hostel_name == "NA") {
                 res.send('<script>alert("You have not been assigned to any hostel. Please click ok to proceed"); window.location.href = "/apply-hostel";</script>');
             } else {
+                complaintList.reverse();
                 res.render('my-complaints', { complaintList: complaintList });
             }
             

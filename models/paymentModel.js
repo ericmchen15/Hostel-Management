@@ -24,7 +24,7 @@ const paymentSchema = new mongoose.Schema({
   status : {
     type: String,
     enum: ['paid', 'due', 'NA'],
-    default: 'NA'
+    default: 'due'
 },
 })
 
