@@ -14,6 +14,10 @@ const leaveSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  stud_name: {
+    type: String,
+    required: false
+  },
   hostel_name: {
     type: String,
     required: true

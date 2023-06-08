@@ -5,5 +5,4 @@ function encode(data) {
 }
 
 
-
 module.exports = encode

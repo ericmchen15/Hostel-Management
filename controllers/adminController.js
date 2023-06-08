@@ -56,39 +56,19 @@ const verifyLogin = async (req, res) => {
 const loadHome = async (req, res) => {
 
     try {
-        let allocatedStudents = 0
         const allocatedUsers = await User.find({'hostel_allocated.status' : 'approved'})
-
-        allocatedUsers.forEach(user =>{
-            allocatedStudents++;
-        })
-
-        let totalWardens = 0;
-        const Wardens = await Warden.find({})
-        Wardens.forEach(warden =>{
-            totalWardens++;
-        })
-
-        let totalHostels = 0;
-        const Hostels = await Hostel.find({})
-        Hostels.forEach(hostel =>{
-            totalHostels++;
-        })
-
-        let appliedStudents = 0
-        const appliedUsers = await User.find({'hostel_allocated.status' : 'pending'})
-
-        appliedUsers.forEach(user =>{
-            appliedStudents++;
-        })
-       
-
-        const complaintData = await Complaint.find({})
-        complaintData.reverse()
+        const wardens = await Warden.find({})
+        const hostels = await Hostel.find({})
         const leaveData = await Leave.find({})
-        leaveData.reverse()
+        const complaintData = await Complaint.find({})
+        const appliedUsers = await User.find({'hostel_allocated.status' : 'pending'})
         const userData = await User.findById({ _id: req.session.user_id })
-        res.render('home', { user: userData, leave: leaveData, complaints: complaintData, allocated: allocatedStudents, totalWardens: totalWardens, totalHostels: totalHostels, appliedStudents: appliedStudents })
+        const allocatedStudentData = await User.find({ "user_allocation_batch" : "present" }) 
+        
+        complaintData.reverse()
+        leaveData.reverse()
+        
+        res.render('home', { user: userData, leave: leaveData, complaints: complaintData, allocated: allocatedUsers.length , totalWardens: wardens.length, totalHostels: hostels.length, appliedStudents: appliedUsers.length, present: allocatedStudentData })
     } catch (error) {
         console.log(error.message)
     }
@@ -246,7 +226,6 @@ const insertHostel = async (req, res) => {
 
         });
 
-        console.log(req.body)
 
         const hostelData = await hostel.save()
 
@@ -294,8 +273,7 @@ const securePassword = async (password) => {
 const loadAddWarden = async (req, res) => {
 
     try {
-
-        const hostelsData = await Hostel.find({})
+        const hostelsData = await Hostel.find({ warden: false })
         res.render('addWarden', { hostelsData: hostelsData })
     } catch (error) {
         console.log(error.message);
@@ -318,6 +296,13 @@ const addWarden = async (req, res) => {
             role: 2
 
         });
+
+        await Hostel.findOneAndUpdate({ name: req.body.hostel_name },
+            {
+                $set: {
+                    warden: true
+                }
+            })
 
         const wardenData = await warden.save()
 

@@ -58,7 +58,6 @@ const hostelSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
     name: {
         type: String,
         required: true
@@ -73,6 +72,11 @@ const hostelSchema = mongoose.Schema({
     },
     type: {
         type: String,
+        required: true
+    },
+    warden: {
+        type: Boolean,
+        default: false,
         required: true
     },
     vacancy: {
