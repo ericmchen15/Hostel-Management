@@ -6,6 +6,10 @@ const leaveSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  stud_name: {
+    type: String,
+    required: true
+  },
   leave_id: {
     type: String,
     required: true

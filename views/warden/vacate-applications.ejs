@@ -27,8 +27,8 @@
         <div class="row">
           <div class="col-12">
             <div class="card mb-4">
-              <div class="card-header pb-0 px-3">
-                <h6 class="mb-0">Vacate Information</h6>
+              <div class="card-header pb-0 px-4">
+                <h6 class="mb-0">Vacating Applications</h6>
               </div>
               <div class="card-body pt-4 p-3">
                 <ul class="list-group">
@@ -43,50 +43,36 @@
                     %>
                     
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-3 text-sm">Student : <%= vacate.reg_no %>
-                        </h6>
+  <div class="d-flex flex-column">
+    <span class="mb-2 text-md">Student:<span class="text-dark font-weight-bold ms-sm-2"><%= vacate.reg_no %></span> </span>
 
-                        <h6 class="mb-3 text-sm">Payment status : <%= paymentStatus %>
-                        </h6>
+    <span class="mb-2 text-md">Reason: <span class="text-dark font-weight-bold ms-sm-2"><%= vacate.reason %></span></span>
+    <span class="mb-2 text-md text-capitalize">Payment status: <span class="text-dark font-weight-bold ms-sm-2"> <%= paymentStatus %></span></span>
+    <span class="mb-2 text-md">Status:
+      <span class="text-dark ms-sm-2 font-weight-bold text-capitalize">
+        <% if (vacate.status==="pending" ) { %>
+        <%= vacate.status %>
+        <% } else if (vacate.status==="approved" ) { %>
+        <%= vacate.status %><br>
+        <% } else { %>
+        <%= vacate.status %><br>
+        <% } %>
+      </span>
+    </span>
+  </div>
 
-                        <span class="mb-2 text-xs">Reason: <span class="text-dark font-weight-bold ms-sm-2">
-                            <%= vacate.reason %>
-                          </span></span>
-                        
-                        <span class="mb-2 text-xs">Status: <span
-                            class="text-dark ms-sm-2 font-weight-bold text-capitalize">
-                            <% if (vacate.status==="pending" ) { %>
-                              <%= vacate.status %>
-  
-                                <% } else if (vacate.status==="approved" ) { %>
-                                  <%= vacate.status %>
-                                    <br>
-  
-                                    <% } else { %>
-                                      <%= vacate.status %>
-                                        <br>
-  
-                                        <% } %>
-                          </span>
-  
-                        </span>
-  
-  
-                      </div>
-  
-                      <% if (vacate.status==="pending" ) { %>
-                        <div class="ms-auto text-end">
-                          <a class="btn btn-link text-success text-gradient px-3 mb-0" href="javascript:;"
-                            onclick="approveVacate('<%= vacate.vacate_id %>', '<%= vacate.reg_no %> ')"><i
-                              class="fas fa-pencil-alt me-2"></i>Approve</a>
-                          <a class="btn btn-link text-danger px-3 mb-0" href="javascript:;"
-                            onclick="rejectVacate('<%= vacate.vacate_id%>')"><i class="fas fa-trash-alt text-danger me-2"
-                              aria-hidden="true"></i>Reject</a>
-                        </div>
-                        <% } %>
-  
+  <% if (vacate.status==="pending" ) { %>
+  <div class="ms-auto text-end">
+    <a class="btn btn-link text-success text-gradient px-3 mb-0" href="javascript:;" onclick="approveVacate('<%= vacate.vacate_id %>', '<%= vacate.reg_no %>')">
+      <i class="fas fa-check me-2"></i>Approve
+    </a>
+    <a class="btn btn-link text-danger px-3 mb-0" href="javascript:;" onclick="rejectVacate('<%= vacate.vacate_id %>')">
+      <i class="fas fa-trash-alt text-danger me-2" aria-hidden="true"></i>Reject
+    </a>
+  </div>
+  <% } %>
                     </li>
+
   
                     <% }); %>
                       <% } else { %>

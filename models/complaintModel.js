@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const DateOnly = require('mongoose-dateonly')(mongoose);
 
 // Define the schema for a complaint
 const complaintSchema = new mongoose.Schema({
@@ -21,6 +22,10 @@ const complaintSchema = new mongoose.Schema({
   },
   regNo : {
     type: String,
+    required: true
+  },
+  date: {
+    type: DateOnly,
     required: true
   },
   userId : {
