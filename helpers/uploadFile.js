@@ -12,7 +12,7 @@ const s3 = new S3Client({
         accessKeyId: process.env.ACCESS_KEY_ID, 
         secretAccessKey: process.env.SECRET_KEY
     },
-    region: "ap-northeast-1" // this is the region that you select in AWS account
+    region: "ap-south-1" 
 })
 
 const s3Storage = multerS3({
