@@ -568,19 +568,23 @@ const loadApplyLeave = async (req, res) => {
 
 const applyLeave = async (req, res) => {
     try {
+
+        const userData = await User.findOne({ _id: req.session.user_id })
+
         const leaveData = new Leave({
-            reg_no: ((await User.findOne({ _id: req.session.user_id })).reg_no),
+            reg_no: userData.reg_no,
+            stud_name:  userData.name,
             leave_id: new ObjectId(),
             reason: req.body.reason,
             from: req.body.from,
             to: req.body.to,
-            hostel_name: ((await User.findOne({ _id: req.session.user_id })).hostel_allocated).hostel_name
+            hostel_name: userData.hostel_allocated.hostel_name
         })
 
 
         await leaveData.save()
         res.redirect('/home')
-        console.log('success')
+
 
     } catch (error) {
         console.log(error.message)

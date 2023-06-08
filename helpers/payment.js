@@ -5,7 +5,7 @@ const success_url = process.env.SUCCESS_URL
 const fail_url = process.env.FAIL_URL
 const stripe = require('stripe')(stripe_key)
 
-const createNewCustomer = async(name, email) => {
+const createNewCustomer = async (name, email) => {
     try{
         const customer = await stripe.customers.create({
             name: name,

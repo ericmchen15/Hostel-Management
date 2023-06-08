@@ -125,7 +125,7 @@
         </div>
 
         <div class="row mt-4">
-          <div class="col-lg-7 mb-lg-0 mb-4">
+          <div class="col-lg-6 mb-lg-0 mb-4">
             <div class="card ">
               <div class="card-header pb-0 p-3">
                 <div class="d-flex justify-content-between">
@@ -209,56 +209,87 @@
               </div>
             </div>
           </div>
-
-          <div class="col-lg-5">
-            <div class="card">
-              <div class="card-header pb-0">
-                <h6 class="mb-0">Recent Leaves</h6>
+          
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="card ">
+              <div class="card-header pb-0 p-3">
+                <div class="d-flex justify-content-between">
+                  <h6 class="mb-2">Recent Leaves</h6>
+                </div>
               </div>
-              <div class="card-body">
-                <ul class="list-group">
-                  <% if (leave.length ) { for(let i=0; i<3; i++) { %>
-                    <li class="list-group-item border-0 d-flex p-3 mb-1 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <span class="text-xs">Student Reg. No. : <span class="text-dark font-weight-bold ms-sm-2">
-                            <%= leave[i].reg_no %>
-                          </span></span>
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <% if (leave.length ) { %>
+                    <thead>
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Submitted
+                          by</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                          Hostel Name</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                          Status</th>
+
+                      </tr>
+                    </thead>
+
+                    <tbody >
+
+                      <% for(let i=0; i<3; i++) { %>
+                        <tr>
+                          <td class="align-middle text-lg-start">
+                            <div class="d-flex px-2 py-1">
+                              <div class="d-flex flex-column justify-content-center">
+                                <h6>
+                                  <%= leave[i].reg_no %>
+                                </h6>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td class="align-middle text-lg-start">
+                            <h5 class="text-xs font-weight-bold mb-0">
+                              <h6>
+                                <%= leave[i].stud_name %>
+                              </h6>
+                            </h5>
+                          </td>
+
+                          <td class="align-middle text-lg-start">
+                            <h6 class="d-flex flex-column justify-content-center">
+                              <%= leave[i].hostel_name %>
+                            </h6>
+                          </td>
 
 
-                        <span class=" text-xs">Status: <span class="text-dark ms-sm-2 font-weight-bold text-capitalize">
-                            <% if (leave[i].status==="pending" ) { %>
-                              <%= leave[i].status %>
+                          <td class="align-middle text-lg-start">
+                            <h5 class="text-xs font-weight-bold mb-0">
+                              <h6>
+                                <%= leave[i].status %>
+                              </h6>
+                            </h5>
+                          </td>
 
-                                <% } else if (leave[i].status==="approved" ) { %>
-                                  <%= leave[i].status %>
+                        </tr>
 
-
-                                    <% } else { %>
-                                      <%= leave[i].status %>
-
-
-                                        <% } %>
-                          </span>
-
-                        </span>
-
-
-                      </div>
-
-                    </li>
-
-                    <% } %>
-                      <% } else { %>
-                        <p>No leaves to show!!!</p>
                         <% } %>
+                          <% } else { %>
+                            <p class="p-3">No Leaves to show!!!</p>
+                            <% } %>
 
-                </ul>
+
+
+                    </tbody>
+
+                </table>
+
+                <p class="btn bg-gradient-danger mx-3 mt-2" style="width: 100px;"> <a href="/admin/viewComplaints"
+                    style="color: aliceblue;">View all</a></p>
+
               </div>
-              <p class="btn bg-gradient-danger mx-3" style="width: 100px;"> <a href="/admin/viewLeaves"
-                  style="color: aliceblue;">View all</a></p>
             </div>
-
           </div>
+
         </div>
 
         <footer class="footer pt-3 mt-auto ">
