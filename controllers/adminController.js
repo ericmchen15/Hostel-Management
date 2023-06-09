@@ -174,7 +174,7 @@ const allocatedRooms = async (req, res) => {
 
       console.log(users)
       // Send the list of rooms to the client
-      res.render('allocated-rooms', { beds, users });
+      res.render('allocated-rooms', { beds, users, hostelName });
     } catch (error) {
       console.log(error.message);
     }

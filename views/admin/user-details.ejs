@@ -22,14 +22,14 @@
       <div class="container-fluid py-4">
         <div class="row">
           <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-header pb-0">
-                <h6> Details </h6>
+            <div class="card border shadow-lg mb-4">
+              <div class="card-header text-center">
+                <h5 class="p-2"> User Details </h5>
               </div>
 
               <div class="table-responsive">
                 <table class="table table-hover table-bordered text-center">
-                  <tbody>
+                  <tbody class="text-dark">
                     <% userData.forEach(function(user) { if (user) { %>
                       <tr>
                         <td><strong>Name</strong></td>
@@ -107,6 +107,7 @@
                               <% } %>
                         </td>
                       </tr>
+                      <tr></tr>
                       <% } %>
                         <% }); %>
                   </tbody>
