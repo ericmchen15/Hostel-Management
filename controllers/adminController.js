@@ -450,7 +450,8 @@ const randomHostel = async (req, res) => {
                     'hostel_name': allocatedHostel.name,
                     'bed_no': allocatedBed,
                     'room_no' : room_no,
-                    'status': "approved"
+                    'status': "approved",
+                    'allocation_date': Date.now()
                 })
 
                 // console.log(allocatedData)

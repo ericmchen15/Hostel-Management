@@ -329,7 +329,9 @@
 
                     <tbody>
 
-                      <% for(let i=0; i<4; i++) { %>
+                      <% let mini = Math.min(4, recentAllocated.length) %>
+
+                      <% for(let i=0; i< mini; i++) { %>
                         <tr>
                           <td>
                             <div class="d-flex px-2 py-1">

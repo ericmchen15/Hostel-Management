@@ -280,7 +280,8 @@ const removeBoarder = async (req, res) => {
                 "hostel_allocated.bed_no": 0, 
                 "hostel_allocated.status": "NA",
                 "hostel_allocated.room_no" : 0,
-                "user_allocation_batch": "left"    
+                "user_allocation_batch": "left",
+                "user_vacated_timestamp": Date.now() 
             } });
 
         res.redirect('/warden/dashboard?message=Successfully removed boarder!');
@@ -425,7 +426,8 @@ const approveVacate = async (req, res) => {
                 "hostel_allocated.bed_no": 0, 
                 "hostel_allocated.room_no": 0, 
                 "hostel_allocated.status": "NA",
-                "user_allocation_batch": "left"    
+                "user_allocation_batch": "left",
+                "user_vacated_timestamp": Date.now()     
             } });
 
         const vacate = await Vacate.findOneAndUpdate(
