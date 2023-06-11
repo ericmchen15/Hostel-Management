@@ -150,8 +150,8 @@
                     </thead>
 
                     <tbody>
-
-                      <% for(let i=0; i< 4; i++) { %>
+                      <% let mini = Math.min(4, complaints.length) %>
+                      <% for(let i=0; i< mini; i++) { %>
                         <tr>
                           <td>
                             <div class="d-flex px-2 py-1">
@@ -235,7 +235,8 @@
 
                     <tbody >
 
-                      <% for(let i=0; i<3; i++) { %>
+                      <% let mini = Math.min(4, complaints.length) %>
+                      <% for(let i=0; i<mini; i++) { %>
                         <tr>
                           <td class="align-middle text-lg-start">
                             <div class="d-flex px-2 py-1">
@@ -283,7 +284,7 @@
 
                 </table>
 
-                <p class="btn bg-gradient-danger mx-3 mt-2" style="width: 100px;"> <a href="/admin/viewComplaints"
+                <p class="btn bg-gradient-danger mx-3 mt-2" style="width: 100px;"> <a href="/admin/viewLeaves"
                     style="color: aliceblue;">View all</a></p>
 
               </div>
@@ -301,8 +302,10 @@
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
+                <% if (present.length){ %>
                 <table class="table align-items-center mb-0" id="recentAll">
                   <thead>
+                    
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Student Name</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reg No</th>
@@ -359,6 +362,12 @@
 
                       </tr>
                       <% }); %>
+                      <% }else{ %>
+                        <h4 class="p-4">No students allocated recently!</h4>
+                        <p class="btn bg-gradient-danger mx-3 mt-2" style="width: auto;"> <a href="/admin/view-allocated"
+                          style="color: aliceblue;">View previously allocated students</a></p>
+      
+                      <% } %>
 
                   </tbody>
                 </table>

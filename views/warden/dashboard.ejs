@@ -126,7 +126,8 @@
               </div>
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
-                  <% if (complaints.length==4 ) { %>
+                  <% if (complaints.length ) { %>
+                    <% let mini = Math.min(4, complaints.length) %>
                     <thead>
                       <tr>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
@@ -142,8 +143,8 @@
                     </thead>
 
                     <tbody>
-
-                      <% for(let i=0; i<4; i++) { %>
+                      
+                      <% for(let i=0; i<mini; i++) { %>
                         <tr>
                           <td>
                             <div class="d-flex px-2 py-1">
@@ -215,7 +216,8 @@
               </div>
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
-                  <% if (leavesList.length==4 ) { %>
+                  <% if(leavesList.length){ %>
+                  <% let mini2 = Math.min(4, leavesList.length) %>
                     <thead>
                       <tr>
                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Registration No
@@ -231,8 +233,8 @@
                     </thead>
 
                     <tbody>
-
-                      <% for(let i=0; i<4; i++) { %>
+                      
+                      <% for(let i=0; i<mini2; i++) { %>
                         <tr>
                           <td>
                             <div class="d-flex px-2 py-1">
@@ -329,7 +331,7 @@
 
                     <tbody>
 
-                      <% let mini = Math.min(4, recentAllocated.length) %>
+                      <% let mini = Math.min(3, recentAllocated.length) %>
 
                       <% for(let i=0; i< mini; i++) { %>
                         <tr>
