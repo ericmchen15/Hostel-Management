@@ -318,11 +318,9 @@ const updateProfile = async (req, res) => {
 
     try {
 
-        if (req.file) {
-            const userData = await User.findByIdAndUpdate({ _id: req.body.user_id }, { $set: { name: req.body.name, email: req.body.email, phone: req.body.mno } })
-        } else {
-            const userData = await User.findByIdAndUpdate({ _id: req.body.user_id }, { $set: { name: req.body.name, email: req.body.email, phone: req.body.mno } })
-        }
+        console.log("_id: " , req.session.user_id)
+        const userData = await User.findByIdAndUpdate({ _id: req.session.user_id }, { $set: { name: req.body.name, email: req.body.email, phone: req.body.mno, dept: req.body.dept } })
+        
 
         res.redirect('/home')
 
