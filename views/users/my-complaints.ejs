@@ -5,46 +5,61 @@
   <%- include('navbar.ejs') %>
     <!-- End Navbar -->
     <div class="container-fluid py-4" style="min-height: 95vh; display: flex; flex-direction: column;">
+
       <div class="row">
-        <div class="card bg-gray-100 mb-4">
-          <div class="card-header bg-gray-100 pb-3 px-5">
-           <strong> My Complaints </strong>
+        <div class="card mb-4">
+          <div class="card-header pb-2 px-2">
+            <strong> My Complaints </strong>
           </div>
           <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
-              <% if(complaintList.length===0) { %>
-
-                <p class="text-center">You have not submitted any complaints yet.</p>
-                <% } else { %>
-                  <div >
-                    <div class="container">
-                      <% complaintList.forEach(complaint => { %>
-                      <div class="row mb-4">
-                        <div class="col">
-                          <div class="card mx-0 mt-2">
-                            <div class="card-body">
-                              <h5 class="card-title"><%= complaint.title %></h5>
-                              <p class="card-text"><%= complaint.description %></p>
-                              <p class="mb-0"><strong>Submitted by:</strong> <%= complaint.submittedBy %></p>
-                              <p class="mb-0"><strong>Submitted on:</strong> <%= complaint.date %></p>
-                              <p class="mb-0"><strong>Status:</strong> <%= complaint.status %></p>
-                            </div>
-                          </div>
-                        </div>
+              <% if(complaintList.length === 0) { %>
+                <ul class="list-group">
+                  <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                    No leaves applied
+                  </li>
+                </ul>
+              <% } else { complaintList.forEach(complaint => { %>
+                  <ul class="list-group">
+                    <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                      <div class="d-flex flex-column">
+                        <span class="mb-2 text-md">
+                          <strong>Title: </strong>
+                          <%= complaint.title %>
+                        </span>
+                        <span class="mb-2 text-md">
+                          <strong>Description: </strong>
+                          <%= complaint.description %>
+                        </span>
+                        <span class="mb-2 text-md">
+                          <strong>Submitted As: </strong>
+                          <%= complaint.submittedBy %>
+                        </span>
+                        <span class="mb-2 text-md">
+                          <strong>Submitted On: </strong>
+                          <span class="text-capitalize">
+                            <%= complaint.status %>
+                          </span>
+                        </span>
+                        <span class="mb-2 text-md">
+                          <strong>Status: </strong>
+                          <span class="text-capitalize">
+                            <%= complaint.status %>
+                          </span>
+                        </span>
                       </div>
-                      <% }); %>
-                    </div>
-                    
-                  </div>
-                  
-                  
-                  
-                  <% } %>
+                    </li>
+                  </ul>
+              <% }) } %>
             </div>
           </div>
+          
+          
         </div>
-
+          
       </div>
+
+
 
       <footer class="footer pt-3 mt-auto ">
         <div class="container-fluid">
