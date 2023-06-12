@@ -16,7 +16,7 @@ const loadDashboard = async (req, res) => {
         const wardenName = (await Warden.findOne({ _id: wardenId })).name
         const wardenHostel = (await Warden.findOne({ _id: wardenId })).hostel_name
         const hostelData = await Hostel.findOne({ name: wardenHostel})
-        const recentAllocated = await User.find({ "hostel_allocated.hostel_name": wardenHostel, "user_allocation_batch": "present"})
+        const recentAllocated = await User.find({ "hostel_allocated.hostel_name": wardenHostel, "user_allocation_batch": "past"})
         const complaintData = await Complaint.find({hostelName: hostelData.name})
         complaintData.reverse();
         const leaveData = await Leave.find({hostel_name: wardenHostel})
