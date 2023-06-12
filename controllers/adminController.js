@@ -274,6 +274,7 @@ const loadAddWarden = async (req, res) => {
 
     try {
         const hostelsData = await Hostel.find({ warden: false })
+        console.log(hostelsData)
         res.render('addWarden', { hostelsData: hostelsData })
     } catch (error) {
         console.log(error.message);

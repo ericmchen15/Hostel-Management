@@ -261,15 +261,14 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
 
-
     try {
 
         const userData = await User.findById({ _id: req.session.user_id })
         const hostelData = await Hostel.findOne({ name: userData.hostel_allocated.hostel_name });
-        const hostels = await Hostel.find({})
+        const leaves = await Leave.find({ reg_no: userData.reg_no})
+        const complaints = await Complaint.find({ userId: userData._id })
         
 
-        let messData = "None";
         let warden = "None";
         let leaveData = "None";
         if (hostelData) {
@@ -278,7 +277,7 @@ const loadHome = async (req, res) => {
             leaveData = (await Leave.find({ reg_no: userData.reg_no })) ? leaveData = await Leave.find({ reg_no: userData.reg_no }) : "None";
         } 
 
-        res.render('home', { user: userData, leave: leaveData, warden: warden, mess: messData, hostels : hostels, hostel: hostelData })
+        res.render('home', { user: userData, warden: warden, hostel: hostelData, leaves: leaves, complaints: complaints })
     } catch (error) {
         console.log(error.message)
     }
@@ -625,14 +624,11 @@ const loadHostelsList = async (req, res) => {
 
 const loadHostelDetails = async (req, res) => {
     try {
-        Hostel.findById(req.params.id, function (err, hostel) {
-            if (err) {
-                console.log(err);
-                res.send('Error occurred while retrieving hostel details');
-            } else {
-                res.render('hostel-details.ejs', { hostel: hostel });
-            }
-        });
+        const hostel = await (Hostel.findById(req.params.id))
+        const hostelName = (await Hostel.findById(req.params.id)).name
+        const warden = await Warden.findOne({hostel_name: hostelName})
+
+        res.render('hostel-details.ejs', { hostel: hostel, hostelName: hostelName, warden : warden })
 
     } catch (error) {
         console.log(error.message);
